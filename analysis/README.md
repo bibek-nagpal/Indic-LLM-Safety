@@ -45,7 +45,7 @@ This recreates `analysis/phase_d_preparation/` deterministically. The manifests 
 
 Paid execution is permitted only after explicit user approval. It requires both `--execute-paid-calls` and `--paid-approval-confirmed`; `--max-jobs` supports a small smoke batch and resumable staged execution. These jobs re-score stored responses only and make zero target-inference calls. Raw scores, errors, provenance, and accounting remain under the ignored `runs/cross_judge/` directory.
 
-The original standard GPT-5 Mini and Claude preparations above are preserved for later use. Under the current $4.50 Phase D ceiling, Claude is deferred and the active design uses OpenRouter's asynchronous Batch API for the complete 3,024-response GPT-5 Mini re-judge. Rebuild the token-exact budget design with:
+The original standard GPT-5 Mini and Claude preparations above are preserved for later use. Under the current $4.50 Phase D ceiling, Claude is deferred and the active design uses OpenRouter's asynchronous Batch API with the live-validator-required `openai/gpt-5-mini:batch` model variant for the complete 3,024-response GPT-5 Mini re-judge. Rebuild the token-exact budget design with:
 
 ```powershell
 .analysis-venv\Scripts\python.exe analysis\design_phase_d_budget.py

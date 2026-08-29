@@ -29,6 +29,7 @@ from qc_final import (
 
 
 GPT_MODEL = "openai/gpt-5-mini"
+BATCH_MODEL = "openai/gpt-5-mini:batch"
 TOKEN_ENCODING = "o200k_base"
 DESIGN_SEED = 20260829
 HARD_BUDGET_USD = 4.50
@@ -229,7 +230,7 @@ def main() -> None:
     chat_overhead = 2 * CHAT_TOKENS_PER_MESSAGE + CHAT_PRIMING_TOKENS
     request_contract = {
         "endpoint": "/v1/chat/completions",
-        "model": GPT_MODEL,
+        "model": BATCH_MODEL,
         "temperature": 0.0,
         "max_tokens": MAX_OUTPUT_TOKENS,
         "include_reasoning": True,
@@ -397,10 +398,11 @@ def main() -> None:
         "submission_endpoint": "https://openrouter.ai/api/beta/batches",
         "request_endpoint": "/v1/chat/completions",
         "judge_model": GPT_MODEL,
-        "use_colon_batch_slug": False,
+        "batch_model": BATCH_MODEL,
+        "use_colon_batch_slug": True,
         "colon_batch_slug_investigation": (
-            "Catalog metadata corroborates batch pricing, but execution uses the documented "
-            "Batch API with the base model slug."
+            "The live Batch API validator requires the :batch model variant for GPT-5 Mini; "
+            "a base-slug smoke submission was rejected with HTTP 400 before persistence."
         ),
         "jobs_manifest": str(jobs_path.relative_to(repo)).replace("\\", "/"),
         "jobs_manifest_sha256": sha256_file(jobs_path),

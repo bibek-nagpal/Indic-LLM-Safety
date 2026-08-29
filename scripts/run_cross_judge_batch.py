@@ -279,7 +279,12 @@ def main() -> None:
     output_dir = repo / plan["output_dir"]
     if plan["execution_mode"] != "openrouter_asynchronous_batch_api":
         raise RuntimeError("plan is not an asynchronous Batch API plan")
-    if plan["judge_model"] != "openai/gpt-5-mini" or plan["use_colon_batch_slug"]:
+    if (
+        plan["judge_model"] != "openai/gpt-5-mini"
+        or plan.get("batch_model") != "openai/gpt-5-mini:batch"
+        or plan["request_contract"]["model"] != plan["batch_model"]
+        or not plan["use_colon_batch_slug"]
+    ):
         raise RuntimeError("unsafe batch model contract")
     if float(plan["hard_budget_usd"]) > 4.50:
         raise RuntimeError("plan exceeds the authorized Phase D budget ceiling")
