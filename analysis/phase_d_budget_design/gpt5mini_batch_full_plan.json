@@ -1,7 +1,7 @@
 {
   "colon_batch_slug_investigation": "Catalog metadata corroborates batch pricing, but execution uses the documented Batch API with the base model slug.",
   "cost_analysis": "analysis/phase_d_budget_design/cost_analysis.json",
-  "cost_analysis_sha256": "9096ed58274cc9bed83e023a4475e4bb27c547eba40301dbbfadd9dc9c94159a",
+  "cost_analysis_sha256": "7703a6c30987d320a01fa3fc705b4b810bca0221612ffcb515664af616a1e8dc",
   "deferred_claude_plan": "analysis/phase_d_preparation/claude_sample_plan.json",
   "deferred_claude_plan_sha256": "23ef166ec627e5fbcc3324d6b74e9f4caeabf271043342494d6979aff4bc5e36",
   "execution_mode": "openrouter_asynchronous_batch_api",

@@ -99,10 +99,9 @@ def cost(
     }
 
 
-def pair_model_rank(row: dict[str, Any]) -> str:
+def pair_rank(row: dict[str, Any]) -> str:
     return sha256_text(
-        f"{DESIGN_SEED}\x1f{row['pair_id']}\x1f{row['target_model']}\x1f"
-        f"{row['category']}\x1f{row['strategy']}"
+        f"{DESIGN_SEED}\x1f{row['pair_id']}\x1f{row['category']}\x1f{row['strategy']}"
     )
 
 
@@ -120,31 +119,38 @@ def fallback_subset(
     if any(len(group) != 2 for group in by_pair_model.values()):
         raise RuntimeError("fallback candidates are not complete EN/RH pair-model jobs")
 
-    cells: dict[tuple[str, str, str], list[tuple[str, str]]] = defaultdict(list)
-    for key, row in metadata.items():
-        cells[(row["target_model"], row["category"], row["strategy"])].append(key)
+    pair_metadata: dict[str, dict[str, Any]] = {}
+    for row in metadata.values():
+        previous = pair_metadata.setdefault(row["pair_id"], row)
+        if (previous["category"], previous["strategy"]) != (
+            row["category"],
+            row["strategy"],
+        ):
+            raise RuntimeError("pair metadata changes across target models")
+    cells: dict[tuple[str, str], list[str]] = defaultdict(list)
+    for pair_id, row in pair_metadata.items():
+        cells[(row["category"], row["strategy"])].append(pair_id)
     expected_cells = {
-        (model, category, strategy)
-        for model in EXPECTED_MODELS
+        (category, strategy)
         for category in EXPECTED_CATEGORIES
         for strategy in EXPECTED_STRATEGIES
     }
     if set(cells) != expected_cells or any(len(keys) != 42 for keys in cells.values()):
-        raise RuntimeError("fallback candidate grid is not the expected 36×42 design")
+        raise RuntimeError("fallback candidate grid is not the expected 12×42 pair design")
     ranked_cells = {
-        cell: sorted(keys, key=lambda key: pair_model_rank(metadata[key]))
+        cell: sorted(keys, key=lambda pair_id: pair_rank(pair_metadata[pair_id]))
         for cell, keys in cells.items()
     }
 
     spend_limit = HARD_BUDGET_USD - FALLBACK_RETRY_RESERVE_USD
     for per_cell in range(42, 0, -1):
-        selected_keys = {
-            key for keys in ranked_cells.values() for key in keys[:per_cell]
+        selected_pair_ids = {
+            pair_id for keys in ranked_cells.values() for pair_id in keys[:per_cell]
         }
         selected = [
             row
             for row in rows
-            if (row["pair_id"], row["target_model"]) in selected_keys
+            if row["pair_id"] in selected_pair_ids
         ]
         input_tokens = sum(row["costed_input_tokens"] for row in selected)
         maximum_output = len(selected) * STANDARD_FALLBACK_MAX_OUTPUT_TOKENS
@@ -357,6 +363,7 @@ def main() -> None:
         },
         "standard_fallback": {
             "selection_seed": DESIGN_SEED,
+            "same_pair_ids_across_target_models": True,
             "pair_model_jobs_per_model_category_strategy_cell": per_cell,
             "pair_model_jobs": len(fallback_rows) // 2,
             "response_jobs": len(fallback_rows),
@@ -438,6 +445,7 @@ def main() -> None:
         "pair_model_jobs_per_cell": per_cell,
         "selection_seed": DESIGN_SEED,
         "selection_independent_of_target_scores": True,
+        "same_pair_ids_across_target_models": True,
         "hard_budget_usd": HARD_BUDGET_USD,
         "retry_reserve_usd": FALLBACK_RETRY_RESERVE_USD,
         "maximum_no_retry_cost_usd": fallback_maximum["total_cost_usd"],
@@ -476,6 +484,10 @@ def main() -> None:
         f"$4.50 ceiling even if every response consumes the full {MAX_OUTPUT_TOKENS}-token cap. "
         f"At the single most expensive job's maximum cost, that reserve covers "
         f"{conservative_retry_jobs} whole-job retries.",
+        "",
+        f"The standard-price contingency selects the same {per_cell} pair IDs in each of the "
+        "12 category×strategy cells for all three target models, retaining both languages. "
+        "This preserves pair-level between-model comparisons while reserving $0.50 for retries.",
         "",
         "The strict JSON schema constrains only the response format already required by the frozen rubric. "
         "Reasoning effort is unchanged; prompt caching is automatic provider-side upside and contributes "

@@ -51,7 +51,7 @@ The original standard GPT-5 Mini and Claude preparations above are preserved for
 .analysis-venv\Scripts\python.exe analysis\design_phase_d_budget.py
 ```
 
-This hashes every exact reconstructed judge message, counts the actual frozen prompt/response text with GPT-5 Mini's tokenizer, and assumes no prompt-cache discount. Its recommended full Batch plan and standard-price stratified contingency live in `analysis/phase_d_budget_design/`.
+This hashes every exact reconstructed judge message, counts the actual frozen prompt/response text with GPT-5 Mini's tokenizer, and assumes no prompt-cache discount. Its recommended full Batch plan and standard-price stratified contingency live in `analysis/phase_d_budget_design/`. The contingency selects the same pair IDs across target models so between-model gap comparisons remain paired.
 
 Validate the Batch plan locally with:
 

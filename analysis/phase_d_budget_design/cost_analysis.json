@@ -75,20 +75,21 @@
   },
   "standard_fallback": {
     "expected_600_output_tokens_per_job": {
-      "input_cost_usd": 0.94418625,
+      "input_cost_usd": 0.95910175,
       "output_cost_usd": 2.3328,
-      "total_cost_usd": 3.27698625
+      "total_cost_usd": 3.29190175
     },
     "max_output_tokens_per_job": 768,
     "maximum_768_output_tokens_per_job": {
-      "input_cost_usd": 0.94418625,
+      "input_cost_usd": 0.95910175,
       "output_cost_usd": 2.985984,
-      "total_cost_usd": 3.93017025
+      "total_cost_usd": 3.94508575
     },
     "pair_model_jobs": 972,
     "pair_model_jobs_per_model_category_strategy_cell": 27,
     "reserved_for_retries_usd": 0.5,
     "response_jobs": 1944,
+    "same_pair_ids_across_target_models": true,
     "selection_seed": 20260829
   },
   "token_encoding": "o200k_base",

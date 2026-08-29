@@ -56,6 +56,19 @@ def test_standard_contingency_is_balanced_in_every_cell() -> None:
     assert len(pair_models) == 972
     assert len(cells) == 36
     assert set(cells.values()) == {27}
+    pair_ids_by_model_cell: dict[tuple[str, str, str], set[object]] = {}
+    for model, category, strategy in cells:
+        pair_ids_by_model_cell[(model, category, strategy)] = {
+            pair_id
+            for pair_id, row_model, row_category, row_strategy in pair_models
+            if (row_model, row_category, row_strategy) == (model, category, strategy)
+        }
+    for category, strategy in {(cell[1], cell[2]) for cell in cells}:
+        selections = {
+            frozenset(pair_ids_by_model_cell[(model, category, strategy)])
+            for model in {cell[0] for cell in cells}
+        }
+        assert len(selections) == 1
     for pair_id, model, _, _ in pair_models:
         languages = {
             row["language"]
