@@ -21,7 +21,7 @@ from dotenv import load_dotenv
 
 
 BATCH_URL = "https://openrouter.ai/api/beta/batches"
-TERMINAL_STATUSES = {"completed", "failed", "expired", "cancelled"}
+TERMINAL_STATUSES = {"completed", "failed", "expired", "cancelled", "rejected"}
 
 
 def sha256_text(value: str) -> str:
@@ -239,6 +239,22 @@ def headers() -> dict[str, str]:
         "Content-Type": "application/json",
         "HTTP-Referer": "https://github.com/Soham-Kumar/jailbreak_hermes",
         "X-Title": "jailbreak_hermes Phase D batch cross-judge",
+    }
+
+
+def sanitized_error(response: httpx.Response) -> dict[str, Any]:
+    """Return provider error metadata without ever echoing a submitted body."""
+    try:
+        payload = response.json()
+    except ValueError:
+        payload = {}
+    error = payload.get("error") if isinstance(payload, dict) else None
+    if not isinstance(error, dict):
+        error = {}
+    return {
+        "http_status": response.status_code,
+        "error_code": error.get("code"),
+        "error_message": str(error.get("message") or "")[:2000],
     }
 
 
@@ -562,8 +578,29 @@ def main() -> None:
     write_state(state_path, state)
     with httpx.Client(timeout=180.0) as client:
         response = client.post(BATCH_URL, headers=api_headers, json=payload)
-        response.raise_for_status()
-        result = response.json()
+    if response.status_code != 202:
+        error_record = {
+            "schema_version": 1,
+            "submission_attempt_id": submission_record["submission_attempt_id"],
+            **sanitized_error(response),
+            "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
+        }
+        append_jsonl(output_dir / "submission_errors.jsonl", error_record)
+        if 400 <= response.status_code < 500:
+            # A documented 4xx validation rejection did not persist a batch.
+            submission_record["status"] = "rejected"
+            submission_record["actual_cost_usd"] = 0.0
+            submission_record["collected"] = True
+        else:
+            submission_record["status"] = "submission_outcome_unknown"
+        submission_record.update(error_record)
+        write_state(state_path, state)
+        raise RuntimeError(
+            f"Batch submission rejected: HTTP {response.status_code}; "
+            f"code={error_record['error_code']!r}; "
+            f"message={error_record['error_message']!r}"
+        )
+    result = response.json()
     if response.status_code != 202 or not result.get("id"):
         raise RuntimeError("unexpected batch submission response")
     submission_record["batch_id"] = result["id"]

@@ -5,13 +5,14 @@ import sys
 from pathlib import Path
 
 import pytest
+import httpx
 
 
 SCRIPTS_DIR = Path(__file__).resolve().parents[1] / "scripts"
 if str(SCRIPTS_DIR) not in sys.path:
     sys.path.insert(0, str(SCRIPTS_DIR))
 
-from run_cross_judge_batch import budget_commitment, parse_batch_result
+from run_cross_judge_batch import budget_commitment, parse_batch_result, sanitized_error
 
 
 class _Judge:
@@ -133,3 +134,19 @@ def test_ambiguous_failed_batch_keeps_its_budget_reservation() -> None:
         ]
     }
     assert budget_commitment(state) == pytest.approx(0.35)
+
+
+def test_submission_error_is_sanitized() -> None:
+    response = httpx.Response(
+        400,
+        json={
+            "error": {"code": "bad_request", "message": "unsupported parameter"},
+            "echoed_request": "must not be retained",
+        },
+        request=httpx.Request("POST", "https://openrouter.ai/api/beta/batches"),
+    )
+    assert sanitized_error(response) == {
+        "http_status": 400,
+        "error_code": "bad_request",
+        "error_message": "unsupported parameter",
+    }
