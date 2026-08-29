@@ -1,0 +1,31 @@
+{
+  "api_calls": 0,
+  "bootstrap": {
+    "interval": "95% percentile",
+    "resamples": 10000,
+    "seed": 20260829,
+    "unit": "pair_id with all models retained"
+  },
+  "character_definition": "Python len() over stored Unicode response string; no trimming",
+  "experimental_unit": "pair_id",
+  "input_snapshot": "frozen_final_2026_08_29",
+  "input_traces_sha256": "0e61cebfb3f7aa573ed337b2cf55a73335a921dadf8cd800c0dad47e78c55135",
+  "phase": "C",
+  "primary_thresholds": {
+    "long": "characters > 500",
+    "short": "characters < 80"
+  },
+  "schema_version": 1,
+  "sensitivity_grid": {
+    "long": [
+      400,
+      500,
+      600
+    ],
+    "short": [
+      60,
+      80,
+      100
+    ]
+  }
+}

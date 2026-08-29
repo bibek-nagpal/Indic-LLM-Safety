@@ -1,0 +1,23 @@
+{
+  "nvidia/nemotron-3-nano-30b-a3b": {
+    "directional_n": 176,
+    "forward": 56,
+    "p_value": 1.589326879567879e-06,
+    "reverse": 120,
+    "test": "two-sided exact binomial on forward-shaped versus reverse-shaped pairs"
+  },
+  "openai/gpt-oss-20b": {
+    "directional_n": 75,
+    "forward": 59,
+    "p_value": 6.114156572521501e-07,
+    "reverse": 16,
+    "test": "two-sided exact binomial on forward-shaped versus reverse-shaped pairs"
+  },
+  "qwen/qwen3-30b-a3b-instruct-2507": {
+    "directional_n": 203,
+    "forward": 203,
+    "p_value": 1.5557538194652854e-61,
+    "reverse": 0,
+    "test": "two-sided exact binomial on forward-shaped versus reverse-shaped pairs"
+  }
+}

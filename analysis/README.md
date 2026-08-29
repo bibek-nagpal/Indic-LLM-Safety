@@ -21,3 +21,11 @@ Run Phase B only after the gate passes:
 ```
 
 The analyzer reruns the QC gate and fails closed if any check is not clean. All bootstrap resampling clusters on `pair_id` and retains every associated language/model observation. Generated outputs live in `analysis/results/`.
+
+Run the judge-independent Phase C length analysis with:
+
+```powershell
+.analysis-venv\Scripts\python.exe analysis\analyze_phase_c.py
+```
+
+Phase C outputs live in `analysis/phase_c_results/`. It reads only stored target responses and makes no API calls.
