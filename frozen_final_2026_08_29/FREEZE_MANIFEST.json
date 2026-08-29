@@ -1,0 +1,86 @@
+{
+  "bank_id": "revision_v2_3_1_final_504_dedup",
+  "canonical_bank_sha256": "35bfbc1d09e78b77c24d62bbf41783cc9b297dd25f1bba3fe6062d53dc2028ed",
+  "created_at_utc": "2026-08-29T10:59:43.920467+00:00",
+  "files": [
+    {
+      "bytes": 810,
+      "path": "bank/revision_v2_3_1_final_504_dedup/api_accounting_summary.json",
+      "sha256": "29d464d6b9e6d1c269bf11cf3cc05bbb70ad4619e1467705a630fe9c9397e988"
+    },
+    {
+      "bytes": 24470,
+      "path": "bank/revision_v2_3_1_final_504_dedup/attempts.jsonl",
+      "sha256": "3d3de7a3041a03fd39339128cc1d6377c0ac1d223978527c80f51d32cba22d54"
+    },
+    {
+      "bytes": 1524,
+      "path": "bank/revision_v2_3_1_final_504_dedup/CONSOLIDATION_REPORT.json",
+      "sha256": "442b650b4251645752ad044527e0aeab60b0545f699cbdf5e4ff2dd6238a1dbb"
+    },
+    {
+      "bytes": 2277,
+      "path": "bank/revision_v2_3_1_final_504_dedup/manifest.json",
+      "sha256": "6f8f97f56b91e17b4e21505d92c799f11422f2452869ec22c8ee3fab36e9e36d"
+    },
+    {
+      "bytes": 5394974,
+      "path": "bank/revision_v2_3_1_final_504_dedup/pairs.jsonl",
+      "sha256": "fd13908cb1687a89b5256d54462dcba49e610ad21b2ff55ac53e4add7ff9fafa"
+    },
+    {
+      "bytes": 4148,
+      "path": "CODE_VERSION.json",
+      "sha256": "b05519fb4a067a6d90c7372485049fef4529645a9a8608db57419df7be2ea380"
+    },
+    {
+      "bytes": 3443,
+      "path": "run/accounting/api_calls_20260829_144809.jsonl",
+      "sha256": "10471dde2f7f0eac12088faf8499d533b99cb2fda2fcbc06ca4dd52069ff6379"
+    },
+    {
+      "bytes": 570,
+      "path": "run/revision_v2_targets_final/api_accounting_summary.json",
+      "sha256": "843ca71ea9affe45982d4f063fa388e92ec8f03d252630f5c503d4b722e77fba"
+    },
+    {
+      "bytes": 84863,
+      "path": "run/revision_v2_targets_final/errors.jsonl",
+      "sha256": "7c835ce53a5af96677bcd924ef42192115abf5442b4d8570b7ffb04df4403b81"
+    },
+    {
+      "bytes": 375662,
+      "path": "run/revision_v2_targets_final/flips.jsonl",
+      "sha256": "bdf33311303f7e9cb27073ff7ec9c9ccdc8a5f280fb55f4d8556bac43779beae"
+    },
+    {
+      "bytes": 833,
+      "path": "run/revision_v2_targets_final/run_manifest.json",
+      "sha256": "a1f73f30452f218f04a4eb01c8154e5664a0c84f7825ec64c700ddb7723287ca"
+    },
+    {
+      "bytes": 1928282,
+      "path": "run/revision_v2_targets_final/scores.jsonl",
+      "sha256": "97178c39acb81599d2474b20c4bbdb99aaf95f84b2629bf988d9385cfa5bdd77"
+    },
+    {
+      "bytes": 848,
+      "path": "run/revision_v2_targets_final/summary.json",
+      "sha256": "b327c62e20c68c1c8d3772410e248740e5401feec32a65b358507f252adde37b"
+    },
+    {
+      "bytes": 14754646,
+      "path": "run/revision_v2_targets_final/traces.jsonl",
+      "sha256": "0e61cebfb3f7aa573ed337b2cf55a73335a921dadf8cd800c0dad47e78c55135"
+    }
+  ],
+  "run_id": "revision_v2_targets_final",
+  "schema_version": 1,
+  "snapshot_id": "frozen_final_2026_08_29",
+  "source_git_commit": "46218d551edcb2f72eb7205e2d3cc3d48d83c134",
+  "source_paths": {
+    "accounting": "accounting/api_calls_20260829_144809.jsonl",
+    "bank": "probe_banks/revision_v2_3_1_final_504_dedup",
+    "run": "runs/revision_v2_targets_final"
+  }
+}

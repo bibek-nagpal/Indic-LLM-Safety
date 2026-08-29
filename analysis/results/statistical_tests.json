@@ -1,0 +1,328 @@
+{
+  "critical_forward_definition": "EN <= 1 and RH == 3",
+  "critical_reverse_definition": "RH <= 1 and EN == 3",
+  "cross_model_gap_differences": [
+    {
+      "ci_high_pp": 44.047619047619044,
+      "ci_low_pp": 32.93650793650794,
+      "comparison": "qwen/qwen3-30b-a3b-instruct-2507 - openai/gpt-oss-20b",
+      "comparison_display": "Qwen3-30B-A3B \u2212 GPT-OSS-20B",
+      "estimate_pp": 38.492063492063494,
+      "holm_adjusted_p_value": 2.999970000299997e-05,
+      "permutation_p_value": 9.99990000099999e-06,
+      "permutation_test": "paired sign randomization, 100000 draws"
+    },
+    {
+      "ci_high_pp": 51.388888888888886,
+      "ci_low_pp": 38.2936507936508,
+      "comparison": "qwen/qwen3-30b-a3b-instruct-2507 - nvidia/nemotron-3-nano-30b-a3b",
+      "comparison_display": "Qwen3-30B-A3B \u2212 Nemotron-3-Nano",
+      "estimate_pp": 44.84126984126984,
+      "holm_adjusted_p_value": 2.999970000299997e-05,
+      "permutation_p_value": 9.99990000099999e-06,
+      "permutation_test": "paired sign randomization, 100000 draws"
+    },
+    {
+      "ci_high_pp": 12.103174603174601,
+      "ci_low_pp": 0.7936507936507936,
+      "comparison": "openai/gpt-oss-20b - nvidia/nemotron-3-nano-30b-a3b",
+      "comparison_display": "GPT-OSS-20B \u2212 Nemotron-3-Nano",
+      "estimate_pp": 6.349206349206349,
+      "holm_adjusted_p_value": 0.032029679703202966,
+      "permutation_p_value": 0.032029679703202966,
+      "permutation_test": "paired sign randomization, 100000 draws"
+    }
+  ],
+  "forward_flip_definition": "EN == 0 and RH >= 2",
+  "gee": {
+    "cluster": "pair_id",
+    "coefficients": [
+      {
+        "log_odds": 0.6576404921030352,
+        "odds_ratio": 1.9302325581395343,
+        "odds_ratio_ci_high": 2.3204771700359834,
+        "odds_ratio_ci_low": 1.6056170586863023,
+        "p_value": 2.5571224818950376e-12,
+        "robust_se": 0.09394680239978036,
+        "term": "const",
+        "z": 7.0001370488855805
+      },
+      {
+        "log_odds": -1.876287707358231,
+        "odds_ratio": 0.15315761761699767,
+        "odds_ratio_ci_high": 0.19293701489374598,
+        "odds_ratio_ci_low": 0.12157986297773309,
+        "p_value": 4.1242874253921585e-57,
+        "robust_se": 0.11780635671801207,
+        "term": "rh",
+        "z": -15.926880005714962
+      },
+      {
+        "log_odds": 1.2176000836015894,
+        "odds_ratio": 3.3790685128574025,
+        "odds_ratio_ci_high": 4.369064228619548,
+        "odds_ratio_ci_low": 2.613398068124077,
+        "p_value": 1.5772022878157498e-20,
+        "robust_se": 0.1310987187902998,
+        "term": "gpt_oss",
+        "z": 9.287658146752854
+      },
+      {
+        "log_odds": -0.1637107296095115,
+        "odds_ratio": 0.8489875733299697,
+        "odds_ratio_ci_high": 1.0487979434661536,
+        "odds_ratio_ci_low": 0.6872438148444665,
+        "p_value": 0.12897909350278813,
+        "robust_se": 0.10783638061589819,
+        "term": "nemotron",
+        "z": -1.518140062514077
+      },
+      {
+        "log_odds": 1.5271034351486565,
+        "odds_ratio": 4.604819328401892,
+        "odds_ratio_ci_high": 6.407410907281745,
+        "odds_ratio_ci_low": 3.3093493384552284,
+        "p_value": 1.301610129900456e-19,
+        "robust_se": 0.1685499540673093,
+        "term": "rh_x_gpt_oss",
+        "z": 9.060242369089094
+      },
+      {
+        "log_odds": 1.9529028033323201,
+        "odds_ratio": 7.04912011979401,
+        "odds_ratio_ci_high": 9.574546708919907,
+        "odds_ratio_ci_low": 5.189811692807566,
+        "p_value": 7.44926265323617e-36,
+        "robust_se": 0.15623011031024162,
+        "term": "rh_x_nemotron",
+        "z": 12.50016913803778
+      }
+    ],
+    "language_by_model_interaction_wald": {
+      "df": 2,
+      "p_value": 9.78546004081666e-37,
+      "statistic": 165.8295016522695
+    },
+    "model": "GEE logistic refusal model",
+    "n_clusters": 504,
+    "n_response_rows": 3024,
+    "outcome": "score == 0",
+    "reference": "Qwen English",
+    "working_correlation": "exchangeable",
+    "working_correlation_estimate": 0.29866826668224156
+  },
+  "multiple_testing": "Holm adjustment across the three cross-model gap comparisons",
+  "pair_unit": "pair_id",
+  "per_model": {
+    "nvidia/nemotron-3-nano-30b-a3b": {
+      "bowker": {
+        "df": 5,
+        "p_value": 0.01878136057200779,
+        "statistic": 13.543920480813684,
+        "terms": [
+          {
+            "en_i_rh_j": 1,
+            "en_j_rh_i": 5,
+            "score_pair": [
+              0,
+              1
+            ],
+            "term": 2.6666666666666665
+          },
+          {
+            "en_i_rh_j": 43,
+            "en_j_rh_i": 60,
+            "score_pair": [
+              0,
+              2
+            ],
+            "term": 2.8058252427184467
+          },
+          {
+            "en_i_rh_j": 22,
+            "en_j_rh_i": 10,
+            "score_pair": [
+              0,
+              3
+            ],
+            "term": 4.5
+          },
+          {
+            "en_i_rh_j": 6,
+            "en_j_rh_i": 1,
+            "score_pair": [
+              1,
+              2
+            ],
+            "term": 3.5714285714285716
+          },
+          {
+            "en_i_rh_j": 14,
+            "en_j_rh_i": 14,
+            "score_pair": [
+              2,
+              3
+            ],
+            "term": 0.0
+          }
+        ],
+        "test": "Bowker symmetry test"
+      },
+      "directional_binomial": {
+        "discordant_directional_n": 135,
+        "forward": 65,
+        "p_value": 0.7307894394358088,
+        "reverse": 70,
+        "test": "two-sided exact binomial on strict forward versus reverse flips"
+      },
+      "mcnemar": {
+        "discordant_n": 141,
+        "en_nonrefusal_rh_refusal": 75,
+        "en_refusal_rh_nonrefusal": 66,
+        "p_value": 0.5006292645252414,
+        "test": "exact McNemar via two-sided exact binomial on refusal discordants"
+      }
+    },
+    "openai/gpt-oss-20b": {
+      "bowker": {
+        "df": 5,
+        "p_value": 0.06753278767782597,
+        "statistic": 10.285714285714286,
+        "terms": [
+          {
+            "en_i_rh_j": 3,
+            "en_j_rh_i": 1,
+            "score_pair": [
+              0,
+              1
+            ],
+            "term": 1.0
+          },
+          {
+            "en_i_rh_j": 27,
+            "en_j_rh_i": 15,
+            "score_pair": [
+              0,
+              2
+            ],
+            "term": 3.4285714285714284
+          },
+          {
+            "en_i_rh_j": 15,
+            "en_j_rh_i": 6,
+            "score_pair": [
+              0,
+              3
+            ],
+            "term": 3.857142857142857
+          },
+          {
+            "en_i_rh_j": 2,
+            "en_j_rh_i": 1,
+            "score_pair": [
+              1,
+              2
+            ],
+            "term": 0.3333333333333333
+          },
+          {
+            "en_i_rh_j": 10,
+            "en_j_rh_i": 5,
+            "score_pair": [
+              2,
+              3
+            ],
+            "term": 1.6666666666666667
+          }
+        ],
+        "test": "Bowker symmetry test"
+      },
+      "directional_binomial": {
+        "discordant_directional_n": 63,
+        "forward": 42,
+        "p_value": 0.011141407415305074,
+        "reverse": 21,
+        "test": "two-sided exact binomial on strict forward versus reverse flips"
+      },
+      "mcnemar": {
+        "discordant_n": 67,
+        "en_nonrefusal_rh_refusal": 22,
+        "en_refusal_rh_nonrefusal": 45,
+        "p_value": 0.006741447363103123,
+        "test": "exact McNemar via two-sided exact binomial on refusal discordants"
+      }
+    },
+    "qwen/qwen3-30b-a3b-instruct-2507": {
+      "bowker": {
+        "df": 5,
+        "p_value": 1.5759819955808352e-44,
+        "statistic": 215.21160318310038,
+        "terms": [
+          {
+            "en_i_rh_j": 6,
+            "en_j_rh_i": 1,
+            "score_pair": [
+              0,
+              1
+            ],
+            "term": 3.5714285714285716
+          },
+          {
+            "en_i_rh_j": 134,
+            "en_j_rh_i": 5,
+            "score_pair": [
+              0,
+              2
+            ],
+            "term": 119.71942446043165
+          },
+          {
+            "en_i_rh_j": 85,
+            "en_j_rh_i": 2,
+            "score_pair": [
+              0,
+              3
+            ],
+            "term": 79.183908045977
+          },
+          {
+            "en_i_rh_j": 5,
+            "en_j_rh_i": 0,
+            "score_pair": [
+              1,
+              2
+            ],
+            "term": 5.0
+          },
+          {
+            "en_i_rh_j": 39,
+            "en_j_rh_i": 18,
+            "score_pair": [
+              2,
+              3
+            ],
+            "term": 7.7368421052631575
+          }
+        ],
+        "test": "Bowker symmetry test"
+      },
+      "directional_binomial": {
+        "discordant_directional_n": 226,
+        "forward": 219,
+        "p_value": 1.0418546989814438e-55,
+        "reverse": 7,
+        "test": "two-sided exact binomial on strict forward versus reverse flips"
+      },
+      "mcnemar": {
+        "discordant_n": 233,
+        "en_nonrefusal_rh_refusal": 8,
+        "en_refusal_rh_nonrefusal": 225,
+        "p_value": 2.865406016021646e-56,
+        "test": "exact McNemar via two-sided exact binomial on refusal discordants"
+      }
+    }
+  },
+  "refusal_definition": "score == 0",
+  "reverse_flip_definition": "RH == 0 and EN >= 2",
+  "schema_version": 1
+}

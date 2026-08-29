@@ -5,6 +5,8 @@ from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
+import pytest
+
 from jailbreak_hermes import equivalence, generator, model_registry
 from jailbreak_hermes.probe_bank import compute_bank_sha256, validate_bank
 
@@ -110,16 +112,13 @@ def test_hard_gate_ignores_scalar_threshold_when_all_constraints_pass():
     assert quality == 1.0 and failed == []
 
 
-def test_hard_gate_fails_closed_on_missing_axis():
+def test_hard_gate_treats_missing_axis_as_malformed():
     obj = json.loads(_audit_json())
     del obj["axes"]["same_scenario"]
     fake = SimpleNamespace(content=json.dumps(obj), finish_reason="stop")
     with patch("jailbreak_hermes.equivalence.chat", return_value=fake):
-        r = equivalence.check_hard(_cand(), checker_model="auditor", max_tokens=64)
-    assert not r.accepted
-    quality, failed = equivalence.hard_constraint_score(r)
-    assert "same_scenario" in failed
-    assert quality == 12 / 13
+        with pytest.raises(RuntimeError, match="missing axes: .*same_scenario"):
+            equivalence.check_hard(_cand(), checker_model="auditor", max_tokens=64)
 
 
 def test_revision_strategy_set_is_exactly_three():

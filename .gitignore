@@ -1,5 +1,6 @@
 # --- environment / build ---
 .venv/
+.analysis-venv/
 __pycache__/
 *.pyc
 *.pyo
@@ -7,6 +8,7 @@ __pycache__/
 build/
 dist/
 .uv-cache/
+.matplotlib-cache/
 .pytest_cache/
 
 # --- secrets ---
@@ -35,10 +37,19 @@ prompts/optimized/*
 
 # --- LaTeX build artifacts ---
 *.aux
+*.bbl
+*.blg
 *.fdb_latexmk
 *.fls
+*.lof
 *.out
+*.toc
+*.nav
+*.snm
+*.vrb
 *.synctex.gz
+paper/*.pdf
+paper/**/*.pdf
 
 # --- IDE / agent / OS noise ---
 .idea/
@@ -47,10 +58,13 @@ prompts/optimized/*
 .DS_Store
 *.swp
 
-# --- paper LaTeX source lives outside the repo ---
+# --- legacy paper copy lives outside the repo ---
 Automated_Indic_Jailbreaking_Harness_Prahlada/
-paper/
 
 # Revision V2 frozen banks contain full research prompts; keep private by default.
 probe_banks/*
 !probe_banks/.gitkeep
+
+# Local immutable snapshots contain the same private prompt/response material.
+frozen_final_*/bank/
+frozen_final_*/run/
