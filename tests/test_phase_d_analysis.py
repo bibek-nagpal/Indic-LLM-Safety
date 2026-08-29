@@ -148,6 +148,8 @@ def test_complete_phase_d_analysis_with_score_only_mock_outputs(tmp_path: Path) 
             str(snapshot),
             "--gpt-scores",
             str(gpt_path),
+            "--gpt-plan",
+            str(REPO / "analysis" / "phase_d_preparation" / "gpt5mini_full_plan.json"),
             "--claude-scores",
             str(claude_path),
             "--sample",
@@ -179,3 +181,47 @@ def test_complete_phase_d_analysis_with_score_only_mock_outputs(tmp_path: Path) 
         artifact = output / record["path"]
         digest = hashlib.sha256(artifact.read_bytes()).hexdigest()
         assert digest == record["sha256"]
+
+
+def test_complete_phase_d_gpt_only_batch_analysis(tmp_path: Path) -> None:
+    snapshot = REPO / "frozen_final_2026_08_29"
+    primary_path = snapshot / "run" / RUN_ID / "scores.jsonl"
+    primary = [json.loads(line) for line in primary_path.read_text(encoding="utf-8").splitlines()]
+    score_lookup = {
+        (row["pair_id"], row["model"], row["language"]): row["score"] for row in primary
+    }
+    jobs_path = REPO / "analysis" / "phase_d_budget_design" / "gpt5mini_batch_full_jobs.jsonl"
+    plan_path = REPO / "analysis" / "phase_d_budget_design" / "gpt5mini_batch_full_plan.json"
+    jobs = [json.loads(line) for line in jobs_path.read_text(encoding="utf-8").splitlines()]
+    gpt_path = tmp_path / "gpt_batch_scores.jsonl"
+    _write_mock_scores(gpt_path, jobs, score_lookup)
+    output = tmp_path / "gpt_only_results"
+    subprocess.run(
+        [
+            sys.executable,
+            str(REPO / "analysis" / "analyze_phase_d.py"),
+            "--snapshot",
+            str(snapshot),
+            "--gpt-scores",
+            str(gpt_path),
+            "--gpt-plan",
+            str(plan_path),
+            "--output",
+            str(output),
+            "--bootstrap-resamples",
+            "20",
+        ],
+        cwd=REPO,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    with (output / "agreement_overall.csv").open(
+        "r", encoding="utf-8", newline=""
+    ) as stream:
+        agreement = list(csv.DictReader(stream))
+    assert len(agreement) == 1
+    assert agreement[0]["comparison"] == "Gemini vs GPT-5 Mini"
+    summary = (output / "phase_d_summary.md").read_text(encoding="utf-8")
+    assert "Stratified three-judge sample" not in summary

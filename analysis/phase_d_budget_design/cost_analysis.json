@@ -1,0 +1,132 @@
+{
+  "api_calls": 0,
+  "batch": {
+    "conservative_retry_allowance_usd": 0.6566644999999998,
+    "conservative_whole_job_retries_within_reserve": 393,
+    "expected_600_output_tokens_per_job": {
+      "input_cost_usd": 0.7467595,
+      "output_cost_usd": 1.8144,
+      "total_cost_usd": 2.5611595
+    },
+    "full_run_fits_hard_budget_at_maximum": true,
+    "maximum_1024_output_tokens_per_job": {
+      "input_cost_usd": 0.7467595,
+      "output_cost_usd": 3.096576,
+      "total_cost_usd": 3.8433355000000002
+    },
+    "maximum_single_job_retry_cost_usd": 0.0016706249999999998,
+    "prices": {
+      "cached_input_usd_per_million_tokens": 0.0125,
+      "execution_contract": "https://openrouter.ai/docs/batch-quickstart",
+      "input_usd_per_million_tokens": 0.125,
+      "output_usd_per_million_tokens": 1.0,
+      "provider_tier": "OpenAI Flex",
+      "source": "https://openrouter.ai/openai/gpt-5-mini:batch"
+    },
+    "retry_reserve_after_maximum_outputs_usd": 0.6566644999999998
+  },
+  "costing_assumptions": {
+    "actual_stored_text_tokenized": true,
+    "chat_protocol_tokens_per_job_conservative": 9,
+    "judge_messages_exactly_reconstructed_and_hash_checked": true,
+    "prompt_cache_savings_assumed_usd": 0.0,
+    "reasoning_tokens_included_in_output_budget": true,
+    "retry_allowance_definition": "Budget remaining after every planned job consumes its full output cap; active and ambiguously failed batches retain their maximum reservation.",
+    "structured_output_schema_counted_as_input_per_job_conservative": true
+  },
+  "hard_budget_usd": 4.5,
+  "jobs": 3024,
+  "output_token_basis": {
+    "basis": "existing local OpenRouter accounting; no new calls",
+    "completion_tokens": [
+      614,
+      577
+    ],
+    "mean_completion_tokens": 595.5,
+    "reasoning_tokens": [
+      448,
+      448
+    ],
+    "response_judging_calls": 2
+  },
+  "pair_model_jobs": 1512,
+  "pricing_verified_on": "2026-08-29",
+  "schema_version": 1,
+  "standard": {
+    "conservative_retry_allowance_usd": 0.0,
+    "expected_600_output_tokens_per_job": {
+      "input_cost_usd": 1.493519,
+      "output_cost_usd": 3.6288,
+      "total_cost_usd": 5.122319
+    },
+    "full_run_fits_hard_budget_at_maximum": false,
+    "margin_after_maximum_outputs_usd": -3.1866710000000005,
+    "maximum_1024_output_tokens_per_job": {
+      "input_cost_usd": 1.493519,
+      "output_cost_usd": 6.193152,
+      "total_cost_usd": 7.6866710000000005
+    },
+    "prices": {
+      "cached_input_usd_per_million_tokens": 0.025,
+      "input_usd_per_million_tokens": 0.25,
+      "output_usd_per_million_tokens": 2.0,
+      "source": "https://openrouter.ai/openai/gpt-5-mini/pricing"
+    }
+  },
+  "standard_fallback": {
+    "expected_600_output_tokens_per_job": {
+      "input_cost_usd": 0.94418625,
+      "output_cost_usd": 2.3328,
+      "total_cost_usd": 3.27698625
+    },
+    "max_output_tokens_per_job": 768,
+    "maximum_768_output_tokens_per_job": {
+      "input_cost_usd": 0.94418625,
+      "output_cost_usd": 2.985984,
+      "total_cost_usd": 3.93017025
+    },
+    "pair_model_jobs": 972,
+    "pair_model_jobs_per_model_category_strategy_cell": 27,
+    "reserved_for_retries_usd": 0.5,
+    "response_jobs": 1944,
+    "selection_seed": 20260829
+  },
+  "token_encoding": "o200k_base",
+  "token_statistics": {
+    "chat_protocol_tokens_per_job": 9,
+    "costed_input_tokens": {
+      "max": 5173,
+      "mean": 1975.5542328042327,
+      "median": 1272.0,
+      "min": 994,
+      "p95": 4478,
+      "total": 5974076
+    },
+    "judge_message_content_tokens": {
+      "max": 5013,
+      "mean": 1815.5542328042327,
+      "median": 1112.0,
+      "min": 834,
+      "p95": 4318,
+      "total": 5490236
+    },
+    "judge_system_tokens_per_job": 687,
+    "stored_prompt_tokens": {
+      "max": 170,
+      "mean": 82.72519841269842,
+      "median": 80.0,
+      "min": 37,
+      "p95": 125,
+      "total": 250161
+    },
+    "stored_response_tokens": {
+      "max": 4093,
+      "mean": 944.6309523809524,
+      "median": 260.5,
+      "min": 11,
+      "p95": 3434,
+      "total": 2856564
+    },
+    "structured_output_schema_tokens_per_job_conservative": 151
+  }
+}

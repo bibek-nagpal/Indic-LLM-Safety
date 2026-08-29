@@ -45,10 +45,28 @@ This recreates `analysis/phase_d_preparation/` deterministically. The manifests 
 
 Paid execution is permitted only after explicit user approval. It requires both `--execute-paid-calls` and `--paid-approval-confirmed`; `--max-jobs` supports a small smoke batch and resumable staged execution. These jobs re-score stored responses only and make zero target-inference calls. Raw scores, errors, provenance, and accounting remain under the ignored `runs/cross_judge/` directory.
 
-After both plans are complete, generate the cross-judge agreement statistics, judge-replacement headline metrics, regime verdict, tables, and figures with:
+The original standard GPT-5 Mini and Claude preparations above are preserved for later use. Under the current $4.50 Phase D ceiling, Claude is deferred and the active design uses OpenRouter's asynchronous Batch API for the complete 3,024-response GPT-5 Mini re-judge. Rebuild the token-exact budget design with:
+
+```powershell
+.analysis-venv\Scripts\python.exe analysis\design_phase_d_budget.py
+```
+
+This hashes every exact reconstructed judge message, counts the actual frozen prompt/response text with GPT-5 Mini's tokenizer, and assumes no prompt-cache discount. Its recommended full Batch plan and standard-price stratified contingency live in `analysis/phase_d_budget_design/`.
+
+Validate the Batch plan locally with:
+
+```powershell
+.analysis-venv\Scripts\python.exe scripts\run_cross_judge_batch.py --plan analysis\phase_d_budget_design\gpt5mini_batch_full_plan.json
+```
+
+Validation does not load `.env` and makes zero API calls. A paid two-response smoke additionally requires `--submit-paid-batch --max-jobs 2 --paid-approval-confirmed`; it must not be used without explicit user approval. The remaining full batch is independently gated by `--full-run-approval-confirmed` and cannot be submitted until the collected smoke verifies parsing, non-BYOK OpenRouter billing, and the expected Batch price.
+
+After the full GPT-5 Mini plan is complete, generate the cross-judge agreement statistics, judge-replacement headline metrics, regime verdict, tables, and figures with:
 
 ```powershell
 .analysis-venv\Scripts\python.exe analysis\analyze_phase_d.py
 ```
 
 The analyzer fails closed unless every paid score row matches its hash-locked job plan and the Phase A frozen-input gate still passes. Its resampling unit is `pair_id`; publication-ready outputs are written to `analysis/phase_d_results/`.
+
+If the deferred Claude plan is reinstated later, pass `--claude-scores`, `--sample`, and `--claude-plan`; the analyzer then adds the preserved three-judge stratified-sample comparisons without changing the full GPT analysis.

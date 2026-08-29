@@ -1,0 +1,41 @@
+{
+  "api_calls": 0,
+  "design_script_sha256": "cde163917b8ba558ec15ed5dc5276b799d902e3a879da8094fbf516489d184c6",
+  "files": [
+    {
+      "bytes": 1209,
+      "path": "budget_design_summary.md",
+      "sha256": "3b347ebe2fefaf5c039d4b060d785647beae9e965387fbb89266bcd965b214fc"
+    },
+    {
+      "bytes": 4267,
+      "path": "cost_analysis.json",
+      "sha256": "9096ed58274cc9bed83e023a4475e4bb27c547eba40301dbbfadd9dc9c94159a"
+    },
+    {
+      "bytes": 3463443,
+      "path": "gpt5mini_batch_full_jobs.jsonl",
+      "sha256": "44bc764e877968f12dad96da52c0a0f1f83457f2526271c8d5146197744956e2"
+    },
+    {
+      "bytes": 4070,
+      "path": "gpt5mini_batch_full_plan.json",
+      "sha256": "d1308c2010965399d33f9d6c1c4ce8d5f6975ef4137c80e0e7c958ac5d5520fe"
+    },
+    {
+      "bytes": 2226294,
+      "path": "gpt5mini_standard_fallback_jobs.jsonl",
+      "sha256": "eeff7e4f41022513b00fe8bed1e60cebae5ef8a481182e595053b64839e4fa2c"
+    },
+    {
+      "bytes": 1056,
+      "path": "gpt5mini_standard_fallback_plan.json",
+      "sha256": "bd17e23664c084c9eb6742d34de1c4cabfa43a565521e95cbcd1dd18f70c6730"
+    }
+  ],
+  "hard_budget_usd": 4.5,
+  "input_freeze_manifest_sha256": "cd5944201bf1e3fb7a2dea3c649e3323d609d0808011e7d59982de4f8c84d075",
+  "input_snapshot": "frozen_final_2026_08_29",
+  "phase": "D budget redesign",
+  "schema_version": 1
+}

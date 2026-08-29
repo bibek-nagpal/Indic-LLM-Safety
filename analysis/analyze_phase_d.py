@@ -100,7 +100,10 @@ def validate_crossjudge_rows(
     )
     for row in rows:
         job = jobs_by_id[row["job_id"]]
-        changed = [field for field in identity_fields if row.get(field) != job.get(field)]
+        fields = identity_fields + (
+            (("batch_request_sha256",) if "batch_request_sha256" in job else ())
+        )
+        changed = [field for field in fields if row.get(field) != job.get(field)]
         if changed:
             raise RuntimeError(f"{label} score identity mismatch for {row['job_id']}: {changed}")
         if row.get("logical_consistency_ok") is not True or row.get("parse_error") is not None:
@@ -415,12 +418,15 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--snapshot", type=Path, default=Path("frozen_final_2026_08_29"))
     parser.add_argument(
-        "--gpt-scores", type=Path, default=Path("runs/cross_judge/gpt5mini_final/scores.jsonl")
+        "--gpt-scores",
+        type=Path,
+        default=Path("runs/cross_judge/gpt5mini_batch_budget/scores.jsonl"),
     )
     parser.add_argument(
         "--claude-scores",
         type=Path,
-        default=Path("runs/cross_judge/claude_sonnet_4_6_sample/scores.jsonl"),
+        default=None,
+        help="Optional deferred Claude sample scores; omit for the GPT-only analysis.",
     )
     parser.add_argument(
         "--sample",
@@ -430,7 +436,7 @@ def main() -> None:
     parser.add_argument(
         "--gpt-plan",
         type=Path,
-        default=Path("analysis/phase_d_preparation/gpt5mini_full_plan.json"),
+        default=Path("analysis/phase_d_budget_design/gpt5mini_batch_full_plan.json"),
     )
     parser.add_argument(
         "--claude-plan",
@@ -445,51 +451,53 @@ def main() -> None:
     snapshot = args.snapshot.resolve()
     if run_qc(snapshot)["overall_status"] != "PASS":
         raise RuntimeError("Phase A QC failed; refusing Phase D analysis")
-    for path in (
-        args.gpt_scores,
-        args.claude_scores,
-        args.sample,
-        args.gpt_plan,
-        args.claude_plan,
-    ):
+    claude_enabled = args.claude_scores is not None
+    required_paths = [args.gpt_scores, args.gpt_plan]
+    if claude_enabled:
+        required_paths.extend([args.claude_scores, args.sample, args.claude_plan])
+    for path in required_paths:
         if not path.is_file():
             raise FileNotFoundError(path)
 
     primary_path = snapshot / "run" / RUN_ID / "scores.jsonl"
     primary = normalize_scores(load_jsonl(primary_path), label="Gemini")
     gpt_rows = load_jsonl(args.gpt_scores)
-    claude_rows = load_jsonl(args.claude_scores)
     gpt_jobs_path = validate_crossjudge_rows(
         gpt_rows,
         label="GPT-5 Mini",
         plan_path=args.gpt_plan,
         snapshot=snapshot,
     )
-    claude_jobs_path = validate_crossjudge_rows(
-        claude_rows,
-        label="Claude Sonnet",
-        plan_path=args.claude_plan,
-        snapshot=snapshot,
-    )
     gpt = normalize_scores(gpt_rows, label="GPT-5 Mini")
-    claude = normalize_scores(claude_rows, label="Claude Sonnet")
     if len(primary) != 3024 or len(gpt) != 3024:
         raise RuntimeError("full Gemini/GPT score grids must each contain 3024 rows")
 
-    sample = pd.read_csv(args.sample, dtype=str)
-    sample_pairs = {
-        (row.pair_id, row.target_model) for row in sample.itertuples(index=False)
-    }
-    expected_sample_keys = {
-        (pair_id, model, language)
-        for pair_id, model in sample_pairs
-        for language in ("en", "rh")
-    }
-    claude_keys = set(
-        zip(claude["pair_id"], claude["target_model"], claude["language"])
-    )
-    if len(sample_pairs) != 180 or len(claude) != 360 or claude_keys != expected_sample_keys:
-        raise RuntimeError("Claude scores do not match the frozen 180-job stratified sample")
+    sample_pairs: set[tuple[str, str]] = set()
+    claude: pd.DataFrame | None = None
+    claude_jobs_path: Path | None = None
+    if claude_enabled:
+        claude_rows = load_jsonl(args.claude_scores)
+        claude_jobs_path = validate_crossjudge_rows(
+            claude_rows,
+            label="Claude Sonnet",
+            plan_path=args.claude_plan,
+            snapshot=snapshot,
+        )
+        claude = normalize_scores(claude_rows, label="Claude Sonnet")
+        sample = pd.read_csv(args.sample, dtype=str)
+        sample_pairs = {
+            (row.pair_id, row.target_model) for row in sample.itertuples(index=False)
+        }
+        expected_sample_keys = {
+            (pair_id, model, language)
+            for pair_id, model in sample_pairs
+            for language in ("en", "rh")
+        }
+        claude_keys = set(
+            zip(claude["pair_id"], claude["target_model"], claude["language"])
+        )
+        if len(sample_pairs) != 180 or len(claude) != 360 or claude_keys != expected_sample_keys:
+            raise RuntimeError("Claude scores do not match the frozen 180-job stratified sample")
 
     output_dir = args.output.resolve()
     matrices_dir = output_dir / "confusion_matrices"
@@ -526,43 +534,51 @@ def main() -> None:
             }
         )
 
-    sample_primary = primary[
-        primary.apply(
-            lambda row: (row["pair_id"], row["target_model"]) in sample_pairs, axis=1
-        )
-    ]
-    sample_gpt = gpt[
-        gpt.apply(lambda row: (row["pair_id"], row["target_model"]) in sample_pairs, axis=1)
-    ]
-    sample_comparisons = (
-        ("Gemini", sample_primary, "GPT-5 Mini", sample_gpt),
-        ("Gemini", sample_primary, "Claude Sonnet", claude),
-        ("GPT-5 Mini", sample_gpt, "Claude Sonnet", claude),
-    )
-    for left_name, left, right_name, right in sample_comparisons:
-        merged = merge_two(left, right, "left", "right")
-        metrics, matrix = agreement_metrics(
-            merged["score_left"].to_numpy(), merged["score_right"].to_numpy()
-        )
-        comparison = f"{left_name} vs {right_name}"
-        agreement_rows.append({"scope": "sample", "comparison": comparison, **metrics})
-        save_confusion(
-            matrix,
-            matrices_dir / f"{safe_slug(left_name)}_vs_{safe_slug(right_name)}_sample.csv",
-        )
-        for (model, language), subset in merged.groupby(["target_model", "language"]):
-            group_metrics, _ = agreement_metrics(
-                subset["score_left"].to_numpy(), subset["score_right"].to_numpy()
+    sample_primary: pd.DataFrame | None = None
+    sample_gpt: pd.DataFrame | None = None
+    if claude_enabled:
+        assert claude is not None
+        sample_primary = primary[
+            primary.apply(
+                lambda row: (row["pair_id"], row["target_model"]) in sample_pairs,
+                axis=1,
             )
-            by_group_rows.append(
-                {
-                    "scope": "sample",
-                    "comparison": comparison,
-                    "target_model": model,
-                    "language": language,
-                    **group_metrics,
-                }
+        ]
+        sample_gpt = gpt[
+            gpt.apply(
+                lambda row: (row["pair_id"], row["target_model"]) in sample_pairs,
+                axis=1,
             )
+        ]
+        sample_comparisons = (
+            ("Gemini", sample_primary, "GPT-5 Mini", sample_gpt),
+            ("Gemini", sample_primary, "Claude Sonnet", claude),
+            ("GPT-5 Mini", sample_gpt, "Claude Sonnet", claude),
+        )
+        for left_name, left, right_name, right in sample_comparisons:
+            merged = merge_two(left, right, "left", "right")
+            metrics, matrix = agreement_metrics(
+                merged["score_left"].to_numpy(), merged["score_right"].to_numpy()
+            )
+            comparison = f"{left_name} vs {right_name}"
+            agreement_rows.append({"scope": "sample", "comparison": comparison, **metrics})
+            save_confusion(
+                matrix,
+                matrices_dir / f"{safe_slug(left_name)}_vs_{safe_slug(right_name)}_sample.csv",
+            )
+            for (model, language), subset in merged.groupby(["target_model", "language"]):
+                group_metrics, _ = agreement_metrics(
+                    subset["score_left"].to_numpy(), subset["score_right"].to_numpy()
+                )
+                by_group_rows.append(
+                    {
+                        "scope": "sample",
+                        "comparison": comparison,
+                        "target_model": model,
+                        "language": language,
+                        **group_metrics,
+                    }
+                )
 
     agreement = pd.DataFrame(agreement_rows)
     agreement.to_csv(output_dir / "agreement_overall.csv", index=False, float_format="%.10g")
@@ -571,13 +587,22 @@ def main() -> None:
     )
 
     score_distributions = []
-    for scope, frames in (
-        ("full", (("Gemini", primary), ("GPT-5 Mini", gpt))),
-        (
-            "sample",
-            (("Gemini", sample_primary), ("GPT-5 Mini", sample_gpt), ("Claude Sonnet", claude)),
-        ),
-    ):
+    distribution_scopes: list[tuple[str, tuple[tuple[str, pd.DataFrame], ...]]] = [
+        ("full", (("Gemini", primary), ("GPT-5 Mini", gpt)))
+    ]
+    if claude_enabled:
+        assert sample_primary is not None and sample_gpt is not None and claude is not None
+        distribution_scopes.append(
+            (
+                "sample",
+                (
+                    ("Gemini", sample_primary),
+                    ("GPT-5 Mini", sample_gpt),
+                    ("Claude Sonnet", claude),
+                ),
+            )
+        )
+    for scope, frames in distribution_scopes:
         for label, frame in frames:
             counts = frame["score"].value_counts().reindex(range(4), fill_value=0)
             for score, count in counts.items():
@@ -719,36 +744,35 @@ def main() -> None:
             + " > ".join(MODEL_NAMES[model] for model in gpt_regimes["gap_order_descending"]),
             "- Predeclared three-regime conclusion survives judge replacement: "
             + ("YES" if regime_payload["qualitative_three_regime_survives_judge_replacement"] else "NO"),
-            "",
-            "## Stratified three-judge sample",
-            "",
-            "| Comparison | Exact | Adjacent | Unweighted κ | Quadratic κ |",
-            "|---|---:|---:|---:|---:|",
         ]
     )
-    for row in agreement_rows[1:]:
-        summary_lines.append(
-            f"| {row['comparison']} | {100*row['exact_agreement']:.2f}% | "
-            f"{100*row['adjacent_agreement']:.2f}% | {row['unweighted_kappa']:.3f} | "
-            f"{row['quadratic_weighted_kappa']:.3f} |"
+    if claude_enabled:
+        summary_lines.extend(
+            [
+                "",
+                "## Stratified three-judge sample",
+                "",
+                "| Comparison | Exact | Adjacent | Unweighted κ | Quadratic κ |",
+                "|---|---:|---:|---:|---:|",
+            ]
         )
+        for row in agreement_rows[1:]:
+            summary_lines.append(
+                f"| {row['comparison']} | {100*row['exact_agreement']:.2f}% | "
+                f"{100*row['adjacent_agreement']:.2f}% | {row['unweighted_kappa']:.3f} | "
+                f"{row['quadratic_weighted_kappa']:.3f} |"
+            )
     summary_lines.append("")
     (output_dir / "phase_d_summary.md").write_text(
         "\n".join(summary_lines), encoding="utf-8"
     )
-    write_manifest(
-        output_dir,
-        [
-            primary_path,
-            args.gpt_scores,
-            args.claude_scores,
-            args.sample,
-            args.gpt_plan,
-            args.claude_plan,
-            gpt_jobs_path,
-            claude_jobs_path,
-        ],
-    )
+    manifest_inputs = [primary_path, args.gpt_scores, args.gpt_plan, gpt_jobs_path]
+    if claude_enabled:
+        assert args.claude_scores is not None and claude_jobs_path is not None
+        manifest_inputs.extend(
+            [args.claude_scores, args.sample, args.claude_plan, claude_jobs_path]
+        )
+    write_manifest(output_dir, manifest_inputs)
     print("Phase D analysis complete")
 
 
