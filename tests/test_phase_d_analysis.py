@@ -167,9 +167,11 @@ def test_complete_phase_d_analysis_with_score_only_mock_outputs(tmp_path: Path) 
 
     with (output / "agreement_overall.csv").open("r", encoding="utf-8", newline="") as stream:
         agreement = list(csv.DictReader(stream))
-    assert len(agreement) == 4
+    assert len(agreement) == 5
     assert all(float(row["exact_agreement"]) == 1.0 for row in agreement)
     assert all(float(row["quadratic_weighted_kappa"]) == 1.0 for row in agreement)
+    pure = next(row for row in agreement if row["scope"] == "gemini_only")
+    assert int(pure["n"]) == 3022
 
     regimes = json.loads((output / "regime_robustness.json").read_text(encoding="utf-8"))
     assert regimes["qualitative_three_regime_survives_judge_replacement"] is True
@@ -221,7 +223,8 @@ def test_complete_phase_d_gpt_only_batch_analysis(tmp_path: Path) -> None:
         "r", encoding="utf-8", newline=""
     ) as stream:
         agreement = list(csv.DictReader(stream))
-    assert len(agreement) == 1
-    assert agreement[0]["comparison"] == "Gemini vs GPT-5 Mini"
+    assert len(agreement) == 2
+    assert agreement[0]["comparison"] == "Primary pipeline vs GPT-5 Mini"
+    assert agreement[1]["comparison"] == "Gemini-only vs GPT-5 Mini"
     summary = (output / "phase_d_summary.md").read_text(encoding="utf-8")
     assert "Stratified three-judge sample" not in summary

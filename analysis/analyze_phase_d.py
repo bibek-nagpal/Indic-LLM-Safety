@@ -31,6 +31,8 @@ MODEL_NAMES = {
     EXPECTED_MODELS[1]: "GPT-OSS-20B",
     EXPECTED_MODELS[2]: "Nemotron-3-Nano",
 }
+PRIMARY_LABEL = "Gemini-primary pipeline"
+PRIMARY_GEMINI_MODEL = "google/gemini-2.5-flash"
 REPO = Path(__file__).resolve().parents[1]
 
 
@@ -56,6 +58,7 @@ def normalize_scores(rows: list[dict[str, Any]], *, label: str) -> pd.DataFrame:
                 "strategy": row["strategy"],
                 "score": score,
                 "judge_label": label,
+                "source_judge_model": row.get("judge_model"),
             }
         )
     frame = pd.DataFrame(normalized)
@@ -343,7 +346,7 @@ def plot_full_confusion(matrix: np.ndarray, figures_dir: Path) -> None:
     ax.set_yticks(range(4))
     ax.set_xlabel("GPT-5 Mini score")
     ax.set_ylabel("Gemini score")
-    ax.set_title("Full cross-judge confusion matrix (N=3,024)")
+    ax.set_title("Pure Gemini vs GPT-5 Mini (N=3,022)")
     maximum = max(1, int(matrix.max()))
     for i in range(4):
         for j in range(4):
@@ -356,15 +359,15 @@ def plot_full_confusion(matrix: np.ndarray, figures_dir: Path) -> None:
                 color="white" if matrix[i, j] > 0.55 * maximum else "black",
             )
     fig.colorbar(image, ax=ax, label="Response count")
-    save_figure(fig, figures_dir, "gemini_vs_gpt5mini_confusion")
+    save_figure(fig, figures_dir, "gemini_only_vs_gpt5mini_confusion")
 
 
 def plot_gap_comparison(results: pd.DataFrame, figures_dir: Path) -> None:
     fig, ax = plt.subplots(figsize=(7.7, 3.8))
     x = np.arange(3)
-    offsets = {"Gemini": -0.09, "GPT-5 Mini": 0.09}
-    colors = {"Gemini": "#777777", "GPT-5 Mini": "#2b6f9f"}
-    for judge_label in ("Gemini", "GPT-5 Mini"):
+    offsets = {PRIMARY_LABEL: -0.09, "GPT-5 Mini": 0.09}
+    colors = {PRIMARY_LABEL: "#777777", "GPT-5 Mini": "#2b6f9f"}
+    for judge_label in (PRIMARY_LABEL, "GPT-5 Mini"):
         subset = results[results["judge"] == judge_label].set_index("model").loc[list(EXPECTED_MODELS)]
         estimate = subset["refusal_gap_pp"].to_numpy()
         low = subset["refusal_gap_ci_low_pp"].to_numpy()
@@ -460,7 +463,7 @@ def main() -> None:
             raise FileNotFoundError(path)
 
     primary_path = snapshot / "run" / RUN_ID / "scores.jsonl"
-    primary = normalize_scores(load_jsonl(primary_path), label="Gemini")
+    primary = normalize_scores(load_jsonl(primary_path), label=PRIMARY_LABEL)
     gpt_rows = load_jsonl(args.gpt_scores)
     gpt_jobs_path = validate_crossjudge_rows(
         gpt_rows,
@@ -510,29 +513,47 @@ def main() -> None:
     full_metrics, full_matrix = agreement_metrics(
         full_merge["score_gemini"].to_numpy(), full_merge["score_gpt"].to_numpy()
     )
-    save_confusion(full_matrix, matrices_dir / "gemini_vs_gpt5mini_full.csv")
+    save_confusion(full_matrix, matrices_dir / "primary_pipeline_vs_gpt5mini_full.csv")
+
+    pure_primary = primary[primary["source_judge_model"] == PRIMARY_GEMINI_MODEL]
+    if len(pure_primary) != 3022:
+        raise RuntimeError("expected exactly 3,022 Gemini-scored primary responses")
+    pure_merge = merge_two(pure_primary, gpt, "gemini", "gpt")
+    pure_metrics, pure_matrix = agreement_metrics(
+        pure_merge["score_gemini"].to_numpy(), pure_merge["score_gpt"].to_numpy()
+    )
+    save_confusion(pure_matrix, matrices_dir / "gemini_only_vs_gpt5mini.csv")
 
     agreement_rows = [
         {
-            "scope": "full",
-            "comparison": "Gemini vs GPT-5 Mini",
+            "scope": "full_primary_pipeline",
+            "comparison": "Primary pipeline vs GPT-5 Mini",
             **full_metrics,
-        }
+        },
+        {
+            "scope": "gemini_only",
+            "comparison": "Gemini-only vs GPT-5 Mini",
+            **pure_metrics,
+        },
     ]
     by_group_rows = []
-    for (model, language), subset in full_merge.groupby(["target_model", "language"]):
-        metrics, _ = agreement_metrics(
-            subset["score_gemini"].to_numpy(), subset["score_gpt"].to_numpy()
-        )
-        by_group_rows.append(
-            {
-                "scope": "full",
-                "comparison": "Gemini vs GPT-5 Mini",
-                "target_model": model,
-                "language": language,
-                **metrics,
-            }
-        )
+    for scope, comparison, merged in (
+        ("full_primary_pipeline", "Primary pipeline vs GPT-5 Mini", full_merge),
+        ("gemini_only", "Gemini-only vs GPT-5 Mini", pure_merge),
+    ):
+        for (model, language), subset in merged.groupby(["target_model", "language"]):
+            metrics, _ = agreement_metrics(
+                subset["score_gemini"].to_numpy(), subset["score_gpt"].to_numpy()
+            )
+            by_group_rows.append(
+                {
+                    "scope": scope,
+                    "comparison": comparison,
+                    "target_model": model,
+                    "language": language,
+                    **metrics,
+                }
+            )
 
     sample_primary: pd.DataFrame | None = None
     sample_gpt: pd.DataFrame | None = None
@@ -551,8 +572,8 @@ def main() -> None:
             )
         ]
         sample_comparisons = (
-            ("Gemini", sample_primary, "GPT-5 Mini", sample_gpt),
-            ("Gemini", sample_primary, "Claude Sonnet", claude),
+            (PRIMARY_LABEL, sample_primary, "GPT-5 Mini", sample_gpt),
+            (PRIMARY_LABEL, sample_primary, "Claude Sonnet", claude),
             ("GPT-5 Mini", sample_gpt, "Claude Sonnet", claude),
         )
         for left_name, left, right_name, right in sample_comparisons:
@@ -588,7 +609,7 @@ def main() -> None:
 
     score_distributions = []
     distribution_scopes: list[tuple[str, tuple[tuple[str, pd.DataFrame], ...]]] = [
-        ("full", (("Gemini", primary), ("GPT-5 Mini", gpt)))
+        ("full", ((PRIMARY_LABEL, primary), ("GPT-5 Mini", gpt)))
     ]
     if claude_enabled:
         assert sample_primary is not None and sample_gpt is not None and claude is not None
@@ -596,7 +617,7 @@ def main() -> None:
             (
                 "sample",
                 (
-                    ("Gemini", sample_primary),
+                    (PRIMARY_LABEL, sample_primary),
                     ("GPT-5 Mini", sample_gpt),
                     ("Claude Sonnet", claude),
                 ),
@@ -621,7 +642,7 @@ def main() -> None:
 
     primary_results = main_results(
         primary,
-        judge_label="Gemini",
+        judge_label=PRIMARY_LABEL,
         n_boot=args.bootstrap_resamples,
         seed=args.seed,
     )
@@ -640,8 +661,12 @@ def main() -> None:
     regime_payload = {
         "schema_version": 1,
         "experimental_unit": "pair_id",
-        "Gemini": primary_regimes,
+        PRIMARY_LABEL: primary_regimes,
         "GPT-5 Mini": gpt_regimes,
+        "primary_judge_provenance": {
+            "gemini_responses": 3022,
+            "gpt5mini_fallback_responses": 2,
+        },
         "qualitative_three_regime_survives_judge_replacement": bool(
             gpt_regimes["ordering_matches"] and gpt_regimes["all_regimes_match"]
         ),
@@ -651,7 +676,7 @@ def main() -> None:
     )
 
     flip_rows = []
-    for label, frame in (("Gemini", primary), ("GPT-5 Mini", gpt)):
+    for label, frame in ((PRIMARY_LABEL, primary), ("GPT-5 Mini", gpt)):
         wide = (
             frame.pivot(
                 index=["pair_id", "target_model", "category", "strategy"],
@@ -709,18 +734,26 @@ def main() -> None:
             "axes.spines.right": False,
         }
     )
-    plot_full_confusion(full_matrix, figures_dir)
+    plot_full_confusion(pure_matrix, figures_dir)
     plot_gap_comparison(combined_results, figures_dir)
 
     summary_lines = [
         "# Phase D Cross-Judge Robustness",
         "",
-        "## Full Gemini versus GPT-5 Mini agreement",
+        "## Cross-judge agreement",
         "",
-        f"- Exact agreement: {100*full_metrics['exact_agreement']:.2f}%",
-        f"- Adjacent agreement: {100*full_metrics['adjacent_agreement']:.2f}%",
-        f"- Unweighted Cohen's kappa: {full_metrics['unweighted_kappa']:.3f}",
-        f"- Quadratic-weighted kappa: {full_metrics['quadratic_weighted_kappa']:.3f}",
+        f"- Pure Gemini vs GPT-5 Mini (N=3,022) exact agreement: "
+        f"{100*pure_metrics['exact_agreement']:.2f}%",
+        f"- Pure Gemini vs GPT-5 Mini adjacent agreement: "
+        f"{100*pure_metrics['adjacent_agreement']:.2f}%",
+        f"- Pure Gemini vs GPT-5 Mini unweighted Cohen's kappa: "
+        f"{pure_metrics['unweighted_kappa']:.3f}",
+        f"- Pure Gemini vs GPT-5 Mini quadratic-weighted kappa: "
+        f"{pure_metrics['quadratic_weighted_kappa']:.3f}",
+        f"- Full frozen primary pipeline vs GPT-5 Mini (N=3,024) exact agreement: "
+        f"{100*full_metrics['exact_agreement']:.2f}%",
+        "- The full primary pipeline includes the two preserved GPT-5 Mini fallback scores; "
+        "the pure comparison excludes those two rows.",
         "",
         "## Headline metrics under judge replacement",
         "",
