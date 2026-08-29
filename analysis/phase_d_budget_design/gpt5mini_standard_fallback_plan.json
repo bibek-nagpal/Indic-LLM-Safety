@@ -1,13 +1,21 @@
 {
+  "cost_analysis": "analysis/phase_d_budget_design/cost_analysis.json",
+  "cost_analysis_sha256": "46588efbb6c51ac07b0e6036efb010b72cf4c2478152a58d9d2d280e6a8e76c3",
   "execution_mode": "synchronous_resumable",
+  "expected_cost_usd": 3.29190175,
   "expected_jobs": 1944,
   "expected_pair_model_jobs": 972,
   "hard_budget_usd": 4.5,
+  "input_bank_id": "revision_v2_3_1_final_504_dedup",
+  "input_freeze_manifest_sha256": "cd5944201bf1e3fb7a2dea3c649e3323d609d0808011e7d59982de4f8c84d075",
+  "input_run_id": "revision_v2_targets_final",
+  "input_snapshot": "frozen_final_2026_08_29",
   "jobs_manifest": "analysis/phase_d_budget_design/gpt5mini_standard_fallback_jobs.jsonl",
-  "jobs_manifest_sha256": "5f8ee46621975fe39c412cbb86a6eefa604ca9f334f15ae8776d2676cec65395",
+  "jobs_manifest_sha256": "806e3943b760fc1b56988a351c2ffa3abea956c9381223bbbfd670020d99a7d7",
   "judge_model": "openai/gpt-5-mini",
   "max_judge_tokens": 768,
   "maximum_no_retry_cost_usd": 3.94508575,
+  "output_dir": "runs/cross_judge/gpt5mini_standard_budget",
   "pair_model_jobs_per_cell": 27,
   "phase": "D1 standard-price contingency",
   "pricing": {
@@ -16,12 +24,84 @@
     "output_usd_per_million_tokens": 2.0,
     "source": "https://openrouter.ai/openai/gpt-5-mini/pricing"
   },
+  "request_contract": {
+    "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+    "include_reasoning": true,
+    "max_tokens": 768,
+    "model": "openai/gpt-5-mini",
+    "provider": {
+      "require_parameters": true
+    },
+    "response_format": {
+      "json_schema": {
+        "name": "response_safety_judgment",
+        "schema": {
+          "additionalProperties": false,
+          "properties": {
+            "disclaimers_present": {
+              "type": "boolean"
+            },
+            "framing_used": {
+              "enum": [
+                "none",
+                "academic",
+                "fiction",
+                "archival",
+                "debugging",
+                "persona",
+                "audit",
+                "other"
+              ],
+              "type": "string"
+            },
+            "gate_a": {
+              "type": "boolean"
+            },
+            "gate_b": {
+              "type": "boolean"
+            },
+            "gate_c": {
+              "type": "boolean"
+            },
+            "rationale": {
+              "type": "string"
+            },
+            "score": {
+              "enum": [
+                0,
+                1,
+                2,
+                3
+              ],
+              "type": "integer"
+            }
+          },
+          "required": [
+            "gate_a",
+            "gate_b",
+            "gate_c",
+            "score",
+            "rationale",
+            "disclaimers_present",
+            "framing_used"
+          ],
+          "type": "object"
+        },
+        "strict": true
+      },
+      "type": "json_schema"
+    },
+    "temperature": 0.0
+  },
+  "request_contract_sha256": "1e5482c01dc33d894b21600bec21ba6e5fc896027ebe2830fdf9a72d1fbfd89e",
   "response_format_sha256": "dc5cfd594e890ce4364d00e76d5e0954f45d8327be8b53be7447c3be35f9f1c2",
   "retry_reserve_usd": 0.5,
+  "rubric_sha256": "3fe224ea7400af8c9da646cbf5d07710e5a2e29d8594bcb74f288f52897a1516",
   "same_pair_ids_across_target_models": true,
   "schema_version": 1,
   "selection_independent_of_target_scores": true,
   "selection_seed": 20260829,
-  "status": "deferred_unless_batch_smoke_fails",
+  "smoke_test_jobs": 2,
+  "status": "recommended_after_batch_unavailable",
   "target_inference_calls": 0
 }

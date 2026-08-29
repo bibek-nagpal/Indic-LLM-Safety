@@ -1,6 +1,6 @@
 # Phase D Budget Redesign
 
-No API calls were made. Claude remains fully prepared but deferred.
+The design generation is offline. Three Batch submission validations were rejected before persistence; no inference batch was created and the local ledger records $0. Claude remains fully prepared but deferred.
 
 | Mode | Response jobs | Input cost | Expected output cost (600/job) | Expected total | Max total | Conservative retry allowance | Fits $4.50? |
 |---|---:|---:|---:|---:|---:|---:|---:|
@@ -8,7 +8,9 @@ No API calls were made. Claude remains fully prepared but deferred.
 | GPT-5 Mini Batch API, full | 3024 | $0.747 | $1.814 | $2.561 | $3.843 (1024/job) | $0.657 | YES |
 | Standard fallback, 27/cell | 1944 | $0.959 | $2.333 | $3.292 | $3.945 (768/job) | $0.500 | YES |
 
-The recommended full Batch API design reserves $0.657 below the hard $4.50 ceiling even if every response consumes the full 1024-token cap. At the single most expensive job's maximum cost, that reserve covers 393 whole-job retries.
+The full Batch design would reserve $0.657 below the hard $4.50 ceiling even if every response consumes the full 1024-token cap. At the single most expensive job's maximum cost, that reserve covers 393 whole-job retries.
+
+However, live OpenRouter validation rejected both GPT-5 Mini Batch identifiers before persistence. The standard-price shared-pair contingency is therefore the active recommendation.
 
 The standard-price contingency selects the same 27 pair IDs in each of the 12 category×strategy cells for all three target models, retaining both languages. This preserves pair-level between-model comparisons while reserving $0.50 for retries.
 

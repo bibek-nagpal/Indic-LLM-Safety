@@ -369,6 +369,10 @@ def main() -> None:
     if not args.submit_paid_batch and not args.collect_batches:
         print("Validation-only mode: 0 API calls")
         return
+    if plan.get("status") != "ready_for_smoke":
+        raise SystemExit(
+            f"Batch API access refused because plan status is {plan.get('status')!r}"
+        )
     if not args.paid_approval_confirmed:
         raise SystemExit("Batch API access refused without explicit paid approval")
 

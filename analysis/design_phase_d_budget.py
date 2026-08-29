@@ -180,6 +180,8 @@ def write_manifest(output_dir: Path, snapshot: Path) -> None:
         "phase": "D budget redesign",
         "api_calls": 0,
         "hard_budget_usd": HARD_BUDGET_USD,
+        "active_recommendation": "standard_fallback_shared_pairs",
+        "batch_live_validation_available": False,
         "input_snapshot": snapshot.name,
         "input_freeze_manifest_sha256": sha256_file(snapshot / "FREEZE_MANIFEST.json"),
         "design_script_sha256": sha256_file(Path(__file__).resolve()),
@@ -237,8 +239,18 @@ def main() -> None:
         "response_format": judge.JUDGE_RESPONSE_FORMAT,
         "provider": {"require_parameters": True},
     }
+    standard_request_contract = {
+        "endpoint": "https://openrouter.ai/api/v1/chat/completions",
+        "model": GPT_MODEL,
+        "temperature": 0.0,
+        "max_tokens": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
+        "include_reasoning": True,
+        "response_format": judge.JUDGE_RESPONSE_FORMAT,
+        "provider": {"require_parameters": True},
+    }
 
     rows = []
+    messages_by_job_id: dict[str, list[dict[str, str]]] = {}
     for old in old_jobs:
         pair = pair_lookup[old["pair_id"]]
         trace = trace_lookup[(old["pair_id"], old["target_model"])]
@@ -282,6 +294,7 @@ def main() -> None:
         if old_by_id[row["job_id"]]["response_sha256"] != row["response_sha256"]:
             raise RuntimeError("old job identity mismatch")
         rows.append(row)
+        messages_by_job_id[row["job_id"]] = messages
     if len(rows) != 3024:
         raise RuntimeError(f"expected 3024 full cross-judge rows, found {len(rows)}")
 
@@ -305,6 +318,22 @@ def main() -> None:
     per_cell, fallback_rows, fallback_maximum = fallback_subset(
         rows, prices=STANDARD_PRICING
     )
+    fallback_rows = [
+        {
+            **{key: value for key, value in row.items() if key != "batch_request_sha256"},
+            "standard_request_sha256": canonical_sha256(
+                {
+                    "messages": messages_by_job_id[row["job_id"]],
+                    **{
+                        key: value
+                        for key, value in standard_request_contract.items()
+                        if key != "endpoint"
+                    },
+                }
+            ),
+        }
+        for row in fallback_rows
+    ]
     fallback_path = output_dir / "gpt5mini_standard_fallback_jobs.jsonl"
     write_jsonl(fallback_path, fallback_rows)
     fallback_input = sum(row["costed_input_tokens"] for row in fallback_rows)
@@ -338,6 +367,8 @@ def main() -> None:
         "jobs": len(rows),
         "pair_model_jobs": len(rows) // 2,
         "hard_budget_usd": HARD_BUDGET_USD,
+        "active_recommendation": "standard_fallback_shared_pairs",
+        "batch_live_validation_available": False,
         "pricing_verified_on": PRICING_VERIFIED_ON,
         "token_encoding": TOKEN_ENCODING,
         "token_statistics": token_statistics,
@@ -382,7 +413,7 @@ def main() -> None:
             "prompt_cache_savings_assumed_usd": 0.0,
             "retry_allowance_definition": (
                 "Budget remaining after every planned job consumes its full output cap; "
-                "active and ambiguously failed batches retain their maximum reservation."
+                "active and ambiguously failed requests retain their maximum reservation."
             ),
         },
     }
@@ -430,6 +461,11 @@ def main() -> None:
         "deferred_claude_plan_sha256": sha256_file(deferred_claude_path),
         "supersedes_for_current_budget": str(old_plan_path.relative_to(repo)).replace("\\", "/"),
         "superseded_plan_preserved": True,
+        "status": "unavailable_after_live_smoke_validation",
+        "availability_evidence": (
+            "OpenRouter returned HTTP 400 before persistence for both the base and :batch "
+            "model identifiers; no inference batch was created and the local ledger records $0."
+        ),
     }
     (output_dir / "gpt5mini_batch_full_plan.json").write_text(
         json.dumps(batch_plan, indent=2, sort_keys=True) + "\n", encoding="utf-8"
@@ -440,6 +476,8 @@ def main() -> None:
         "phase": "D1 standard-price contingency",
         "execution_mode": "synchronous_resumable",
         "judge_model": GPT_MODEL,
+        "request_contract": standard_request_contract,
+        "request_contract_sha256": canonical_sha256(standard_request_contract),
         "jobs_manifest": str(fallback_path.relative_to(repo)).replace("\\", "/"),
         "jobs_manifest_sha256": sha256_file(fallback_path),
         "expected_jobs": len(fallback_rows),
@@ -448,14 +486,24 @@ def main() -> None:
         "selection_seed": DESIGN_SEED,
         "selection_independent_of_target_scores": True,
         "same_pair_ids_across_target_models": True,
+        "input_snapshot": snapshot.name,
+        "input_freeze_manifest_sha256": sha256_file(snapshot / "FREEZE_MANIFEST.json"),
+        "input_bank_id": BANK_ID,
+        "input_run_id": RUN_ID,
+        "rubric_sha256": sha256_text(judge.JUDGE_SYSTEM),
         "hard_budget_usd": HARD_BUDGET_USD,
         "retry_reserve_usd": FALLBACK_RETRY_RESERVE_USD,
         "maximum_no_retry_cost_usd": fallback_maximum["total_cost_usd"],
         "pricing": STANDARD_PRICING,
         "max_judge_tokens": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
         "response_format_sha256": canonical_sha256(judge.JUDGE_RESPONSE_FORMAT),
+        "cost_analysis": str(report_path.relative_to(repo)).replace("\\", "/"),
+        "cost_analysis_sha256": sha256_file(report_path),
+        "expected_cost_usd": fallback_expected["total_cost_usd"],
+        "smoke_test_jobs": 2,
+        "output_dir": "runs/cross_judge/gpt5mini_standard_budget",
         "target_inference_calls": 0,
-        "status": "deferred_unless_batch_smoke_fails",
+        "status": "recommended_after_batch_unavailable",
     }
     (output_dir / "gpt5mini_standard_fallback_plan.json").write_text(
         json.dumps(fallback_plan, indent=2, sort_keys=True) + "\n", encoding="utf-8"
@@ -464,7 +512,9 @@ def main() -> None:
     summary = [
         "# Phase D Budget Redesign",
         "",
-        "No API calls were made. Claude remains fully prepared but deferred.",
+        "The design generation is offline. Three Batch submission validations were rejected "
+        "before persistence; no inference batch was created and the local ledger records $0. "
+        "Claude remains fully prepared but deferred.",
         "",
         f"| Mode | Response jobs | Input cost | Expected output cost (600/job) | Expected total | Max total | Conservative retry allowance | Fits $4.50? |",
         "|---|---:|---:|---:|---:|---:|---:|---:|",
@@ -482,10 +532,13 @@ def main() -> None:
         f"({STANDARD_FALLBACK_MAX_OUTPUT_TOKENS}/job) | "
         f"${FALLBACK_RETRY_RESERVE_USD:.3f} | YES |",
         "",
-        f"The recommended full Batch API design reserves ${batch_retry_reserve:.3f} below the hard "
+        f"The full Batch design would reserve ${batch_retry_reserve:.3f} below the hard "
         f"$4.50 ceiling even if every response consumes the full {MAX_OUTPUT_TOKENS}-token cap. "
         f"At the single most expensive job's maximum cost, that reserve covers "
         f"{conservative_retry_jobs} whole-job retries.",
+        "",
+        "However, live OpenRouter validation rejected both GPT-5 Mini Batch identifiers before "
+        "persistence. The standard-price shared-pair contingency is therefore the active recommendation.",
         "",
         f"The standard-price contingency selects the same {per_cell} pair IDs in each of the "
         "12 category×strategy cells for all three target models, retaining both languages. "

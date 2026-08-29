@@ -103,8 +103,10 @@ def validate_crossjudge_rows(
     )
     for row in rows:
         job = jobs_by_id[row["job_id"]]
-        fields = identity_fields + (
-            (("batch_request_sha256",) if "batch_request_sha256" in job else ())
+        fields = identity_fields + tuple(
+            field
+            for field in ("batch_request_sha256", "standard_request_sha256")
+            if field in job
         )
         changed = [field for field in fields if row.get(field) != job.get(field)]
         if changed:
@@ -210,11 +212,12 @@ def main_results(
         .rename_axis(None, axis=1)
     )
     pair_order = sorted(wide["pair_id"].unique())
-    if len(pair_order) != 504 or len(wide) != 1512:
-        raise ValueError(f"{judge_label} is not a complete 504×3 paired grid")
+    n_pairs = len(pair_order)
+    if n_pairs == 0 or len(wide) != n_pairs * 3:
+        raise ValueError(f"{judge_label} is not a complete shared-pair × 3-model grid")
     pair_index = {pair_id: index for index, pair_id in enumerate(pair_order)}
     model_index = {model: index for index, model in enumerate(EXPECTED_MODELS)}
-    en = np.empty((504, 3), dtype=np.int8)
+    en = np.empty((n_pairs, 3), dtype=np.int8)
     rh = np.empty_like(en)
     for row in wide.itertuples(index=False):
         en[pair_index[row.pair_id], model_index[row.target_model]] = int(row.en)
@@ -236,7 +239,7 @@ def main_results(
     start = 0
     while start < n_boot:
         stop = min(start + 500, n_boot)
-        indices = rng.integers(0, 504, size=(stop - start, 504))
+        indices = rng.integers(0, n_pairs, size=(stop - start, n_pairs))
         values = score_metrics(en[indices], rh[indices], axis=1)
         for name in bootstrap:
             bootstrap[name][start:stop] = values[name]
@@ -248,7 +251,7 @@ def main_results(
             "judge": judge_label,
             "model": model,
             "model_display": MODEL_NAMES[model],
-            "n_pairs": 504,
+            "n_pairs": n_pairs,
         }
         for metric, values in point.items():
             estimate = float(np.asarray(values)[index])
@@ -339,14 +342,14 @@ def save_figure(fig: plt.Figure, figures_dir: Path, stem: str) -> None:
     plt.close(fig)
 
 
-def plot_full_confusion(matrix: np.ndarray, figures_dir: Path) -> None:
+def plot_full_confusion(matrix: np.ndarray, figures_dir: Path, *, n: int) -> None:
     fig, ax = plt.subplots(figsize=(4.8, 4.1))
     image = ax.imshow(matrix, cmap="Blues")
     ax.set_xticks(range(4))
     ax.set_yticks(range(4))
     ax.set_xlabel("GPT-5 Mini score")
     ax.set_ylabel("Gemini score")
-    ax.set_title("Pure Gemini vs GPT-5 Mini (N=3,022)")
+    ax.set_title(f"Pure Gemini vs GPT-5 Mini (N={n:,})")
     maximum = max(1, int(matrix.max()))
     for i in range(4):
         for j in range(4):
@@ -423,7 +426,7 @@ def main() -> None:
     parser.add_argument(
         "--gpt-scores",
         type=Path,
-        default=Path("runs/cross_judge/gpt5mini_batch_budget/scores.jsonl"),
+        default=Path("runs/cross_judge/gpt5mini_standard_budget/scores.jsonl"),
     )
     parser.add_argument(
         "--claude-scores",
@@ -439,7 +442,7 @@ def main() -> None:
     parser.add_argument(
         "--gpt-plan",
         type=Path,
-        default=Path("analysis/phase_d_budget_design/gpt5mini_batch_full_plan.json"),
+        default=Path("analysis/phase_d_budget_design/gpt5mini_standard_fallback_plan.json"),
     )
     parser.add_argument(
         "--claude-plan",
@@ -464,6 +467,7 @@ def main() -> None:
 
     primary_path = snapshot / "run" / RUN_ID / "scores.jsonl"
     primary = normalize_scores(load_jsonl(primary_path), label=PRIMARY_LABEL)
+    gpt_plan_payload = json.loads(args.gpt_plan.read_text(encoding="utf-8"))
     gpt_rows = load_jsonl(args.gpt_scores)
     gpt_jobs_path = validate_crossjudge_rows(
         gpt_rows,
@@ -472,8 +476,18 @@ def main() -> None:
         snapshot=snapshot,
     )
     gpt = normalize_scores(gpt_rows, label="GPT-5 Mini")
-    if len(primary) != 3024 or len(gpt) != 3024:
-        raise RuntimeError("full Gemini/GPT score grids must each contain 3024 rows")
+    if len(primary) != 3024 or len(gpt) != int(gpt_plan_payload["expected_jobs"]):
+        raise RuntimeError("primary or GPT score grid does not match its frozen plan")
+    gpt_keys = set(zip(gpt["pair_id"], gpt["target_model"], gpt["language"]))
+    primary_comparison = primary[
+        primary.apply(
+            lambda row: (row["pair_id"], row["target_model"], row["language"])
+            in gpt_keys,
+            axis=1,
+        )
+    ].copy()
+    if len(primary_comparison) != len(gpt):
+        raise RuntimeError("GPT plan is not a subset of the frozen primary score grid")
 
     sample_pairs: set[tuple[str, str]] = set()
     claude: pd.DataFrame | None = None
@@ -509,15 +523,17 @@ def main() -> None:
     matrices_dir.mkdir(parents=True, exist_ok=True)
     figures_dir.mkdir(parents=True, exist_ok=True)
 
-    full_merge = merge_two(primary, gpt, "gemini", "gpt")
+    full_merge = merge_two(primary_comparison, gpt, "gemini", "gpt")
     full_metrics, full_matrix = agreement_metrics(
         full_merge["score_gemini"].to_numpy(), full_merge["score_gpt"].to_numpy()
     )
-    save_confusion(full_matrix, matrices_dir / "primary_pipeline_vs_gpt5mini_full.csv")
+    save_confusion(
+        full_matrix, matrices_dir / "primary_pipeline_vs_gpt5mini_planned_scope.csv"
+    )
 
-    pure_primary = primary[primary["source_judge_model"] == PRIMARY_GEMINI_MODEL]
-    if len(pure_primary) != 3022:
-        raise RuntimeError("expected exactly 3,022 Gemini-scored primary responses")
+    pure_primary = primary_comparison[
+        primary_comparison["source_judge_model"] == PRIMARY_GEMINI_MODEL
+    ]
     pure_merge = merge_two(pure_primary, gpt, "gemini", "gpt")
     pure_metrics, pure_matrix = agreement_metrics(
         pure_merge["score_gemini"].to_numpy(), pure_merge["score_gpt"].to_numpy()
@@ -526,7 +542,7 @@ def main() -> None:
 
     agreement_rows = [
         {
-            "scope": "full_primary_pipeline",
+            "scope": "planned_primary_pipeline",
             "comparison": "Primary pipeline vs GPT-5 Mini",
             **full_metrics,
         },
@@ -538,7 +554,7 @@ def main() -> None:
     ]
     by_group_rows = []
     for scope, comparison, merged in (
-        ("full_primary_pipeline", "Primary pipeline vs GPT-5 Mini", full_merge),
+        ("planned_primary_pipeline", "Primary pipeline vs GPT-5 Mini", full_merge),
         ("gemini_only", "Gemini-only vs GPT-5 Mini", pure_merge),
     ):
         for (model, language), subset in merged.groupby(["target_model", "language"]):
@@ -609,7 +625,7 @@ def main() -> None:
 
     score_distributions = []
     distribution_scopes: list[tuple[str, tuple[tuple[str, pd.DataFrame], ...]]] = [
-        ("full", ((PRIMARY_LABEL, primary), ("GPT-5 Mini", gpt)))
+        ("planned_scope", ((PRIMARY_LABEL, primary_comparison), ("GPT-5 Mini", gpt)))
     ]
     if claude_enabled:
         assert sample_primary is not None and sample_gpt is not None and claude is not None
@@ -641,7 +657,7 @@ def main() -> None:
     )
 
     primary_results = main_results(
-        primary,
+        primary_comparison,
         judge_label=PRIMARY_LABEL,
         n_boot=args.bootstrap_resamples,
         seed=args.seed,
@@ -663,9 +679,9 @@ def main() -> None:
         "experimental_unit": "pair_id",
         PRIMARY_LABEL: primary_regimes,
         "GPT-5 Mini": gpt_regimes,
-        "primary_judge_provenance": {
-            "gemini_responses": 3022,
-            "gpt5mini_fallback_responses": 2,
+        "primary_judge_provenance_in_planned_scope": {
+            "gemini_responses": int(len(pure_primary)),
+            "gpt5mini_fallback_responses": int(len(primary_comparison) - len(pure_primary)),
         },
         "qualitative_three_regime_survives_judge_replacement": bool(
             gpt_regimes["ordering_matches"] and gpt_regimes["all_regimes_match"]
@@ -676,7 +692,7 @@ def main() -> None:
     )
 
     flip_rows = []
-    for label, frame in ((PRIMARY_LABEL, primary), ("GPT-5 Mini", gpt)):
+    for label, frame in ((PRIMARY_LABEL, primary_comparison), ("GPT-5 Mini", gpt)):
         wide = (
             frame.pivot(
                 index=["pair_id", "target_model", "category", "strategy"],
@@ -734,7 +750,7 @@ def main() -> None:
             "axes.spines.right": False,
         }
     )
-    plot_full_confusion(pure_matrix, figures_dir)
+    plot_full_confusion(pure_matrix, figures_dir, n=len(pure_merge))
     plot_gap_comparison(combined_results, figures_dir)
 
     summary_lines = [
@@ -742,7 +758,7 @@ def main() -> None:
         "",
         "## Cross-judge agreement",
         "",
-        f"- Pure Gemini vs GPT-5 Mini (N=3,022) exact agreement: "
+        f"- Pure Gemini vs GPT-5 Mini (N={len(pure_merge):,}) exact agreement: "
         f"{100*pure_metrics['exact_agreement']:.2f}%",
         f"- Pure Gemini vs GPT-5 Mini adjacent agreement: "
         f"{100*pure_metrics['adjacent_agreement']:.2f}%",
@@ -750,10 +766,11 @@ def main() -> None:
         f"{pure_metrics['unweighted_kappa']:.3f}",
         f"- Pure Gemini vs GPT-5 Mini quadratic-weighted kappa: "
         f"{pure_metrics['quadratic_weighted_kappa']:.3f}",
-        f"- Full frozen primary pipeline vs GPT-5 Mini (N=3,024) exact agreement: "
+        f"- Frozen primary pipeline vs GPT-5 Mini in the planned scope "
+        f"(N={len(full_merge):,}) exact agreement: "
         f"{100*full_metrics['exact_agreement']:.2f}%",
-        "- The full primary pipeline includes the two preserved GPT-5 Mini fallback scores; "
-        "the pure comparison excludes those two rows.",
+        f"- The planned scope contains {len(primary_comparison) - len(pure_primary)} preserved "
+        "GPT-5 Mini fallback score(s) in the primary pipeline; the pure comparison excludes them.",
         "",
         "## Headline metrics under judge replacement",
         "",

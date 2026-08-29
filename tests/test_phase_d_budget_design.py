@@ -24,6 +24,8 @@ def test_full_batch_fits_but_full_standard_does_not() -> None:
     assert report["batch"]["maximum_1024_output_tokens_per_job"]["total_cost_usd"] < 4.50
     assert report["batch"]["conservative_retry_allowance_usd"] > 0.65
     assert report["costing_assumptions"]["prompt_cache_savings_assumed_usd"] == 0.0
+    assert report["active_recommendation"] == "standard_fallback_shared_pairs"
+    assert report["batch_live_validation_available"] is False
 
     for mode in ("standard", "batch"):
         expected = report[mode]["expected_600_output_tokens_per_job"]
@@ -32,6 +34,10 @@ def test_full_batch_fits_but_full_standard_does_not() -> None:
             + expected["output_cost_usd"]
             - expected["total_cost_usd"]
         ) < 1e-12
+    batch_plan = json.loads(
+        (DESIGN_DIR / "gpt5mini_batch_full_plan.json").read_text(encoding="utf-8")
+    )
+    assert batch_plan["status"] == "unavailable_after_live_smoke_validation"
 
 
 def test_full_jobs_are_complete_hash_only_identifiers() -> None:
@@ -76,3 +82,10 @@ def test_standard_contingency_is_balanced_in_every_cell() -> None:
             if row["pair_id"] == pair_id and row["target_model"] == model
         }
         assert languages == {"en", "rh"}
+
+    plan = json.loads(
+        (DESIGN_DIR / "gpt5mini_standard_fallback_plan.json").read_text(encoding="utf-8")
+    )
+    assert plan["status"] == "recommended_after_batch_unavailable"
+    assert plan["request_contract"]["response_format"]["json_schema"]["strict"] is True
+    assert plan["maximum_no_retry_cost_usd"] + plan["retry_reserve_usd"] < 4.50

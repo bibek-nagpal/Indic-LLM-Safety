@@ -1,4 +1,5 @@
 {
+  "active_recommendation": "standard_fallback_shared_pairs",
   "api_calls": 0,
   "batch": {
     "conservative_retry_allowance_usd": 0.6566644999999998,
@@ -25,13 +26,14 @@
     },
     "retry_reserve_after_maximum_outputs_usd": 0.6566644999999998
   },
+  "batch_live_validation_available": false,
   "costing_assumptions": {
     "actual_stored_text_tokenized": true,
     "chat_protocol_tokens_per_job_conservative": 9,
     "judge_messages_exactly_reconstructed_and_hash_checked": true,
     "prompt_cache_savings_assumed_usd": 0.0,
     "reasoning_tokens_included_in_output_budget": true,
-    "retry_allowance_definition": "Budget remaining after every planned job consumes its full output cap; active and ambiguously failed batches retain their maximum reservation.",
+    "retry_allowance_definition": "Budget remaining after every planned job consumes its full output cap; active and ambiguously failed requests retain their maximum reservation.",
     "structured_output_schema_counted_as_input_per_job_conservative": true
   },
   "hard_budget_usd": 4.5,

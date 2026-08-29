@@ -45,23 +45,24 @@ This recreates `analysis/phase_d_preparation/` deterministically. The manifests 
 
 Paid execution is permitted only after explicit user approval. It requires both `--execute-paid-calls` and `--paid-approval-confirmed`; `--max-jobs` supports a small smoke batch and resumable staged execution. These jobs re-score stored responses only and make zero target-inference calls. Raw scores, errors, provenance, and accounting remain under the ignored `runs/cross_judge/` directory.
 
-The original standard GPT-5 Mini and Claude preparations above are preserved for later use. Under the current $4.50 Phase D ceiling, Claude is deferred and the active design uses OpenRouter's asynchronous Batch API with the live-validator-required `openai/gpt-5-mini:batch` model variant for the complete 3,024-response GPT-5 Mini re-judge. Rebuild the token-exact budget design with:
+The original full standard GPT-5 Mini and Claude preparations above are preserved for later use. Under the current $4.50 Phase D ceiling, Claude is deferred. OpenRouter's live Batch validator rejected both the base and `:batch` GPT-5 Mini identifiers before persistence, so the active design is now the shared-pair standard-price contingency. Rebuild the token-exact budget design with:
 
 ```powershell
 .analysis-venv\Scripts\python.exe analysis\design_phase_d_budget.py
 ```
 
-This hashes every exact reconstructed judge message, counts the actual frozen prompt/response text with GPT-5 Mini's tokenizer, and assumes no prompt-cache discount. Its recommended full Batch plan and standard-price stratified contingency live in `analysis/phase_d_budget_design/`. The contingency selects the same pair IDs across target models so between-model gap comparisons remain paired.
+This hashes every exact reconstructed judge message, counts the actual frozen prompt/response text with GPT-5 Mini's tokenizer, and assumes no prompt-cache discount. The preserved Batch plan and active standard-price stratified plan live in `analysis/phase_d_budget_design/`. The standard plan selects the same pair IDs across target models so between-model gap comparisons remain paired.
 
-Validate the Batch plan locally with:
+Validate both plans locally with:
 
 ```powershell
 .analysis-venv\Scripts\python.exe scripts\run_cross_judge_batch.py --plan analysis\phase_d_budget_design\gpt5mini_batch_full_plan.json
+.analysis-venv\Scripts\python.exe scripts\run_cross_judge_standard_budget.py --plan analysis\phase_d_budget_design\gpt5mini_standard_fallback_plan.json
 ```
 
-Validation does not load `.env` and makes zero API calls. A paid two-response smoke additionally requires `--submit-paid-batch --max-jobs 2 --paid-approval-confirmed`; it must not be used without explicit user approval. The remaining full batch is independently gated by `--full-run-approval-confirmed` and cannot be submitted until the collected smoke verifies parsing, non-BYOK OpenRouter billing, and the expected Batch price.
+Validation does not load `.env` and makes zero API calls. The unavailable Batch plan refuses further paid access. A paid two-response standard smoke requires `--execute-paid-calls --max-jobs 2 --paid-approval-confirmed`; it must not be used without explicit user approval. The remaining standard subset is independently gated by `--full-run-approval-confirmed` and cannot run until the smoke verifies parsing, non-BYOK OpenRouter billing, and the expected standard price.
 
-After the full GPT-5 Mini plan is complete, generate the cross-judge agreement statistics, judge-replacement headline metrics, regime verdict, tables, and figures with:
+After the GPT-5 Mini standard subset is complete, generate the cross-judge agreement statistics, judge-replacement headline metrics, regime verdict, tables, and figures with:
 
 ```powershell
 .analysis-venv\Scripts\python.exe analysis\analyze_phase_d.py
