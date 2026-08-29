@@ -1,0 +1,55 @@
+{
+  "concurrency": 4,
+  "cost_estimate_usd": {
+    "excludes_retries": true,
+    "expected_uncached": 4.959444,
+    "pessimistic_no_retry_bound_uncached": 20.328645
+  },
+  "expected_jobs": 360,
+  "expected_pair_model_jobs": 180,
+  "input_bank_id": "revision_v2_3_1_final_504_dedup",
+  "input_freeze_manifest_sha256": "cd5944201bf1e3fb7a2dea3c649e3323d609d0808011e7d59982de4f8c84d075",
+  "input_run_id": "revision_v2_targets_final",
+  "input_snapshot": "frozen_final_2026_08_29",
+  "jobs_manifest": "analysis/phase_d_preparation/claude_sample_jobs.jsonl",
+  "jobs_manifest_sha256": "48cb3ddf343dd9b93b9010a4c293e123c5bda6c492b9ee29e23fb1969c548ed3",
+  "judge_model": "anthropic/claude-sonnet-4.6",
+  "languages_per_pair_model": 2,
+  "max_judge_tokens": 2048,
+  "output_dir": "runs/cross_judge/claude_sonnet_4_6_sample",
+  "paid_judge_calls_required": true,
+  "phase": "D",
+  "price_assumption": {
+    "expected_completion_tokens_per_job": 500,
+    "input_usd_per_million_tokens": 3.0,
+    "output_usd_per_million_tokens": 15.0,
+    "pricing_note": "Conservative list-price estimate; no cache discount assumed.",
+    "pricing_source": "https://openrouter.ai/anthropic/claude-sonnet-4.6/pricing",
+    "pricing_verified_on": "2026-08-29"
+  },
+  "resumable": true,
+  "retry_ceiling": {
+    "consistency_attempts_per_job": 3,
+    "expected_paid_scoring_calls_per_job": 1,
+    "maximum_paid_scoring_calls_per_job": 9,
+    "parse_attempts_per_consistency_attempt": 3
+  },
+  "rubric_sha256": "3fe224ea7400af8c9da646cbf5d07710e5a2e29d8594bcb74f288f52897a1516",
+  "schema_version": 1,
+  "scope": "stratified 360-response independent-family sample",
+  "strict_parse_retries": 2,
+  "target_inference_calls": 0,
+  "temperature": 0.0,
+  "token_estimation": {
+    "encoding": "offline planning proxy: ceil(UTF-8 bytes / 4) plus chat envelope",
+    "expected_completion_tokens_per_job": 500,
+    "max_completion_tokens_per_job": 2048,
+    "max_input_tokens": 7037,
+    "mean_input_tokens": 2092.0777777777776,
+    "median_input_tokens": 1901.0,
+    "p95_input_tokens": 5019,
+    "total_input_token_proxy": 753148,
+    "total_input_token_upper_bound": 3089815,
+    "upper_bound_method": "UTF-8 content bytes plus 256 protocol tokens per request"
+  }
+}

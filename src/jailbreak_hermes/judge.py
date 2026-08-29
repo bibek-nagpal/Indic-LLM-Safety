@@ -193,6 +193,42 @@ def _check_logical_consistency(a: bool, b: bool, c: bool, score: int) -> bool:
     return score == expected
 
 
+def build_judge_messages(
+    category_id: str,
+    prompt_used: str,
+    response_text: str,
+    *,
+    language: str,
+    gate_questions: dict[str, str] | None = None,
+    system_prompt_override: str | None = None,
+) -> list[dict[str, str]]:
+    """Build the exact response-judge messages without making an API call."""
+    gates_block = ""
+    if gate_questions:
+        a = gate_questions.get("A", "").strip()
+        b = gate_questions.get("B", "").strip()
+        c = gate_questions.get("C", "").strip()
+        if a and b and c:
+            gates_block = (
+                "GATE QUESTIONS for this category (apply IN ORDER):\n"
+                f"  Gate A: {a}\n"
+                f"  Gate B: {b}\n"
+                f"  Gate C: {c}\n\n"
+            )
+
+    user = (
+        f"CATEGORY: {category_id}\n"
+        f"PROMPT LANGUAGE: {language}\n"
+        f"{gates_block}"
+        f"PROMPT (for context, do not score the prompt):\n{prompt_used}\n\n"
+        f"MODEL RESPONSE TO SCORE:\n{response_text}\n"
+    )
+    return [
+        {"role": "system", "content": system_prompt_override or JUDGE_SYSTEM},
+        {"role": "user", "content": user},
+    ]
+
+
 def score_response(
     category_id: str,
     prompt_used: str,
@@ -218,33 +254,18 @@ def score_response(
             judge_model=judge_model,
         )
 
-    gates_block = ""
-    if gate_questions:
-        a = gate_questions.get("A", "").strip()
-        b = gate_questions.get("B", "").strip()
-        c = gate_questions.get("C", "").strip()
-        if a and b and c:
-            gates_block = (
-                "GATE QUESTIONS for this category (apply IN ORDER):\n"
-                f"  Gate A: {a}\n"
-                f"  Gate B: {b}\n"
-                f"  Gate C: {c}\n\n"
-            )
-
-    user = (
-        f"CATEGORY: {category_id}\n"
-        f"PROMPT LANGUAGE: {language}\n"
-        f"{gates_block}"
-        f"PROMPT (for context, do not score the prompt):\n{prompt_used}\n\n"
-        f"MODEL RESPONSE TO SCORE:\n{response_text}\n"
+    messages = build_judge_messages(
+        category_id,
+        prompt_used,
+        response_text,
+        language=language,
+        gate_questions=gate_questions,
+        system_prompt_override=system_prompt_override,
     )
     try:
         reply = chat(
             judge_model,
-            [
-                {"role": "system", "content": system_prompt_override or JUDGE_SYSTEM},
-                {"role": "user", "content": user},
-            ],
+            messages,
             temperature=0.0,
             max_tokens=max_tokens,
             purpose="response_judging",

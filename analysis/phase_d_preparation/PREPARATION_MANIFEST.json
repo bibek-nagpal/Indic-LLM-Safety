@@ -1,0 +1,40 @@
+{
+  "api_calls": 0,
+  "files": [
+    {
+      "bytes": 270304,
+      "path": "claude_sample_jobs.jsonl",
+      "sha256": "48cb3ddf343dd9b93b9010a4c293e123c5bda6c492b9ee29e23fb1969c548ed3"
+    },
+    {
+      "bytes": 2289,
+      "path": "claude_sample_plan.json",
+      "sha256": "23ef166ec627e5fbcc3324d6b74e9f4caeabf271043342494d6979aff4bc5e36"
+    },
+    {
+      "bytes": 2239749,
+      "path": "gpt5mini_full_jobs.jsonl",
+      "sha256": "60278a6a97aa06e48f2748029bf5748076d35228d05150cc80d62538937b04da"
+    },
+    {
+      "bytes": 2272,
+      "path": "gpt5mini_full_plan.json",
+      "sha256": "96af35cf1535b785edf533c454f45897df537fbf22c4c22a887e7422f35204f0"
+    },
+    {
+      "bytes": 852,
+      "path": "preparation_summary.md",
+      "sha256": "9f0e5d5b4756d5fe4b5acd938bffb098e812301556fa09dc2ac63787e8df5839"
+    },
+    {
+      "bytes": 27932,
+      "path": "stratified_180_pair_model_sample.csv",
+      "sha256": "cd76077f028c615103254190e0ab4dfb279cec43089212892db2ef2fc1b9a146"
+    }
+  ],
+  "input_freeze_manifest_sha256": "cd5944201bf1e3fb7a2dea3c649e3323d609d0808011e7d59982de4f8c84d075",
+  "input_snapshot": "frozen_final_2026_08_29",
+  "phase": "D preparation",
+  "preparation_script_sha256": "72a36ddff4683322b0d6c3e73c3eec2aabc7702a9f0b6d7aa7980b98f25fec51",
+  "schema_version": 1
+}
