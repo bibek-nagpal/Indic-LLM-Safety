@@ -1,0 +1,29 @@
+## Revision V2 model-role registry.
+## Generator/judge/summarizer remain Gemini for continuity with V1.
+## Equivalence certification is independent and cost-aware:
+##   primary   = DeepSeek V4 Flash
+##   secondary = GPT-5 Mini (called only after a primary pass by build-bank)
+## The original three target models are unchanged.
+
+orchestrator: google/gemini-2.5-flash
+
+judge_model:             google/gemini-2.5-flash
+fallback_judge_model:    openai/gpt-5-mini  # used only if primary judge cannot score after retries
+summarizer_model:        google/gemini-2.5-flash
+generator_model:         google/gemini-2.5-flash
+equivalence_model:       deepseek/deepseek-v4-flash
+secondary_equivalence_model: openai/gpt-5-mini
+gepa_reflection_model:   google/gemini-2.5-flash
+
+target_models:
+  - qwen/qwen3-30b-a3b-instruct-2507
+  - openai/gpt-oss-20b
+  - nvidia/nemotron-3-nano-30b-a3b
+
+max_orchestrator_tokens: 4096   # generator + equivalence: headroom for complex prompts
+max_target_tokens:       4096   # ALL targets are thinking models (CoT + answer)
+max_judge_tokens:        2048   # judge outputs structured JSON, no CoT
+
+target_temperature:      0.0
+orchestrator_temperature: 0.0
+generator_temperature:   0.4
