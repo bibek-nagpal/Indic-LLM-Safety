@@ -2,7 +2,7 @@
   "active_recommendation": "standard_fallback_shared_pairs",
   "api_calls": 0,
   "batch_live_validation_available": false,
-  "design_script_sha256": "839a822e6204c1596a6e52de1f071b3ef24d1194ade66f68a5b37ed7e7da0107",
+  "design_script_sha256": "fd1f98bbd1b6c4975fbb28dd9d3a5d0a93e52aaa7e72f3ec2748542f16542d5e",
   "files": [
     {
       "bytes": 2083,
@@ -27,22 +27,22 @@
     {
       "bytes": 1240170,
       "path": "gpt5mini_standard_complement_jobs.jsonl",
-      "sha256": "c7ae4ec62d13bb78de2e858eae59595d7b421d7c5b871f19d893fbc0981f2e73"
+      "sha256": "7f1a816e2b1b74cbd7c0ca14baf8ae6b0bb8c37a6c6ffc5e8609a9ec30f43679"
     },
     {
-      "bytes": 3886,
+      "bytes": 3884,
       "path": "gpt5mini_standard_complement_plan.json",
-      "sha256": "0c609f65454d2cd8708b327ced5bd27a4376b81e641d00c24204f3ae809dd778"
+      "sha256": "69cb7d0cf063b4ba356bfdb93c78dceb5d68814482b487190425506e583f458e"
     },
     {
       "bytes": 2232345,
       "path": "gpt5mini_standard_fallback_jobs.jsonl",
-      "sha256": "806e3943b760fc1b56988a351c2ffa3abea956c9381223bbbfd670020d99a7d7"
+      "sha256": "5d34087cad2934e27efa482b9d20e56e8ccb1d2fad4f78ae9af77770b10857d4"
     },
     {
-      "bytes": 3560,
+      "bytes": 3558,
       "path": "gpt5mini_standard_fallback_plan.json",
-      "sha256": "ac469990075d690d6d54a06c81b0f4d25494a06cfa08ca09b2fce17a4e817ac8"
+      "sha256": "dbdfc567706984e2ecbdff8c639dab88991f1265881cdb29723d6fad1adf5a42"
     }
   ],
   "hard_budget_usd": 4.5,

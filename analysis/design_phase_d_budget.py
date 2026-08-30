@@ -242,7 +242,11 @@ def main() -> None:
     standard_request_contract = {
         "endpoint": "https://openrouter.ai/api/v1/chat/completions",
         "model": GPT_MODEL,
-        "temperature": 0.0,
+        # GPT-5 Mini is a mandatory-reasoning model and its live OpenRouter
+        # metadata does not advertise temperature. Requiring temperature=0
+        # excludes every endpoint, so use its supported deterministic seed
+        # parameter while preserving the exact rubric and structured schema.
+        "seed": DESIGN_SEED,
         "max_tokens": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
         "include_reasoning": True,
         "response_format": judge.JUDGE_RESPONSE_FORMAT,

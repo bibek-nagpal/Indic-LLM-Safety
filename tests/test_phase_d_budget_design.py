@@ -88,6 +88,8 @@ def test_standard_contingency_is_balanced_in_every_cell() -> None:
     )
     assert plan["status"] == "recommended_after_batch_unavailable"
     assert plan["request_contract"]["response_format"]["json_schema"]["strict"] is True
+    assert "temperature" not in plan["request_contract"]
+    assert plan["request_contract"]["seed"] == 20260829
     assert plan["maximum_no_retry_cost_usd"] + plan["retry_reserve_usd"] < 4.50
 
 
