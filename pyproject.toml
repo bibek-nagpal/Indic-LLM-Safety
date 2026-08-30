@@ -29,6 +29,7 @@ dev = [
 analysis = [
     "matplotlib>=3.10",
     "numpy>=2.2",
+    "openpyxl>=3.1",
     "pandas>=2.2",
     "scipy>=1.15",
     "statsmodels>=0.14",
