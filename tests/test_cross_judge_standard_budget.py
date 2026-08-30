@@ -161,6 +161,27 @@ def test_length_stop_repairs_inconsistent_zero_token_usage() -> None:
     assert next_token_cap("job", state, plan) == 1280
 
 
+def test_length_stop_repairs_entirely_missing_usage() -> None:
+    plan = {
+        "max_judge_tokens": 768,
+        "continuation_max_judge_tokens": 1024,
+        "truncation_repair_max_judge_tokens": 1280,
+        "final_truncation_repair_max_judge_tokens": 2048,
+    }
+    state = {
+        "attempts": [
+            {
+                "job_id": "job",
+                "status": "completed_parse_error",
+                "max_tokens_used": 1024,
+                "finish_reason": "length",
+                "usage": {},
+            }
+        ]
+    }
+    assert next_token_cap("job", state, plan) == 1280
+
+
 def test_repair_cost_uses_actual_cap() -> None:
     job = {"costed_input_tokens": 1000}
     plan = {

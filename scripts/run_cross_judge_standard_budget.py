@@ -157,9 +157,10 @@ def next_token_cap(job_id: str, state: dict[str, Any], plan: dict[str, Any]) -> 
     details = usage.get("completion_tokens_details") or {}
     completion = int(usage.get("completion_tokens") or 0)
     reasoning = int(details.get("reasoning_tokens") or 0)
-    eligible = bool(latest.get("truncation_repair_eligible")) or (
-        reasoning > 0
-        and (completion >= used or latest.get("finish_reason") == "length")
+    eligible = (
+        bool(latest.get("truncation_repair_eligible"))
+        or latest.get("finish_reason") == "length"
+        or (reasoning > 0 and completion >= used)
     )
     later_caps = sorted(cap for cap in {continuation, repair, final_repair} if cap > used)
     if eligible and later_caps:
@@ -581,10 +582,9 @@ def main() -> None:
                 or 0
             )
             attempt["truncation_repair_eligible"] = (
-                reasoning_tokens > 0
-                and (
-                    completion_tokens >= token_cap
-                    or attempt.get("finish_reason") == "length"
+                (
+                    attempt.get("finish_reason") == "length"
+                    or (reasoning_tokens > 0 and completion_tokens >= token_cap)
                 )
                 and token_cap
                 < int(plan.get("final_truncation_repair_max_judge_tokens", token_cap))
