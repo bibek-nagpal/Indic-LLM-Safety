@@ -1,477 +1,104 @@
-% =============================================================================
-% IndicAlignProbe references.bib  —  VERIFIED PASS
-%
-% CONVENTIONS (previously inconsistent across the file):
-%   1. Keys are lowercase surnameYEARkeyword throughout.
-%   2. Formally published work uses @inproceedings with the real venue.
-%      @misc with eprint/archivePrefix/primaryClass is used ONLY where no
-%      published version exists.
-%   3. No entry uses @article with journal={arXiv preprint arXiv:NNNN}.
-%   4. language, urldate, shorttitle, and isbn fields removed everywhere.
-%   5. Proper nouns and system names brace-protected in titles.
-%
-% VERIFICATION LEGEND
-%   [V] Author list, title, venue, year, and pages checked against the
-%       publisher page (ACL Anthology, OpenReview, PMLR) or the paper PDF.
-%   [P] Partially checked. Venue and year confirmed from a reliable secondary
-%       source, but I did not open the publisher record. Pages may be missing.
-%   [U] NOT VERIFIED against a publisher page. You must check these. Each
-%       carries a note saying exactly what to check.
-% =============================================================================
-
-
-% ---------- Multilingual safety gaps ------------------------------------------
-
 @inproceedings{wang2024xsafety,
-    title     = "All Languages Matter: On the Multilingual Safety of {LLM}s",
-    author    = "Wang, Wenxuan and Tu, Zhaopeng and Chen, Chang and Yuan, Youliang and Huang, Jen-tse and Jiao, Wenxiang and Lyu, Michael",
-    booktitle = "Findings of the Association for Computational Linguistics: ACL 2024",
-    month     = aug,
-    year      = "2024",
-    address   = "Bangkok, Thailand",
-    publisher = "Association for Computational Linguistics",
-    url       = "https://aclanthology.org/2024.findings-acl.349/",
-    doi       = "10.18653/v1/2024.findings-acl.349",
-    pages     = "5865--5877"
+  title = {All Languages Matter: On the Multilingual Safety of Large Language Models},
+  author = {Wang, Wenxuan and Tu, Zhaopeng and Chen, Chang and Yuan, Youliang and Huang, Jen-tse and Jiao, Wenxiang and Lyu, Michael R.},
+  booktitle = {Findings of the Association for Computational Linguistics: ACL 2024},
+  pages = {5865--5877},
+  year = {2024},
+  publisher = {Association for Computational Linguistics},
+  doi = {10.18653/v1/2024.findings-acl.349},
+  url = {https://aclanthology.org/2024.findings-acl.349/}
 }
-% [V] Anthology page opened. Seven authors confirmed in order. NOTE: the
-% anthology records the last author as "Michael Lyu", while the page metadata
-% also carries "Michael R. Lyu". Anthology form used here.
-
-@inproceedings{yong2025state,
-    title     = "The State of Multilingual {LLM} Safety Research: From Measuring The Language Gap To Mitigating It",
-    author    = "Yong, Zheng Xin and Ermis, Beyza and Fadaee, Marzieh and Bach, Stephen and Kreutzer, Julia",
-    booktitle = "Proceedings of the 2025 Conference on Empirical Methods in Natural Language Processing",
-    month     = nov,
-    year      = "2025",
-    address   = "Suzhou, China",
-    publisher = "Association for Computational Linguistics",
-    url       = "https://aclanthology.org/2025.emnlp-main.800/",
-    doi       = "10.18653/v1/2025.emnlp-main.800",
-    pages     = "15845--15860"
-}
-% [V] Anthology page opened, ID 2025.emnlp-main.800.
-% WARNING: two independent citing papers give the pages as 15856--15871. The
-% Anthology record says 15845--15860 and is authoritative, so that is used
-% here, and it matches what you already had. Also note the Anthology gives the
-% author as "Stephen Bach" while arXiv gives "Stephen H. Bach", and the
-% Anthology title is title-cased where arXiv uses sentence case.
 
 @inproceedings{deng2024multilingual,
-  author    = {Deng, Yue and Zhang, Wenxuan and Pan, Sinno Jialin and Bing, Lidong},
-  title     = {Multilingual Jailbreak Challenges in Large Language Models},
-  booktitle = {The Twelfth International Conference on Learning Representations (ICLR)},
-  year      = {2024}
+  title = {Multilingual Jailbreak Challenges in Large Language Models},
+  author = {Deng, Yue and Zhang, Wenxuan and Pan, Sinno Jialin and Bing, Lidong},
+  booktitle = {The Twelfth International Conference on Learning Representations},
+  year = {2024},
+  url = {https://proceedings.iclr.cc/paper_files/paper/2024/hash/6b396f766a50e0853a5164e68048540c-Abstract-Conference.html}
 }
-% [P] ICLR 2024, arXiv:2310.06474. Consistently cited as ICLR 2024.
-% [U] Open the OpenReview record and copy the official BibTeX.
 
-@inproceedings{yong2023low,
-  author    = {Yong, Zheng-Xin and Menghini, Cristina and Bach, Stephen H.},
-  title     = {Low-Resource Languages Jailbreak {GPT-4}},
-  booktitle = {NeurIPS Workshop on Socially Responsible Language Modelling Research (SoLaR)},
-  year      = {2023}
-}
-% [P] arXiv:2310.02446. NOTE: many papers, including yong2025state above, cite
-% this simply as an arXiv preprint. Keep the workshop form only if you can
-% confirm it on the SoLaR site, otherwise switch to @misc.
-
-@inproceedings{shen2024language,
-  author    = {Shen, Lingfeng and Tan, Weiting and Chen, Sihao and Chen, Yunmo and Zhang, Jingyu and Xu, Haoran and Zheng, Boyuan and Koehn, Philipp and Khashabi, Daniel},
-  title     = {The Language Barrier: Dissecting Safety Challenges of {LLMs} in Multilingual Contexts},
-  booktitle = {Findings of the Association for Computational Linguistics: ACL 2024},
-  month     = aug,
-  year      = {2024},
-  address   = {Bangkok, Thailand},
+@inproceedings{yoo2025codeswitch,
+  title = {Code-Switching Red-Teaming: {LLM} Evaluation for Safety and Multilingual Understanding},
+  author = {Yoo, Haneul and Yang, Yongjin and Lee, Hwaran},
+  booktitle = {Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages = {13392--13413},
+  year = {2025},
   publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2024.findings-acl.156/},
-  doi       = {10.18653/v1/2024.findings-acl.156},
-  pages     = {2668--2680}
+  doi = {10.18653/v1/2025.acl-long.657},
+  url = {https://aclanthology.org/2025.acl-long.657/}
 }
-% [U] I did not open this page. Go to the URL, click Cite, copy the BibTeX.
 
-
-% ---------- Cross-lingual jailbreaks ------------------------------------------
-
-@inproceedings{upadhayay2024sandwich,
-  author    = {Upadhayay, Bibek and Behzadan, Vahid},
-  title     = {Sandwich Attack: Multi-language Mixture Adaptive Attack on {LLMs}},
-  booktitle = {Proceedings of the 4th Workshop on Trustworthy Natural Language Processing (TrustNLP 2024)},
-  year      = {2024},
-  address   = {Mexico City, Mexico},
+@inproceedings{j2024romansetu,
+  title = {{RomanSetu}: Efficiently Unlocking Multilingual Capabilities of Large Language Models via Romanization},
+  author = {J, Jaavid and Dabre, Raj and M, Aswanth and Gala, Jay and Jayakumar, Thanmay and Puduppully, Ratish and Kunchukuttan, Anoop},
+  booktitle = {Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages = {15593--15615},
+  year = {2024},
   publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2024.trustnlp-1.18/},
-  pages     = {208--226}
+  doi = {10.18653/v1/2024.acl-long.833},
+  url = {https://aclanthology.org/2024.acl-long.833/}
 }
-% [P] Venue, authors, and pages 208--226 corroborated by an independent citing
-% reference list. [U] Open the anthology page to confirm.
-
-@inproceedings{song2025multilingualblending,
-  author    = {Song, Jiayang and Huang, Yuheng and Zhou, Zhehua and Ma, Lei},
-  title     = {Multilingual Blending: Large Language Model Safety Alignment Evaluation with Language Mixture},
-  booktitle = {Findings of the Association for Computational Linguistics: NAACL 2025},
-  year      = {2025},
-  address   = {Albuquerque, New Mexico},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2025.findings-naacl.191/},
-  doi       = {10.18653/v1/2025.findings-naacl.191},
-  pages     = {3433--3449}
-}
-% [U] I did not open this page. Verify at the URL above.
-
-@inproceedings{yoo2025code,
-    title     = "Code-Switching Red-Teaming: {LLM} Evaluation for Safety and Multilingual Understanding",
-    author    = "Yoo, Haneul and Yang, Yongjin and Lee, Hwaran",
-    booktitle = "Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
-    month     = jul,
-    year      = "2025",
-    address   = "Vienna, Austria",
-    publisher = "Association for Computational Linguistics",
-    url       = "https://aclanthology.org/2025.acl-long.657/",
-    doi       = "10.18653/v1/2025.acl-long.657",
-    pages     = "13392--13413"
-}
-% [V] Anthology ID 2025.acl-long.657, three authors and pages confirmed.
-% Your pages were already right, the ID was missing.
-
-@misc{li2024cross,
-  author        = {Li, Jie and Liu, Yi and Liu, Chongyang and Shi, Ling and Ren, Xiaoning and Zheng, Yaowen and Liu, Yang and Xue, Yinxing},
-  title         = {A Cross-Language Investigation into Jailbreak Attacks in Large Language Models},
-  year          = {2024},
-  eprint        = {2401.16765},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.CL}
-}
-% [U] NOT VERIFIED. Search the title on ACL Anthology, then Semantic Scholar.
-% Replace if a published version exists. Also check the eight-name author list.
-
-@misc{atil2025jailbreak,
-  author        = {Atil, Berk and Passonneau, Rebecca J. and Morstatter, Fred},
-  title         = {Do Methods to Jailbreak and Defend {LLMs} Generalize Across Languages?},
-  year          = {2025},
-  eprint        = {2511.00689},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.CL}
-}
-% [U] NOT VERIFIED. Confirm authors and title on arXiv, check for a 2026 venue.
-
-
-% ---------- Romanization, code-switching, Indic resources ---------------------
-
-@inproceedings{ghanim2024jailbreaking,
-  author    = {Al Ghanim, Mansour and Almohaimeed, Saleh and Zheng, Mengxin and Solihin, Yan and Lou, Qian},
-  title     = {Jailbreaking {LLMs} with {Arabic} Transliteration and {Arabizi}},
-  booktitle = {Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing},
-  year      = {2024},
-  address   = {Miami, Florida, USA},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2024.emnlp-main.1034/},
-  doi       = {10.18653/v1/2024.emnlp-main.1034},
-  pages     = {18584--18600}
-}
-% [U] Venue and ID look right but I did not open the page.
-% FIXED REGARDLESS: your file had "Ghanim, Mansour Al", which BibTeX renders as
-% "M. A. Ghanim". The surname is "Al Ghanim". Key renamed from
-% alghanim2024jailbreaking. Update the \cite site in Section 2.
-
-@inproceedings{pattnayak2026indicjr,
-  author    = {Pattnayak, Priyaranjan and Chowdhuri, Sanchari},
-  title     = {{IndicJR}: A Judge-Free Benchmark of Jailbreak Robustness in {South Asian} Languages},
-  booktitle = {Proceedings of the 19th Conference of the European Chapter of the Association for Computational Linguistics: Industry Track},
-  year      = {2026},
-  pages     = {649--668},
-  publisher = {Association for Computational Linguistics},
-  url       = {https://aclanthology.org/2026.eacl-industry.50/}
-}
-% [V] Full PDF read. Authors, title, venue, pages 649--668, year all correct.
-% Key renamed from pattnayak-chowdhuri-2026-indicjr.
-
-@misc{pattnayak2026indicsafe,
-  author        = {Pattnayak, Priyaranjan and Chowdhuri, Sanchari},
-  title         = {{IndicSafe}: A Benchmark for Evaluating Multilingual {LLM} Safety in {South Asia}},
-  year          = {2026},
-  eprint        = {2603.17915},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.CL}
-}
-% [V] arXiv abstract page and the authors' own GitHub BibTeX both checked.
-% arXiv-only as of 3 Aug 2026, so @misc is correct.
 
 @misc{ning2025linguasafe,
-  author        = {Ning, Zhiyuan and Gu, Tianle and Song, Jiaxin and Hong, Shixin and Li, Lingyu and Liu, Huacan and Li, Jie and Wang, Yixu and Meng, Lingyu and Teng, Yan and Wang, Yingchun},
-  title         = {{LinguaSafe}: A Comprehensive Multilingual Safety Benchmark for Large Language Models},
-  year          = {2025},
-  eprint        = {2508.12733},
+  title = {{LinguaSafe}: A Comprehensive Multilingual Safety Benchmark for Large Language Models},
+  author = {Ning, Zhiyuan and Gu, Tianle and Song, Jiaxin and Hong, Shixin and Li, Lingyu and Liu, Huacan and Li, Jie and Wang, Yixu and Meng, Lingyu and Teng, Yan and Wang, Yingchun},
+  year = {2025},
+  eprint = {2508.12733},
   archivePrefix = {arXiv},
-  primaryClass  = {cs.CL}
+  primaryClass = {cs.CL},
+  url = {https://arxiv.org/abs/2508.12733}
 }
-% [P] arXiv ID and title verified. Severity-graded scoring confirmed from the
-% paper, which is why Table 1 records it as Graded rather than Binary.
-% [U] AUTHOR LIST STILL SUSPECT. Your file had both "Li, Lingyu" and
-% "Lingyu, Meng". I provisionally rewrote the second as "Meng, Lingyu", but
-% that is a guess. Copy the list from arXiv by hand. Also check for a venue.
 
-@misc{yang2024benchmarking,
-  author        = {Yang, Yahan and Dan, Soham and Roth, Dan and Lee, Insup},
-  title         = {Benchmarking {LLM} Guardrails in Handling Multilingual Toxicity},
-  year          = {2024},
-  eprint        = {2410.22153},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.CL}
+@inproceedings{pattnayak2026indicjr,
+  title = {{IndicJR}: A Judge-Free Benchmark of Jailbreak Robustness in South Asian Languages},
+  author = {Pattnayak, Priyaranjan and Chowdhuri, Sanchari},
+  booktitle = {Proceedings of the 19th Conference of the European Chapter of the Association for Computational Linguistics: Industry Track},
+  pages = {649--668},
+  year = {2026},
+  publisher = {Association for Computational Linguistics},
+  url = {https://aclanthology.org/2026.eacl-industry.50/}
 }
-% [U] NOT VERIFIED. Check for a published version, likely NAACL or EMNLP.
-
-
-% ---------- Jailbreak benchmarks and attack methods ---------------------------
-
-@misc{zou2023universal,
-  author        = {Zou, Andy and Wang, Zifan and Carlini, Nicholas and Nasr, Milad and Kolter, J. Zico and Fredrikson, Matt},
-  title         = {Universal and Transferable Adversarial Attacks on Aligned Language Models},
-  year          = {2023},
-  eprint        = {2307.15043},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.CL}
-}
-% [P] Consistently cited as arXiv-only across the literature. @misc is correct.
-
-@inproceedings{chao2024jailbreakbench,
-  author    = {Chao, Patrick and Debenedetti, Edoardo and Robey, Alexander and Andriushchenko, Maksym and Croce, Francesco and Sehwag, Vikash and Dobriban, Edgar and Flammarion, Nicolas and Pappas, George J. and Tram{\`e}r, Florian and Hassani, Hamed and Wong, Eric},
-  title     = {{JailbreakBench}: An Open Robustness Benchmark for Jailbreaking Large Language Models},
-  booktitle = {Advances in Neural Information Processing Systems 37 (NeurIPS 2024) Datasets and Benchmarks Track},
-  year      = {2024}
-}
-% [P] Venue corrected. Your original pointed at proceedings.com with DOI
-% 10.52202/079017-1745 and an isbn, which is a print-reseller record, not the
-% canonical venue. [U] Confirm on OpenReview and add pages.
-% CAUTION: a different paper by Liu et al. is also cited as "JailbreakBench"
-% with the same arXiv number in some reference lists. Make sure yours resolves
-% to the Chao et al. paper.
 
 @inproceedings{mazeika2024harmbench,
-  author    = {Mazeika, Mantas and Phan, Long and Yin, Xuwang and Zou, Andy and Wang, Zifan and Mu, Norman and Sakhaee, Elham and Li, Nathaniel and Basart, Steven and Li, Bo and Forsyth, David and Hendrycks, Dan},
-  title     = {{HarmBench}: A Standardized Evaluation Framework for Automated Red Teaming and Robust Refusal},
-  booktitle = {Proceedings of the 41st International Conference on Machine Learning (ICML)},
-  series    = {Proceedings of Machine Learning Research},
-  volume    = {235},
-  pages     = {35181--35224},
-  year      = {2024}
+  title = {{HarmBench}: A Standardized Evaluation Framework for Automated Red Teaming and Robust Refusal},
+  author = {Mazeika, Mantas and Phan, Long and Yin, Xuwang and Zou, Andy and Wang, Zifan and Mu, Norman and Sakhaee, Elham and Li, Nathaniel and Basart, Steven and Li, Bo and Forsyth, David and Hendrycks, Dan},
+  booktitle = {Proceedings of the 41st International Conference on Machine Learning},
+  series = {Proceedings of Machine Learning Research},
+  volume = {235},
+  pages = {35181--35224},
+  year = {2024},
+  publisher = {PMLR},
+  url = {https://proceedings.mlr.press/v235/mazeika24a.html}
 }
-% [P] ICML 2024, PMLR v235. [U] Confirm pages on the PMLR page.
 
-@inproceedings{mehrotra2024tap,
-  author    = {Mehrotra, Anay and Zampetakis, Manolis and Kassianik, Paul and Nelson, Blaine and Anderson, Hyrum and Singer, Yaron and Karbasi, Amin},
-  title     = {Tree of Attacks: Jailbreaking Black-Box {LLMs} Automatically},
-  booktitle = {Advances in Neural Information Processing Systems 37 (NeurIPS 2024)},
-  year      = {2024}
+@inproceedings{chao2024jailbreakbench,
+  title = {{JailbreakBench}: An Open Robustness Benchmark for Jailbreaking Large Language Models},
+  author = {Chao, Patrick and Debenedetti, Edoardo and Robey, Alexander and Andriushchenko, Maksym and Croce, Francesco and Sehwag, Vikash and Dobriban, Edgar and Flammarion, Nicolas and Pappas, George J. and Tram{\`e}r, Florian and Hassani, Hamed and Wong, Eric},
+  booktitle = {Advances in Neural Information Processing Systems 37: Datasets and Benchmarks Track},
+  year = {2024},
+  url = {https://arxiv.org/abs/2404.01318}
 }
-% [V] Seven authors and title verified on the arXiv abstract page
-% (arXiv:2312.02119, v3, 31 Oct 2024). NEW ENTRY, added at your request.
-% [U] VENUE ONLY PARTIALLY CONFIRMED. Citing papers split between NeurIPS 2024
-% and the bare preprint. Confirm the NeurIPS record, and fall back to @misc
-% with eprint 2312.02119 if you cannot.
 
 @inproceedings{souly2024strongreject,
-  author    = {Souly, Alexandra and Lu, Qingyuan and Bowen, Dillon and Trinh, Tu and Hsieh, Elvis and Pandey, Sana and Abbeel, Pieter and Svegliato, Justin and Emmons, Scott and Watkins, Olivia and Toyer, Sam},
-  title     = {A {StrongREJECT} for Empty Jailbreaks},
-  booktitle = {Advances in Neural Information Processing Systems 37 (NeurIPS 2024) Datasets and Benchmarks Track},
-  year      = {2024}
+  title = {A {StrongREJECT} for Empty Jailbreaks},
+  author = {Souly, Alexandra and Lu, Qingyuan and Bowen, Dillon and Trinh, Tu and Hsieh, Elvis and Pandey, Sana and Abbeel, Pieter and Svegliato, Justin and Emmons, Scott and Watkins, Olivia and Toyer, Sam},
+  booktitle = {Advances in Neural Information Processing Systems 37: Datasets and Benchmarks Track},
+  year = {2024},
+  url = {https://arxiv.org/abs/2402.10260}
 }
-% [P] Datasets and Benchmarks Track confirmed via an independent citing paper.
-% Your original said "volume 37" without naming the track. [U] Confirm and add
-% pages.
-
-@misc{yi2024survey,
-  author        = {Yi, Sibo and Liu, Yule and Sun, Zhen and Cong, Tianshuo and He, Xinlei and Song, Jiaxing and Xu, Ke and Li, Qi},
-  title         = {Jailbreak Attacks and Defenses Against Large Language Models: A Survey},
-  year          = {2024},
-  eprint        = {2407.04295},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.CR}
-}
-% [U] NOT VERIFIED. Check for a published version.
-
-
-% ---------- Graded scoring and judge reliability -------------------------------
-
-@inproceedings{zheng2023judging,
-  author    = {Zheng, Lianmin and Chiang, Wei-Lin and Sheng, Ying and Zhuang, Siyuan and Wu, Zhanghao and Zhuang, Yonghao and Lin, Zi and Li, Zhuohan and Li, Dacheng and Xing, Eric P. and Zhang, Hao and Gonzalez, Joseph E. and Stoica, Ion},
-  title     = {Judging {LLM}-as-a-Judge with {MT-Bench} and {Chatbot Arena}},
-  booktitle = {Advances in Neural Information Processing Systems 36 (NeurIPS 2023) Datasets and Benchmarks Track},
-  year      = {2023}
-}
-% [P] NeurIPS 2023 Datasets and Benchmarks, arXiv:2306.05685. [U] Confirm and
-% add pages.
-
-@misc{liu2024jailjudge,
-  author        = {Liu, Fan and Feng, Yue and Xu, Zhao and Su, Lixin and Ma, Xinyu and Yin, Dawei and Liu, Hao},
-  title         = {{JAILJUDGE}: A Comprehensive Jailbreak Judge Benchmark with Multi-Agent Enhanced Explanation Evaluation Framework},
-  year          = {2024},
-  eprint        = {2410.12855},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.CL}
-}
-% [U] NOT VERIFIED. Check for a published version, possibly ICLR 2025.
-
-@inproceedings{zhang2025falsereject,
-  author    = {Zhang, Zhehao and Xu, Weijie and Wu, Fanyou and Reddy, Chandan K.},
-  title     = {{FalseReject}: A Resource for Improving Contextual Safety and Mitigating Over-Refusals in {LLMs} via Structured Reasoning},
-  booktitle = {Proceedings of the Second Conference on Language Modeling (COLM)},
-  year      = {2025}
-}
-% [V] PUBLISHED VERSION FOUND. Listed on the COLM 2025 accepted-papers page,
-% and the last author's own site hosts the camera-ready as "COLM25.pdf".
-% Converted from @misc to @inproceedings under your no-arXiv-if-published rule.
-
-@misc{cao2025safedialbench,
-  author        = {Cao, Hongye and Jing, Sijia and Wang, Yanming and Peng, Ziyue and Bai, Zhixin and Cao, Zhe and Fang, Meng and Feng, Fan and Wang, Boyan and Liu, Jiaheng and Yang, Tianpei and Huo, Jing and Gao, Yang and Meng, Fanyu and Yang, Xi and Deng, Chao and Feng, Junlan},
-  title         = {{SafeDialBench}: A Fine-Grained Safety Evaluation Benchmark for Large Language Models in Multi-Turn Dialogues with Diverse Jailbreak Attacks},
-  year          = {2025},
-  eprint        = {2502.11090},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.CL}
-}
-% [U] NOT VERIFIED, AND THE HIGHEST REMAINING RISK IN THIS FILE. Seventeen
-% author names from a scraped source. Open arXiv:2502.11090 and check every
-% name. Also check for a published version.
-
-@misc{mukherjee2026geometry,
-  author        = {Mukherjee, Sourabrata and Hamna, Hamna and Bali, Kalika and Sitaram, Sunayana},
-  title         = {The Geometry of {LLM}-as-Judge: Why Inter-{LLM} Consensus Is Not Human Alignment},
-  year          = {2026},
-  eprint        = {2606.03043},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.CL}
-}
-% [V] Authors and affiliation (Microsoft Research) read off the paper header.
-% arXiv-only as of 3 Aug 2026. NEW ENTRY, added at your request.
-
-
-% ---------- Mitigation ---------------------------------------------------------
-
-@inproceedings{zhao2025mpo,
-    title     = "{MPO}: Multilingual Safety Alignment via Reward Gap Optimization",
-    author    = "Zhao, Weixiang and Hu, Yulin and Deng, Yang and Wu, Tongtong and Zhang, Wenxuan and Guo, Jiahe and Zhang, An and Zhao, Yanyan and Qin, Bing and Chua, Tat-Seng and Liu, Ting",
-    booktitle = "Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)",
-    month     = jul,
-    year      = "2025",
-    address   = "Vienna, Austria",
-    publisher = "Association for Computational Linguistics",
-    url       = "https://aclanthology.org/2025.acl-long.1149/",
-    pages     = "23564--23587"
-}
-% [V] Anthology ID 2025.acl-long.1149, eleven authors and pages confirmed.
-% Key renamed from zhao-etal-2025-mpo. NOTE: the authors' own GitHub still
-% offers an arXiv @article entry. Do not use that one.
-
-
-% ---------- Method and tooling -------------------------------------------------
 
 @inproceedings{khattab2024dspy,
-  author    = {Khattab, Omar and Singhvi, Arnav and Maheshwari, Paridhi and Zhang, Zhiyuan and Santhanam, Keshav and Vardhamanan, Sri and Haq, Saiful and Sharma, Ashutosh and Joshi, Thomas T. and Moazam, Hanna and Miller, Heather and Zaharia, Matei and Potts, Christopher},
-  title     = {{DSPy}: Compiling Declarative Language Model Calls into Self-Improving Pipelines},
-  booktitle = {The Twelfth International Conference on Learning Representations (ICLR)},
-  year      = {2024}
+  title = {{DSPy}: Compiling Declarative Language Model Calls into Self-Improving Pipelines},
+  author = {Khattab, Omar and Singhvi, Arnav and Maheshwari, Paridhi and Zhang, Zhiyuan and Santhanam, Keshav and Vardhamanan, Sri and Haq, Saiful and Sharma, Ashutosh and Joshi, Thomas T. and Moazam, Hanna and Miller, Heather and Zaharia, Matei and Potts, Christopher},
+  booktitle = {The Twelfth International Conference on Learning Representations},
+  year = {2024},
+  url = {https://arxiv.org/abs/2310.03714}
 }
-% [P] ICLR 2024. [U] Confirm on OpenReview.
 
 @inproceedings{agrawal2026gepa,
-  author    = {Agrawal, Lakshya A. and Tan, Shangyin and Soylu, Dilara and Ziems, Noah and Khare, Rishi and Opsahl-Ong, Krista and Singhvi, Arnav and Shandilya, Herumb and Ryan, Michael J. and Jiang, Meng and Potts, Christopher and Sen, Koushik and Dimakis, Alexandros G. and Stoica, Ion and Klein, Dan and Zaharia, Matei and Khattab, Omar},
-  title     = {{GEPA}: Reflective Prompt Evolution Can Outperform Reinforcement Learning},
-  booktitle = {The Fourteenth International Conference on Learning Representations (ICLR)},
-  year      = {2026},
-  note      = {Oral presentation}
+  title = {{GEPA}: Reflective Prompt Evolution Can Outperform Reinforcement Learning},
+  author = {Agrawal, Lakshya A. and Tan, Shangyin and Soylu, Dilara and Ziems, Noah and Khare, Rishi and Opsahl-Ong, Krista and Singhvi, Arnav and Shandilya, Herumb and Ryan, Michael J. and Jiang, Meng and Potts, Christopher and Sen, Koushik and Dimakis, Alexandros G. and Stoica, Ion and Klein, Dan and Zaharia, Matei and Khattab, Omar},
+  booktitle = {The Fourteenth International Conference on Learning Representations},
+  year = {2026},
+  url = {https://arxiv.org/abs/2507.19457}
 }
-% [V] PUBLISHED VERSION FOUND, AND THIS IS THE MOST IMPORTANT FIX IN THE FILE.
-% The camera-ready header reads "Accepted at ICLR 2026 (Oral)" and the
-% OpenReview PDF confirms it. GEPA is central to your method, so citing it as a
-% preprint is exactly the case your no-arXiv rule targets.
-% KEY RENAMED from agrawal2025gepa to agrawal2026gepa. Update BOTH \cite sites
-% in main.tex: the contributions list in Section 1, and Section 4.3.
-% Seventeen authors cross-checked against three independent reference lists.
-
-
-% ---------- Models and services ------------------------------------------------
-
-@misc{geminiteam2025gemini,
-  author        = {{Gemini Team, Google}},
-  title         = {{Gemini 2.5}: Pushing the Frontier with Advanced Reasoning, Multimodality, Long Context, and Next Generation Agentic Capabilities},
-  year          = {2025},
-  eprint        = {2507.06261},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.CL}
-}
-% Key renamed from gemini2.5, the only key in the file containing a period.
-% Update all four \cite sites in main.tex.
-
-@misc{openai2025gptoss,
-  author       = {{OpenAI}},
-  title        = {{gpt-oss}: Open-Weight Reasoning Models},
-  year         = {2025},
-  howpublished = {\url{https://openai.com/index/introducing-gpt-oss/}},
-  note         = {Accessed 2026-08-03}
-}
-
-@misc{nvidia2025nemotron,
-  author       = {{NVIDIA}},
-  title        = {{NVIDIA Nemotron-3 Nano 30B-A3B}},
-  year         = {2025},
-  howpublished = {\url{https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16}},
-  note         = {Accessed 2026-08-03}
-}
-
-@misc{qwen2025qwen3,
-  author       = {{Qwen Team}},
-  title        = {{Qwen3-30B-A3B}},
-  year         = {2025},
-  howpublished = {\url{https://huggingface.co/Qwen/Qwen3-30B-A3B}},
-  note         = {Accessed 2026-08-03}
-}
-% Key shortened from qwen2025qwen330ba3b.
-
-@misc{exa2024api,
-  author       = {{Exa Labs}},
-  title        = {{Exa}: The Neural Search Engine Built for {AI} Agents},
-  year         = {2024},
-  howpublished = {\url{https://exa.ai}},
-  note         = {Accessed 2026-08-03}
-}
-
-@misc{nousresearch2026hermes,
-  author       = {{Nous Research}},
-  title        = {{Hermes-Agent}},
-  year         = {2026},
-  howpublished = {\url{https://github.com/NousResearch/hermes-agent}},
-  note         = {Accessed 2026-08-03}
-}
-% Key shortened from nousresearch_hermes_agent_v0140. The old title carried a
-% marketing tagline ("The Agent That Grows With You"), which is not a title.
-
-
-% =============================================================================
-% UNCITED IN main.tex. Cite them or delete them. An uncited entry never prints,
-% which means neither has ever been proofread.
-% =============================================================================
-
-@misc{peng2025logibreak,
-  author        = {Peng, Jingyu and Wang, Maolin and Wang, Nan and Li, Jiatong and Li, Yuchen and Ye, Yuyang and Wang, Wanyu and Jia, Pengyue and Zhang, Kai and Zhao, Xiangyu},
-  title         = {Logic Jailbreak: Efficiently Unlocking {LLM} Safety Restrictions Through Formal Logical Expression},
-  year          = {2025},
-  eprint        = {2505.13527},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.CL}
-}
-% [U] UNCITED AND UNVERIFIED. The key says "logibreak" while the title says
-% "Logic Jailbreak". One of the two is wrong.
-
-@misc{sahoo2025reject,
-  author        = {Sahoo, Devanshu and Prasad, Manish and Majhi, Vasudev and Singh, Jahnvi and Chamola, Vinay and Sinha, Yash and Mandal, Murari and Kumar, Dhruv},
-  title         = {When Reject Turns into Accept: Quantifying the Vulnerability of {LLM}-Based Scientific Reviewers to Indirect Prompt Injection},
-  year          = {2025},
-  eprint        = {2512.10449},
-  archivePrefix = {arXiv},
-  primaryClass  = {cs.AI}
-}
-% [U] UNCITED AND UNVERIFIED. The old key said 2026 while the year field said
-% 2025. Set to 2025 to match arXiv 2512 (December 2025), but confirm.
-% Shares two co-authors with your paper. If you cite it, cite it in the third
-% person so the submission stays anonymous.
