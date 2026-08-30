@@ -106,11 +106,14 @@ def successful_trace_lookup(
     return latest
 
 
-def maximum_job_cost(job: dict[str, Any], plan: dict[str, Any]) -> float:
+def maximum_job_cost(
+    job: dict[str, Any], plan: dict[str, Any], *, max_tokens: int | None = None
+) -> float:
     pricing = plan["pricing"]
+    output_tokens = int(max_tokens or plan["max_judge_tokens"])
     return (
         job["costed_input_tokens"] * pricing["input_usd_per_million_tokens"]
-        + plan["max_judge_tokens"] * pricing["output_usd_per_million_tokens"]
+        + output_tokens * pricing["output_usd_per_million_tokens"]
     ) / 1_000_000
 
 
@@ -124,6 +127,56 @@ def budget_commitment(state: dict[str, Any]) -> float:
             else float(attempt["reserved_max_cost_usd"])
         )
     return total
+
+
+def next_token_cap(job_id: str, state: dict[str, Any], plan: dict[str, Any]) -> int:
+    """Use the larger cap only to repair a proven reasoning-only truncation."""
+    base = int(plan["max_judge_tokens"])
+    repair = int(plan.get("truncation_repair_max_judge_tokens", base))
+    failures = [
+        attempt
+        for attempt in state["attempts"]
+        if attempt.get("job_id") == job_id
+        and attempt.get("status") == "completed_parse_error"
+    ]
+    if not failures:
+        return base
+    latest = failures[-1]
+    used = int(latest.get("max_tokens_used") or base)
+    usage = latest.get("usage") or {}
+    details = usage.get("completion_tokens_details") or {}
+    completion = int(usage.get("completion_tokens") or 0)
+    reasoning = int(details.get("reasoning_tokens") or 0)
+    eligible = latest.get("truncation_repair_eligible")
+    if eligible is None:
+        eligible = completion >= used and reasoning >= completion
+    if eligible and used < repair:
+        return repair
+    raise RuntimeError(
+        f"job {job_id} has a non-repairable parse failure or exhausted its one repair"
+    )
+
+
+def accounting_row(attempt: dict[str, Any], model: str) -> dict[str, Any]:
+    usage = attempt.get("usage") or {}
+    return {
+        "schema_version": 1,
+        "attempt_id": attempt["attempt_id"],
+        "job_id": attempt["job_id"],
+        "model": model,
+        "status": attempt.get("status"),
+        "max_tokens_used": attempt.get("max_tokens_used"),
+        "actual_request_sha256": attempt.get("actual_request_sha256"),
+        "prompt_tokens": usage.get("prompt_tokens"),
+        "completion_tokens": usage.get("completion_tokens"),
+        "reasoning_tokens": (usage.get("completion_tokens_details") or {}).get(
+            "reasoning_tokens"
+        ),
+        "total_tokens": usage.get("total_tokens"),
+        "cost_usd": usage.get("cost"),
+        "is_byok": usage.get("is_byok"),
+        "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
 
 
 def logical_consistency(a: bool, b: bool, c: bool, score: int) -> bool:
@@ -252,6 +305,10 @@ def main() -> None:
         raise RuntimeError("standard contingency is not active")
     if float(plan["hard_budget_usd"]) > 4.50:
         raise RuntimeError("plan exceeds the authorized Phase D budget ceiling")
+    if int(plan.get("truncation_repair_max_judge_tokens", plan["max_judge_tokens"])) < int(
+        plan["max_judge_tokens"]
+    ):
+        raise RuntimeError("truncation repair cap is below the base cap")
     if sha256_file(jobs_path) != plan["jobs_manifest_sha256"]:
         raise RuntimeError("standard jobs manifest hash does not match plan")
     if sha256_file(snapshot / "FREEZE_MANIFEST.json") != plan["input_freeze_manifest_sha256"]:
@@ -343,6 +400,18 @@ def main() -> None:
     errors_path = output_dir / "errors.jsonl"
     accounting_path = output_dir / "standard_accounting.jsonl"
     state = read_state(state_path)
+    accounted_ids = {
+        row.get("attempt_id") for row in load_jsonl(accounting_path)
+    }
+    for prior_attempt in state["attempts"]:
+        if (
+            prior_attempt.get("attempt_id") not in accounted_ids
+            and prior_attempt.get("actual_cost_usd") is not None
+            and float(prior_attempt.get("actual_cost_usd") or 0.0) > 0
+            and (prior_attempt.get("usage") or {}).get("cost") is not None
+        ):
+            append_jsonl(accounting_path, accounting_row(prior_attempt, plan["judge_model"]))
+            accounted_ids.add(prior_attempt["attempt_id"])
     existing = load_existing_scores(scores_path, jobs_by_id)
     active_ids = {
         attempt["job_id"]
@@ -377,12 +446,26 @@ def main() -> None:
         if not smoke.get("pricing_verified") or not smoke.get("all_scores_parsed"):
             raise SystemExit("Standard full run refused because smoke verification failed")
 
-    remaining_maximum = sum(maximum_job_cost(job, plan) for job in pending)
+    remaining_maximum = sum(
+        maximum_job_cost(
+            job,
+            plan,
+            max_tokens=next_token_cap(job["job_id"], state, plan),
+        )
+        for job in pending
+    )
     if budget_commitment(state) + remaining_maximum > float(plan["hard_budget_usd"]):
         raise SystemExit("Standard execution refused by hard total-budget reservation")
 
     invocation_id = sha256_text(datetime.now(timezone.utc).isoformat())[:24]
+    processed_this_invocation = 0
     for job in selected:
+        token_cap = next_token_cap(job["job_id"], state, plan)
+        request_body = {**materialized[job["job_id"]]["body"], "max_tokens": token_cap}
+        actual_request_sha256 = canonical_sha256(request_body)
+        if token_cap == int(plan["max_judge_tokens"]):
+            if actual_request_sha256 != job["standard_request_sha256"]:
+                raise RuntimeError("base request drifted from the hash-locked job")
         attempt = {
             "schema_version": 1,
             "attempt_id": sha256_text(
@@ -391,8 +474,13 @@ def main() -> None:
             "invocation_id": invocation_id,
             "job_id": job["job_id"],
             "standard_request_sha256": job["standard_request_sha256"],
+            "actual_request_sha256": actual_request_sha256,
+            "max_tokens_used": token_cap,
+            "is_truncation_repair": token_cap > int(plan["max_judge_tokens"]),
             "status": "submitting",
-            "reserved_max_cost_usd": maximum_job_cost(job, plan),
+            "reserved_max_cost_usd": maximum_job_cost(
+                job, plan, max_tokens=token_cap
+            ),
             "actual_cost_usd": None,
             "is_smoke": is_smoke,
             "paid_approval_confirmed": True,
@@ -407,7 +495,7 @@ def main() -> None:
                 response = client.post(
                     plan["request_contract"]["endpoint"],
                     headers=api_headers,
-                    json=materialized[job["job_id"]]["body"],
+                    json=request_body,
                 )
         except httpx.HTTPError as exc:
             attempt["status"] = "submission_outcome_unknown"
@@ -448,12 +536,29 @@ def main() -> None:
         if budget_commitment(state) > float(plan["hard_budget_usd"]) + 1e-12:
             write_state(state_path, state)
             raise RuntimeError("hard Phase D budget ceiling reached")
+        if attempt["attempt_id"] not in accounted_ids:
+            append_jsonl(accounting_path, accounting_row(attempt, plan["judge_model"]))
+            accounted_ids.add(attempt["attempt_id"])
+        content = ""
         try:
             choice = payload["choices"][0]
             content = choice["message"].get("content") or ""
             parsed = parse_judgment(content, json_loader=safe_json_loads)
         except Exception as exc:  # noqa: BLE001
             attempt["status"] = "completed_parse_error"
+            completion_tokens = int(usage.get("completion_tokens") or 0)
+            reasoning_tokens = int(
+                (usage.get("completion_tokens_details") or {}).get("reasoning_tokens")
+                or 0
+            )
+            attempt["truncation_repair_eligible"] = (
+                not content.strip()
+                and completion_tokens >= token_cap
+                and reasoning_tokens >= completion_tokens
+                and token_cap
+                < int(plan.get("truncation_repair_max_judge_tokens", token_cap))
+            )
+            attempt["parse_error"] = str(exc)[:1000]
             append_jsonl(
                 errors_path,
                 {
@@ -461,11 +566,27 @@ def main() -> None:
                     "attempt_id": attempt["attempt_id"],
                     "job_id": job["job_id"],
                     "error": str(exc),
+                    "max_tokens_used": token_cap,
+                    "completion_tokens": completion_tokens,
+                    "reasoning_tokens": reasoning_tokens,
+                    "truncation_repair_eligible": attempt[
+                        "truncation_repair_eligible"
+                    ],
                     "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
                 },
             )
             write_state(state_path, state)
-            raise RuntimeError("paid judgment failed strict parsing; cost retained") from exc
+            if not attempt["truncation_repair_eligible"]:
+                raise RuntimeError(
+                    "paid judgment failed strict parsing and is not eligible for repair; cost retained"
+                ) from exc
+            processed_this_invocation += 1
+            print(
+                f"Deferred reasoning-only truncation for adaptive repair: "
+                f"{job['job_id']} ({token_cap} tokens)",
+                flush=True,
+            )
+            continue
 
         row = {
             "schema_version": 1,
@@ -498,28 +619,23 @@ def main() -> None:
                 materialized[job["job_id"]]["response_text"]
             ),
             "attempt_id": attempt["attempt_id"],
+            "actual_request_sha256": actual_request_sha256,
+            "max_tokens_used": token_cap,
+            "is_truncation_repair": attempt["is_truncation_repair"],
             "request_id": payload.get("id"),
             "finish_reason": choice.get("finish_reason"),
             "scored_at_utc": datetime.now(timezone.utc).isoformat(),
         }
         append_jsonl(scores_path, row)
         existing[job["job_id"]] = row
-        append_jsonl(
-            accounting_path,
-            {
-                "schema_version": 1,
-                "attempt_id": attempt["attempt_id"],
-                "job_id": job["job_id"],
-                "model": plan["judge_model"],
-                "prompt_tokens": usage.get("prompt_tokens"),
-                "completion_tokens": usage.get("completion_tokens"),
-                "total_tokens": usage.get("total_tokens"),
-                "cost_usd": usage.get("cost"),
-                "is_byok": usage.get("is_byok"),
-                "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
-            },
-        )
         write_state(state_path, state)
+        processed_this_invocation += 1
+        if processed_this_invocation % 25 == 0:
+            print(
+                f"Progress: {len(existing)}/{len(jobs)} scores | "
+                f"committed=${budget_commitment(state):.4f}",
+                flush=True,
+            )
 
     invocation_attempts = [
         row for row in state["attempts"] if row.get("invocation_id") == invocation_id

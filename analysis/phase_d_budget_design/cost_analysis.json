@@ -97,6 +97,14 @@
     "union_pair_ids": 504
   },
   "standard_fallback": {
+    "adaptive_truncation_repair": {
+      "base_max_output_tokens": 768,
+      "conservative_whole_job_repairs_within_reserve": 81,
+      "eligibility": "empty content after all completion tokens were reasoning tokens",
+      "maximum_single_failed_attempt_plus_repair_cost_usd": 0.006163999999999999,
+      "repair_max_output_tokens": 1024,
+      "rubric_or_reasoning_effort_change": false
+    },
     "expected_600_output_tokens_per_job": {
       "input_cost_usd": 0.95910175,
       "output_cost_usd": 2.3328,

@@ -37,6 +37,7 @@ FALLBACK_RETRY_RESERVE_USD = 0.50
 EXPECTED_OUTPUT_TOKENS = 600
 MAX_OUTPUT_TOKENS = 1024
 STANDARD_FALLBACK_MAX_OUTPUT_TOKENS = 768
+STANDARD_REPAIR_MAX_OUTPUT_TOKENS = 1024
 CHAT_TOKENS_PER_MESSAGE = 3
 CHAT_PRIMING_TOKENS = 3
 
@@ -363,6 +364,17 @@ def main() -> None:
         len(fallback_rows) * EXPECTED_OUTPUT_TOKENS,
         STANDARD_PRICING,
     )
+    maximum_truncated_attempt_plus_repair = max(
+        cost(
+            2 * row["costed_input_tokens"],
+            STANDARD_FALLBACK_MAX_OUTPUT_TOKENS + STANDARD_REPAIR_MAX_OUTPUT_TOKENS,
+            STANDARD_PRICING,
+        )["total_cost_usd"]
+        for row in fallback_rows
+    )
+    conservative_repair_jobs = math.floor(
+        FALLBACK_RETRY_RESERVE_USD / maximum_truncated_attempt_plus_repair
+    )
     complement_input = sum(row["costed_input_tokens"] for row in complement_rows)
     complement_expected = cost(
         complement_input,
@@ -435,6 +447,14 @@ def main() -> None:
             f"maximum_{STANDARD_FALLBACK_MAX_OUTPUT_TOKENS}_output_tokens_per_job": fallback_maximum,
             "max_output_tokens_per_job": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
             "reserved_for_retries_usd": FALLBACK_RETRY_RESERVE_USD,
+            "adaptive_truncation_repair": {
+                "base_max_output_tokens": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
+                "repair_max_output_tokens": STANDARD_REPAIR_MAX_OUTPUT_TOKENS,
+                "eligibility": "empty content after all completion tokens were reasoning tokens",
+                "maximum_single_failed_attempt_plus_repair_cost_usd": maximum_truncated_attempt_plus_repair,
+                "conservative_whole_job_repairs_within_reserve": conservative_repair_jobs,
+                "rubric_or_reasoning_effort_change": False,
+            },
         },
         "standard_complement_after_top_up": {
             "selection_rule": "exact set complement of the active 324-pair selection",
@@ -541,6 +561,12 @@ def main() -> None:
         "maximum_no_retry_cost_usd": fallback_maximum["total_cost_usd"],
         "pricing": STANDARD_PRICING,
         "max_judge_tokens": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
+        "truncation_repair_max_judge_tokens": STANDARD_REPAIR_MAX_OUTPUT_TOKENS,
+        "truncation_repair_policy": (
+            "Retry only when the base-cap response has empty content and all completion "
+            "tokens were reasoning tokens; preserve the prompt, rubric, schema, model, and "
+            "reasoning effort. Every failed paid attempt remains in total budget accounting."
+        ),
         "response_format_sha256": canonical_sha256(judge.JUDGE_RESPONSE_FORMAT),
         "cost_analysis": str(report_path.relative_to(repo)).replace("\\", "/"),
         "cost_analysis_sha256": sha256_file(report_path),
@@ -580,6 +606,7 @@ def main() -> None:
         "rubric_sha256": sha256_text(judge.JUDGE_SYSTEM),
         "pricing": STANDARD_PRICING,
         "max_judge_tokens": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
+        "truncation_repair_max_judge_tokens": STANDARD_REPAIR_MAX_OUTPUT_TOKENS,
         "response_format_sha256": canonical_sha256(judge.JUDGE_RESPONSE_FORMAT),
         "cost_analysis": str(report_path.relative_to(repo)).replace("\\", "/"),
         "cost_analysis_sha256": sha256_file(report_path),
@@ -628,6 +655,13 @@ def main() -> None:
         f"The standard-price contingency selects the same {per_cell} pair IDs in each of the "
         "12 category×strategy cells for all three target models, retaining both languages. "
         "This preserves pair-level between-model comparisons while reserving $0.50 for retries.",
+        "",
+        f"If a response spends all {STANDARD_FALLBACK_MAX_OUTPUT_TOKENS} output tokens on internal "
+        f"reasoning and returns no JSON, the runner may retry only that item at "
+        f"{STANDARD_REPAIR_MAX_OUTPUT_TOKENS} tokens. The rubric, schema, prompt, model, and reasoning "
+        f"effort remain unchanged; all failed paid attempts count toward the $4.50 ceiling. The "
+        f"$0.50 reserve covers at least {conservative_repair_jobs} such whole-job repairs even at "
+        "the single most expensive input size.",
         "",
         f"A hash-locked deferred complement contains exactly the other {len(complement_pair_ids)} "
         f"pair IDs ({42 - per_cell} per category×strategy cell), with zero overlap and a "
