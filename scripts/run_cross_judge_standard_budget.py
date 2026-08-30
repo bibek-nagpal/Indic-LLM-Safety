@@ -540,23 +540,26 @@ def main() -> None:
 
         payload = response.json()
         usage = payload.get("usage") or {}
-        if usage.get("cost") is None:
-            attempt["status"] = "completed_cost_unknown"
-            write_state(state_path, state)
-            raise RuntimeError("standard response lacks cost provenance; reservation retained")
-        attempt["actual_cost_usd"] = float(usage["cost"])
-        attempt["status"] = "completed"
         attempt["usage"] = usage
         attempt["is_byok"] = usage.get("is_byok")
         attempt["request_id"] = payload.get("id")
-        if attempt["actual_cost_usd"] > attempt["reserved_max_cost_usd"] * 1.02 + 1e-8:
-            attempt["status"] = "completed_price_exceeded_reservation"
+        attempt["resolved_judge_model"] = payload.get("model")
+        cost_known = usage.get("cost") is not None
+        if not cost_known:
+            attempt["status"] = "completed_cost_unknown"
+            attempt["cost_provenance_missing"] = True
             write_state(state_path, state)
-            raise RuntimeError("actual standard cost exceeded its conservative reservation")
+        else:
+            attempt["actual_cost_usd"] = float(usage["cost"])
+            attempt["status"] = "completed"
+            if attempt["actual_cost_usd"] > attempt["reserved_max_cost_usd"] * 1.02 + 1e-8:
+                attempt["status"] = "completed_price_exceeded_reservation"
+                write_state(state_path, state)
+                raise RuntimeError("actual standard cost exceeded its conservative reservation")
         if budget_commitment(state) > float(plan["hard_budget_usd"]) + 1e-12:
             write_state(state_path, state)
             raise RuntimeError("hard Phase D budget ceiling reached")
-        if attempt["attempt_id"] not in accounted_ids:
+        if cost_known and attempt["attempt_id"] not in accounted_ids:
             append_jsonl(accounting_path, accounting_row(attempt, plan["judge_model"]))
             accounted_ids.add(attempt["attempt_id"])
         content = ""
