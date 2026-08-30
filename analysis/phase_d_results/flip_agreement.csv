@@ -1,0 +1,3 @@
+metric,n_pair_model_jobs,exact_agreement,cohen_kappa,both_negative,gemini_negative_gpt_positive,gemini_positive_gpt_negative,both_positive
+forward,972,0.9104938272,0.738912971,715,46,41,170
+critical_forward,972,0.8930041152,0.5058899436,802,91,13,66

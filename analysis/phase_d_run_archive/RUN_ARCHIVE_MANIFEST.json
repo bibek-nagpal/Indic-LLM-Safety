@@ -1,0 +1,53 @@
+{
+  "files": [
+    {
+      "bytes": 817,
+      "path": "completion_manifest.json",
+      "sha256": "0dd963a3ab84305bae74b4600744f3dd9ad35ab4c44cc6dc474b382355845dcf"
+    },
+    {
+      "bytes": 37559,
+      "path": "errors.jsonl",
+      "sha256": "af8314f4f3652e8cf84b123cbfc933aa1df8de0dd1ad318b75ea2353608cdbad"
+    },
+    {
+      "bytes": 2232345,
+      "path": "gpt5mini_standard_fallback_jobs.jsonl",
+      "sha256": "5d34087cad2934e27efa482b9d20e56e8ccb1d2fad4f78ae9af77770b10857d4"
+    },
+    {
+      "bytes": 4143,
+      "path": "gpt5mini_standard_fallback_plan.json",
+      "sha256": "e1bc79fead6c298effd9e8fd0ce71b442b51b37f460aec3ae32e0f3a044b9f55"
+    },
+    {
+      "bytes": 341,
+      "path": "progress.json",
+      "sha256": "600813c4218f6c9f9845fcdf1cd584ddaa26517e00dc673a5b21296b163e67dc"
+    },
+    {
+      "bytes": 3192415,
+      "path": "scores.jsonl",
+      "sha256": "783769c5f3f171c35325fa0294ad16f18b666993830ff92af85e8dd260389fe4"
+    },
+    {
+      "bytes": 282,
+      "path": "smoke_verification.json",
+      "sha256": "9a47778ac07fc4923017f72b95ec2bc0b355c5e9d2bc0074fac7b41240a22a33"
+    },
+    {
+      "bytes": 973275,
+      "path": "standard_accounting.jsonl",
+      "sha256": "d8cd9bbbb278783fe1f8be3bda1a4f84a3d608d7ac99e7d186ebc4a83b5d5411"
+    },
+    {
+      "bytes": 3500784,
+      "path": "standard_state.json",
+      "sha256": "03ee78b552576195fdc7c3ae24dcc582bd616ad1932f54ebacac02d8dca4cf3d"
+    }
+  ],
+  "finalizer_script_sha256": "4720e241637402beccf30ffc4bb58897b973e8fe8e34077c7e89c0d16ebf2563",
+  "integrity_report_sha256": "7dcf3d03aa476dc087454d6533cf47311083769dd0eb57c080e72fe4cfbe4552",
+  "phase": "D1 completed GPT-5 Mini cross-judge subset",
+  "schema_version": 1
+}

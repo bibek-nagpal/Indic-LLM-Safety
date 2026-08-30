@@ -70,4 +70,20 @@ After the GPT-5 Mini standard subset is complete, generate the cross-judge agree
 
 The analyzer fails closed unless every paid score row matches its hash-locked job plan and the Phase A frozen-input gate still passes. Its resampling unit is `pair_id`; publication-ready outputs are written to `analysis/phase_d_results/`.
 
+The approved standard-price run is now complete at 1,944/1,944 response judgments (324 shared pair IDs × three target models × two languages). Its immutable score/provenance/accounting archive is committed under `analysis/phase_d_run_archive/`; the exact 180-pair complement remains deferred and was not called. Rebuild the completion integrity report and archive from the local runtime ledger with:
+
+```powershell
+.analysis-venv\Scripts\python.exe analysis\finalize_phase_d.py
+```
+
+Reproduce the completed GPT-only analysis from committed inputs with:
+
+```powershell
+.analysis-venv\Scripts\python.exe analysis\analyze_phase_d.py `
+  --gpt-scores analysis\phase_d_run_archive\scores.jsonl `
+  --gpt-plan analysis\phase_d_run_archive\gpt5mini_standard_fallback_plan.json
+```
+
+The integrity report records 1,944 valid unique scores, zero unresolved score jobs, zero target-inference calls, $3.67197145 in known billed cost, and $3.67896645 total committed after retaining $0.006995 for ambiguous provider responses. No further paid experiment is authorized by these commands or artifacts.
+
 If the deferred Claude plan is reinstated later, pass `--claude-scores`, `--sample`, and `--claude-plan`; the analyzer then adds the preserved three-judge stratified-sample comparisons without changing the full GPT analysis.

@@ -1,0 +1,3 @@
+scope,comparison,n,exact_agreement,adjacent_agreement,unweighted_kappa,quadratic_weighted_kappa
+planned_primary_pipeline,Primary pipeline vs GPT-5 Mini,1944,0.7366255144,0.9135802469,0.5416971142,0.8128133547
+gemini_only,Gemini-only vs GPT-5 Mini,1943,0.736489964,0.9135357694,0.541291832,0.8125875828

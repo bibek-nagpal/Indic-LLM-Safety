@@ -1,0 +1,100 @@
+{
+  "analysis_script_sha256": "99239bd2b4682dd951e4ed72eee55848425256f7a0b285f61121ff9df69ad145",
+  "files": [
+    {
+      "bytes": 1735,
+      "path": "agreement_by_model_language.csv",
+      "sha256": "69f4f9a16930b19b6445837624785eceffe3c1811f6109bac85f369ddc58836c"
+    },
+    {
+      "bytes": 305,
+      "path": "agreement_overall.csv",
+      "sha256": "3670d8d640e0fd814cdb8b91d13bb033002e3f1a12f6157f228b92ebdd12bf5a"
+    },
+    {
+      "bytes": 151,
+      "path": "confusion_matrices/gemini_only_vs_gpt5mini.csv",
+      "sha256": "6b1a871c7e227b2c5149f5bed759cc43f6bc51083f847b3bb9b5689d791169ca"
+    },
+    {
+      "bytes": 151,
+      "path": "confusion_matrices/primary_pipeline_vs_gpt5mini_planned_scope.csv",
+      "sha256": "0613cfc186dba15c0c4727b92178b0d9caae5198a7a7ea656c54c4e4f56d5bd5"
+    },
+    {
+      "bytes": 16540,
+      "path": "figures/gemini_only_vs_gpt5mini_confusion.pdf",
+      "sha256": "bbff950a5f7a0d15319a9c5211a54127ad753281c3ebf1104bba3266bfed9647"
+    },
+    {
+      "bytes": 75096,
+      "path": "figures/gemini_only_vs_gpt5mini_confusion.png",
+      "sha256": "9751ad4cb97ce366ced74c4588ee57bc9860e7ec5814d8166d725c0bd00dbfa3"
+    },
+    {
+      "bytes": 19222,
+      "path": "figures/judge_replacement_refusal_gaps.pdf",
+      "sha256": "2a601b4611092be34de2763b87fd79245e389cda0958c49fc9b649b805b75052"
+    },
+    {
+      "bytes": 78496,
+      "path": "figures/judge_replacement_refusal_gaps.png",
+      "sha256": "f0bd4f143762986d2874d315a385bae0c7c1fd9334f1d8cfd37e46a377f9bf7e"
+    },
+    {
+      "bytes": 253,
+      "path": "flip_agreement.csv",
+      "sha256": "b80a6739a3b1ac046d409524255782d94a4d7de9bbe19574d719cd654c93fa98"
+    },
+    {
+      "bytes": 1769,
+      "path": "integrity_report.json",
+      "sha256": "7dcf3d03aa476dc087454d6533cf47311083769dd0eb57c080e72fe4cfbe4552"
+    },
+    {
+      "bytes": 635,
+      "path": "integrity_report.md",
+      "sha256": "1752b03a546ea1a70f4d8236523ff454731db99e32177bc82290c4afab44f61d"
+    },
+    {
+      "bytes": 2663,
+      "path": "judge_replacement_main_results.csv",
+      "sha256": "1110baad2e40d1b99a55839d3ba36fc7179042b89f65d11e5825e626dc28359f"
+    },
+    {
+      "bytes": 1472,
+      "path": "phase_d_summary.md",
+      "sha256": "38f9877df86fbac6a5ec61c13f0bbb3d50aa7466a608ff232b279a48058bbe04"
+    },
+    {
+      "bytes": 3526,
+      "path": "regime_robustness.json",
+      "sha256": "748bb2860393bbdb581a0a2a9ad17aa79f9072ed89c03450b7cf5591a13786e1"
+    },
+    {
+      "bytes": 444,
+      "path": "score_distributions.csv",
+      "sha256": "77c98c81bd49a012524049df9b68790667f1a2af0ce7d9cb88a52ff15ef25e5b"
+    }
+  ],
+  "inputs": [
+    {
+      "path": "C:\\Prahlada\\frozen_final_2026_08_29\\run\\revision_v2_targets_final\\scores.jsonl",
+      "sha256": "97178c39acb81599d2474b20c4bbdb99aaf95f84b2629bf988d9385cfa5bdd77"
+    },
+    {
+      "path": "analysis\\phase_d_run_archive\\scores.jsonl",
+      "sha256": "783769c5f3f171c35325fa0294ad16f18b666993830ff92af85e8dd260389fe4"
+    },
+    {
+      "path": "analysis\\phase_d_run_archive\\gpt5mini_standard_fallback_plan.json",
+      "sha256": "e1bc79fead6c298effd9e8fd0ce71b442b51b37f460aec3ae32e0f3a044b9f55"
+    },
+    {
+      "path": "C:\\Prahlada\\analysis\\phase_d_budget_design\\gpt5mini_standard_fallback_jobs.jsonl",
+      "sha256": "5d34087cad2934e27efa482b9d20e56e8ccb1d2fad4f78ae9af77770b10857d4"
+    }
+  ],
+  "phase": "D",
+  "schema_version": 1
+}

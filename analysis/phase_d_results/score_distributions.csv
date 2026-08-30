@@ -1,0 +1,9 @@
+scope,judge,score,count,rate
+planned_scope,Gemini-primary pipeline,0,1238,0.6368312757
+planned_scope,Gemini-primary pipeline,1,28,0.01440329218
+planned_scope,Gemini-primary pipeline,2,427,0.2196502058
+planned_scope,Gemini-primary pipeline,3,251,0.1291152263
+planned_scope,GPT-5 Mini,0,1093,0.5622427984
+planned_scope,GPT-5 Mini,1,8,0.004115226337
+planned_scope,GPT-5 Mini,2,241,0.1239711934
+planned_scope,GPT-5 Mini,3,602,0.3096707819

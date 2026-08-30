@@ -1,0 +1,16 @@
+{
+  "accounting_sha256": "d8cd9bbbb278783fe1f8be3bda1a4f84a3d608d7ac99e7d186ebc4a83b5d5411",
+  "ambiguous_reserved_cost_usd": 0.006994999999998086,
+  "budget_committed_usd": 3.678966449999998,
+  "completed_at_utc": "2026-08-30T13:09:36.650088+00:00",
+  "hard_budget_usd": 4.5,
+  "jobs_manifest_sha256": "5d34087cad2934e27efa482b9d20e56e8ccb1d2fad4f78ae9af77770b10857d4",
+  "known_actual_cost_usd": 3.67197145,
+  "phase": "D1 standard-price cross-judge subset",
+  "plan_sha256": "e1bc79fead6c298effd9e8fd0ce71b442b51b37f460aec3ae32e0f3a044b9f55",
+  "schema_version": 1,
+  "scores_sha256": "783769c5f3f171c35325fa0294ad16f18b666993830ff92af85e8dd260389fe4",
+  "state_sha256": "03ee78b552576195fdc7c3ae24dcc582bd616ad1932f54ebacac02d8dca4cf3d",
+  "successful_jobs": 1944,
+  "target_inference_calls": 0
+}

@@ -1,0 +1,13 @@
+scope,comparison,target_model,language,n,exact_agreement,adjacent_agreement,unweighted_kappa,quadratic_weighted_kappa
+planned_primary_pipeline,Primary pipeline vs GPT-5 Mini,nvidia/nemotron-3-nano-30b-a3b,en,324,0.6635802469,0.8765432099,0.4524481379,0.7463859208
+planned_primary_pipeline,Primary pipeline vs GPT-5 Mini,nvidia/nemotron-3-nano-30b-a3b,rh,324,0.7222222222,0.9074074074,0.5101300272,0.7941306042
+planned_primary_pipeline,Primary pipeline vs GPT-5 Mini,openai/gpt-oss-20b,en,324,0.8981481481,0.9814814815,0.6310431692,0.8902707144
+planned_primary_pipeline,Primary pipeline vs GPT-5 Mini,openai/gpt-oss-20b,rh,324,0.8888888889,0.9598765432,0.6546660351,0.8443704368
+planned_primary_pipeline,Primary pipeline vs GPT-5 Mini,qwen/qwen3-30b-a3b-instruct-2507,en,324,0.7160493827,0.8796296296,0.5074523282,0.7648834851
+planned_primary_pipeline,Primary pipeline vs GPT-5 Mini,qwen/qwen3-30b-a3b-instruct-2507,rh,324,0.5308641975,0.8765432099,0.2912937113,0.6185128159
+gemini_only,Gemini-only vs GPT-5 Mini,nvidia/nemotron-3-nano-30b-a3b,en,323,0.6625386997,0.8761609907,0.4497272628,0.7445994844
+gemini_only,Gemini-only vs GPT-5 Mini,nvidia/nemotron-3-nano-30b-a3b,rh,324,0.7222222222,0.9074074074,0.5101300272,0.7941306042
+gemini_only,Gemini-only vs GPT-5 Mini,openai/gpt-oss-20b,en,324,0.8981481481,0.9814814815,0.6310431692,0.8902707144
+gemini_only,Gemini-only vs GPT-5 Mini,openai/gpt-oss-20b,rh,324,0.8888888889,0.9598765432,0.6546660351,0.8443704368
+gemini_only,Gemini-only vs GPT-5 Mini,qwen/qwen3-30b-a3b-instruct-2507,en,324,0.7160493827,0.8796296296,0.5074523282,0.7648834851
+gemini_only,Gemini-only vs GPT-5 Mini,qwen/qwen3-30b-a3b-instruct-2507,rh,324,0.5308641975,0.8765432099,0.2912937113,0.6185128159

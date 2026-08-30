@@ -1,0 +1,11 @@
+{
+  "ambiguous_reserved_cost_usd": 0.006994999999998086,
+  "budget_committed_usd": 3.678966449999998,
+  "expected_jobs": 1944,
+  "hard_budget_usd": 4.5,
+  "known_actual_cost_usd": 3.67197145,
+  "remaining_jobs": 0,
+  "successful_jobs": 1944,
+  "target_inference_calls": 0,
+  "updated_at_utc": "2026-08-30T13:09:36.446247+00:00"
+}

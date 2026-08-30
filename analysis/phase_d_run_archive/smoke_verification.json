@@ -1,0 +1,10 @@
+{
+  "actual_cost_usd": 0.0025285,
+  "all_scores_parsed": true,
+  "jobs": 2,
+  "openrouter_billing_verified": true,
+  "pricing_verified": true,
+  "schema_version": 1,
+  "standard_rate_uncached_cost_usd": 0.0025285,
+  "verified_at_utc": "2026-08-30T06:54:26.513546+00:00"
+}
