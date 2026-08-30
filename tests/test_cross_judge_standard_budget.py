@@ -13,6 +13,7 @@ if str(SCRIPTS_DIR) not in sys.path:
 
 from run_cross_judge_standard_budget import (
     budget_commitment,
+    known_actual_cost,
     maximum_job_cost,
     next_token_cap,
     parse_judgment,
@@ -68,10 +69,15 @@ def test_standard_budget_keeps_ambiguous_reservations() -> None:
         ]
     }
     assert budget_commitment(state) == pytest.approx(0.03)
+    assert known_actual_cost(state) == pytest.approx(0.02)
 
 
 def test_reasoning_only_truncation_gets_one_larger_cap() -> None:
-    plan = {"max_judge_tokens": 768, "truncation_repair_max_judge_tokens": 1024}
+    plan = {
+        "max_judge_tokens": 768,
+        "continuation_max_judge_tokens": 1024,
+        "truncation_repair_max_judge_tokens": 1280,
+    }
     state = {
         "attempts": [
             {
@@ -88,12 +94,27 @@ def test_reasoning_only_truncation_gets_one_larger_cap() -> None:
     }
     assert next_token_cap("job", state, plan) == 1024
     state["attempts"][0]["max_tokens_used"] = 1024
+    assert next_token_cap("job", state, plan) == 1280
+    state["attempts"][0]["max_tokens_used"] = 1280
     with pytest.raises(RuntimeError):
         next_token_cap("job", state, plan)
 
 
+def test_unattempted_continuation_uses_live_validated_cap() -> None:
+    plan = {
+        "max_judge_tokens": 768,
+        "continuation_max_judge_tokens": 1024,
+        "truncation_repair_max_judge_tokens": 1280,
+    }
+    assert next_token_cap("new-job", {"attempts": []}, plan) == 1024
+
+
 def test_partial_json_truncation_is_repairable_from_token_evidence() -> None:
-    plan = {"max_judge_tokens": 768, "truncation_repair_max_judge_tokens": 1024}
+    plan = {
+        "max_judge_tokens": 768,
+        "continuation_max_judge_tokens": 1024,
+        "truncation_repair_max_judge_tokens": 1280,
+    }
     state = {
         "attempts": [
             {

@@ -37,7 +37,8 @@ FALLBACK_RETRY_RESERVE_USD = 0.50
 EXPECTED_OUTPUT_TOKENS = 600
 MAX_OUTPUT_TOKENS = 1024
 STANDARD_FALLBACK_MAX_OUTPUT_TOKENS = 768
-STANDARD_REPAIR_MAX_OUTPUT_TOKENS = 1024
+STANDARD_CONTINUATION_MAX_OUTPUT_TOKENS = 1024
+STANDARD_REPAIR_MAX_OUTPUT_TOKENS = 1280
 CHAT_TOKENS_PER_MESSAGE = 3
 CHAT_PRIMING_TOKENS = 3
 
@@ -364,10 +365,16 @@ def main() -> None:
         len(fallback_rows) * EXPECTED_OUTPUT_TOKENS,
         STANDARD_PRICING,
     )
+    fallback_continuation_maximum = cost(
+        fallback_input,
+        len(fallback_rows) * STANDARD_CONTINUATION_MAX_OUTPUT_TOKENS,
+        STANDARD_PRICING,
+    )
     maximum_truncated_attempt_plus_repair = max(
         cost(
             2 * row["costed_input_tokens"],
-            STANDARD_FALLBACK_MAX_OUTPUT_TOKENS + STANDARD_REPAIR_MAX_OUTPUT_TOKENS,
+            STANDARD_CONTINUATION_MAX_OUTPUT_TOKENS
+            + STANDARD_REPAIR_MAX_OUTPUT_TOKENS,
             STANDARD_PRICING,
         )["total_cost_usd"]
         for row in fallback_rows
@@ -383,7 +390,7 @@ def main() -> None:
     )
     complement_maximum = cost(
         complement_input,
-        len(complement_rows) * STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
+        len(complement_rows) * STANDARD_CONTINUATION_MAX_OUTPUT_TOKENS,
         STANDARD_PRICING,
     )
 
@@ -445,10 +452,13 @@ def main() -> None:
             "response_jobs": len(fallback_rows),
             "expected_600_output_tokens_per_job": fallback_expected,
             f"maximum_{STANDARD_FALLBACK_MAX_OUTPUT_TOKENS}_output_tokens_per_job": fallback_maximum,
+            f"continuation_maximum_{STANDARD_CONTINUATION_MAX_OUTPUT_TOKENS}_output_tokens_per_job": fallback_continuation_maximum,
             "max_output_tokens_per_job": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
+            "continuation_max_output_tokens_per_job": STANDARD_CONTINUATION_MAX_OUTPUT_TOKENS,
             "reserved_for_retries_usd": FALLBACK_RETRY_RESERVE_USD,
             "adaptive_truncation_repair": {
                 "base_max_output_tokens": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
+                "continuation_max_output_tokens": STANDARD_CONTINUATION_MAX_OUTPUT_TOKENS,
                 "repair_max_output_tokens": STANDARD_REPAIR_MAX_OUTPUT_TOKENS,
                 "eligibility": "strict parse failure after completion reached the cap with reasoning tokens",
                 "maximum_single_failed_attempt_plus_repair_cost_usd": maximum_truncated_attempt_plus_repair,
@@ -465,8 +475,8 @@ def main() -> None:
             "pair_model_jobs": len(complement_rows) // 2,
             "response_jobs": len(complement_rows),
             "expected_600_output_tokens_per_job": complement_expected,
-            f"maximum_{STANDARD_FALLBACK_MAX_OUTPUT_TOKENS}_output_tokens_per_job": complement_maximum,
-            "max_output_tokens_per_job": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
+            f"maximum_{STANDARD_CONTINUATION_MAX_OUTPUT_TOKENS}_output_tokens_per_job": complement_maximum,
+            "max_output_tokens_per_job": STANDARD_CONTINUATION_MAX_OUTPUT_TOKENS,
             "requires_new_explicit_paid_approval": True,
         },
         "costing_assumptions": {
@@ -561,11 +571,16 @@ def main() -> None:
         "maximum_no_retry_cost_usd": fallback_maximum["total_cost_usd"],
         "pricing": STANDARD_PRICING,
         "max_judge_tokens": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
+        "continuation_max_judge_tokens": STANDARD_CONTINUATION_MAX_OUTPUT_TOKENS,
         "truncation_repair_max_judge_tokens": STANDARD_REPAIR_MAX_OUTPUT_TOKENS,
         "truncation_repair_policy": (
             "Retry only when strict parsing fails after the response reaches the output cap "
             "with reasoning tokens; preserve the prompt, rubric, schema, model, and "
             "reasoning effort. Every failed paid attempt remains in total budget accounting."
+        ),
+        "budget_enforcement": (
+            "Before every request, known actual spend plus all ambiguous reservations plus "
+            "the next request's maximum reservation must not exceed the hard ceiling."
         ),
         "response_format_sha256": canonical_sha256(judge.JUDGE_RESPONSE_FORMAT),
         "cost_analysis": str(report_path.relative_to(repo)).replace("\\", "/"),
@@ -606,6 +621,7 @@ def main() -> None:
         "rubric_sha256": sha256_text(judge.JUDGE_SYSTEM),
         "pricing": STANDARD_PRICING,
         "max_judge_tokens": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
+        "continuation_max_judge_tokens": STANDARD_CONTINUATION_MAX_OUTPUT_TOKENS,
         "truncation_repair_max_judge_tokens": STANDARD_REPAIR_MAX_OUTPUT_TOKENS,
         "response_format_sha256": canonical_sha256(judge.JUDGE_RESPONSE_FORMAT),
         "cost_analysis": str(report_path.relative_to(repo)).replace("\\", "/"),
@@ -640,9 +656,8 @@ def main() -> None:
         f"${batch_retry_reserve:.3f} | YES |",
         f"| Standard fallback, {per_cell}/cell | {len(fallback_rows)} | "
         f"${fallback_expected['input_cost_usd']:.3f} | ${fallback_expected['output_cost_usd']:.3f} | "
-        f"${fallback_expected['total_cost_usd']:.3f} | ${fallback_maximum['total_cost_usd']:.3f} "
-        f"({STANDARD_FALLBACK_MAX_OUTPUT_TOKENS}/job) | "
-        f"${FALLBACK_RETRY_RESERVE_USD:.3f} | YES |",
+        f"${fallback_expected['total_cost_usd']:.3f} | ${fallback_continuation_maximum['total_cost_usd']:.3f} "
+        f"({STANDARD_CONTINUATION_MAX_OUTPUT_TOKENS}/job) | runtime hard guard | NO at theoretical max |",
         "",
         f"The full Batch design would reserve ${batch_retry_reserve:.3f} below the hard "
         f"$4.50 ceiling even if every response consumes the full {MAX_OUTPUT_TOKENS}-token cap. "
@@ -656,9 +671,10 @@ def main() -> None:
         "12 category×strategy cells for all three target models, retaining both languages. "
         "This preserves pair-level between-model comparisons while reserving $0.50 for retries.",
         "",
-        f"If a response reaches the {STANDARD_FALLBACK_MAX_OUTPUT_TOKENS}-token cap after internal "
-        f"reasoning and fails strict JSON parsing, the runner may retry only that item at "
-        f"{STANDARD_REPAIR_MAX_OUTPUT_TOKENS} tokens. The rubric, schema, prompt, model, and reasoning "
+        f"After live truncation evidence, remaining items use a {STANDARD_CONTINUATION_MAX_OUTPUT_TOKENS}-token "
+        f"ceiling. If a response reaches that cap after internal reasoning and fails strict JSON "
+        f"parsing, the runner may retry only that item at {STANDARD_REPAIR_MAX_OUTPUT_TOKENS} tokens. "
+        f"The rubric, schema, prompt, model, and reasoning "
         f"effort remain unchanged; all failed paid attempts count toward the $4.50 ceiling. The "
         f"$0.50 reserve covers at least {conservative_repair_jobs} such whole-job repairs even at "
         "the single most expensive input size.",
@@ -667,7 +683,7 @@ def main() -> None:
         f"pair IDs ({42 - per_cell} per category×strategy cell), with zero overlap and a "
         f"{len(fallback_pair_ids | complement_pair_ids)}-pair union. It costs approximately "
         f"${complement_expected['total_cost_usd']:.3f} at 600 output tokens/job or at most "
-        f"${complement_maximum['total_cost_usd']:.3f} before retries at the current cap. It cannot "
+        f"${complement_maximum['total_cost_usd']:.3f} before retries at the continuation cap. It cannot "
         "run without new explicit paid approval.",
         "",
         "The strict JSON schema constrains only the response format already required by the frozen rubric. "

@@ -1,7 +1,8 @@
 {
   "combined_pair_ids": 504,
+  "continuation_max_judge_tokens": 1024,
   "cost_analysis": "analysis/phase_d_budget_design/cost_analysis.json",
-  "cost_analysis_sha256": "de36e787c38f517031ff7bde39ba328f59458d2c97baed005a855a1d6cd1658d",
+  "cost_analysis_sha256": "47a32735e20c6a173cd1fcede0e01299a02ae4686f245613d3367743475b384d",
   "execution_mode": "synchronous_resumable",
   "expected_incremental_cost_usd": 1.83041725,
   "expected_jobs": 1080,
@@ -15,7 +16,7 @@
   "jobs_manifest_sha256": "7f1a816e2b1b74cbd7c0ca14baf8ae6b0bb8c37a6c6ffc5e8609a9ec30f43679",
   "judge_model": "openai/gpt-5-mini",
   "max_judge_tokens": 768,
-  "maximum_incremental_no_retry_cost_usd": 2.1932972499999996,
+  "maximum_incremental_no_retry_cost_usd": 2.74625725,
   "output_dir": "runs/cross_judge/gpt5mini_standard_complement",
   "overlapping_pair_ids": 0,
   "pair_model_jobs_per_cell": 15,
@@ -106,5 +107,5 @@
   "selection_rule": "all frozen pair IDs absent from the active 324-pair selection",
   "status": "deferred_until_additional_budget_approved",
   "target_inference_calls": 0,
-  "truncation_repair_max_judge_tokens": 1024
+  "truncation_repair_max_judge_tokens": 1280
 }

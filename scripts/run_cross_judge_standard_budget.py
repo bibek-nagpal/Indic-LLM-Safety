@@ -129,9 +129,18 @@ def budget_commitment(state: dict[str, Any]) -> float:
     return total
 
 
+def known_actual_cost(state: dict[str, Any]) -> float:
+    return sum(
+        float(attempt["actual_cost_usd"])
+        for attempt in state["attempts"]
+        if attempt.get("actual_cost_usd") is not None
+    )
+
+
 def next_token_cap(job_id: str, state: dict[str, Any], plan: dict[str, Any]) -> int:
     """Use the larger cap only to repair a proven reasoning-only truncation."""
     base = int(plan["max_judge_tokens"])
+    continuation = int(plan.get("continuation_max_judge_tokens", base))
     repair = int(plan.get("truncation_repair_max_judge_tokens", base))
     failures = [
         attempt
@@ -140,7 +149,7 @@ def next_token_cap(job_id: str, state: dict[str, Any], plan: dict[str, Any]) -> 
         and attempt.get("status") == "completed_parse_error"
     ]
     if not failures:
-        return base
+        return continuation
     latest = failures[-1]
     used = int(latest.get("max_tokens_used") or base)
     usage = latest.get("usage") or {}
@@ -150,8 +159,9 @@ def next_token_cap(job_id: str, state: dict[str, Any], plan: dict[str, Any]) -> 
     eligible = bool(latest.get("truncation_repair_eligible")) or (
         completion >= used and reasoning > 0
     )
-    if eligible and used < repair:
-        return repair
+    later_caps = sorted(cap for cap in {continuation, repair} if cap > used)
+    if eligible and later_caps:
+        return later_caps[0]
     raise RuntimeError(
         f"job {job_id} has a non-repairable parse failure or exhausted its one repair"
     )
@@ -305,10 +315,11 @@ def main() -> None:
         raise RuntimeError("standard contingency is not active")
     if float(plan["hard_budget_usd"]) > 4.50:
         raise RuntimeError("plan exceeds the authorized Phase D budget ceiling")
-    if int(plan.get("truncation_repair_max_judge_tokens", plan["max_judge_tokens"])) < int(
-        plan["max_judge_tokens"]
-    ):
-        raise RuntimeError("truncation repair cap is below the base cap")
+    base_cap = int(plan["max_judge_tokens"])
+    continuation_cap = int(plan.get("continuation_max_judge_tokens", base_cap))
+    repair_cap = int(plan.get("truncation_repair_max_judge_tokens", continuation_cap))
+    if not base_cap <= continuation_cap <= repair_cap:
+        raise RuntimeError("standard token caps are not monotonic")
     if sha256_file(jobs_path) != plan["jobs_manifest_sha256"]:
         raise RuntimeError("standard jobs manifest hash does not match plan")
     if sha256_file(snapshot / "FREEZE_MANIFEST.json") != plan["input_freeze_manifest_sha256"]:
@@ -400,6 +411,19 @@ def main() -> None:
     errors_path = output_dir / "errors.jsonl"
     accounting_path = output_dir / "standard_accounting.jsonl"
     state = read_state(state_path)
+    state_changed = False
+    for prior_attempt in state["attempts"]:
+        if (
+            prior_attempt.get("actual_cost_usd") is None
+            and prior_attempt.get("status") == "submitting"
+        ):
+            prior_attempt["status"] = "submission_outcome_unknown_after_interruption"
+            prior_attempt["interruption_recorded_at_utc"] = datetime.now(
+                timezone.utc
+            ).isoformat()
+            state_changed = True
+    if state_changed:
+        write_state(state_path, state)
     accounted_ids = {
         row.get("attempt_id") for row in load_jsonl(accounting_path)
     }
@@ -417,6 +441,7 @@ def main() -> None:
         attempt["job_id"]
         for attempt in state["attempts"]
         if attempt.get("actual_cost_usd") is None
+        and attempt.get("status") == "submitting"
     }
     pending = [
         job
@@ -446,17 +471,6 @@ def main() -> None:
         if not smoke.get("pricing_verified") or not smoke.get("all_scores_parsed"):
             raise SystemExit("Standard full run refused because smoke verification failed")
 
-    remaining_maximum = sum(
-        maximum_job_cost(
-            job,
-            plan,
-            max_tokens=next_token_cap(job["job_id"], state, plan),
-        )
-        for job in pending
-    )
-    if budget_commitment(state) + remaining_maximum > float(plan["hard_budget_usd"]):
-        raise SystemExit("Standard execution refused by hard total-budget reservation")
-
     invocation_id = sha256_text(datetime.now(timezone.utc).isoformat())[:24]
     processed_this_invocation = 0
     for job in selected:
@@ -466,6 +480,14 @@ def main() -> None:
         if token_cap == int(plan["max_judge_tokens"]):
             if actual_request_sha256 != job["standard_request_sha256"]:
                 raise RuntimeError("base request drifted from the hash-locked job")
+        reservation = maximum_job_cost(job, plan, max_tokens=token_cap)
+        if budget_commitment(state) + reservation > float(plan["hard_budget_usd"]):
+            print(
+                f"Stopped before {job['job_id']}: next reservation would exceed the "
+                f"${plan['hard_budget_usd']:.2f} hard ceiling",
+                flush=True,
+            )
+            break
         attempt = {
             "schema_version": 1,
             "attempt_id": sha256_text(
@@ -478,9 +500,7 @@ def main() -> None:
             "max_tokens_used": token_cap,
             "is_truncation_repair": token_cap > int(plan["max_judge_tokens"]),
             "status": "submitting",
-            "reserved_max_cost_usd": maximum_job_cost(
-                job, plan, max_tokens=token_cap
-            ),
+            "reserved_max_cost_usd": reservation,
             "actual_cost_usd": None,
             "is_smoke": is_smoke,
             "paid_approval_confirmed": True,
@@ -586,6 +606,12 @@ def main() -> None:
                 f"{job['job_id']} ({token_cap} tokens)",
                 flush=True,
             )
+            if processed_this_invocation % 25 == 0:
+                print(
+                    f"Progress: {len(existing)}/{len(jobs)} scores | "
+                    f"committed=${budget_commitment(state):.4f}",
+                    flush=True,
+                )
             continue
 
         row = {
@@ -679,6 +705,9 @@ def main() -> None:
         "successful_jobs": len(existing),
         "remaining_jobs": len(jobs) - len(existing),
         "budget_committed_usd": budget_commitment(state),
+        "known_actual_cost_usd": known_actual_cost(state),
+        "ambiguous_reserved_cost_usd": budget_commitment(state)
+        - known_actual_cost(state),
         "hard_budget_usd": plan["hard_budget_usd"],
         "target_inference_calls": 0,
         "updated_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -696,7 +725,10 @@ def main() -> None:
             "state_sha256": sha256_file(state_path),
             "accounting_sha256": sha256_file(accounting_path),
             "successful_jobs": len(existing),
-            "actual_cost_usd": budget_commitment(state),
+            "known_actual_cost_usd": known_actual_cost(state),
+            "budget_committed_usd": budget_commitment(state),
+            "ambiguous_reserved_cost_usd": budget_commitment(state)
+            - known_actual_cost(state),
             "hard_budget_usd": plan["hard_budget_usd"],
             "target_inference_calls": 0,
             "completed_at_utc": datetime.now(timezone.utc).isoformat(),

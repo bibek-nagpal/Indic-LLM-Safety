@@ -92,11 +92,18 @@ def test_standard_contingency_is_balanced_in_every_cell() -> None:
     assert plan["request_contract"]["seed"] == 20260829
     assert plan["maximum_no_retry_cost_usd"] + plan["retry_reserve_usd"] < 4.50
     assert plan["max_judge_tokens"] == 768
-    assert plan["truncation_repair_max_judge_tokens"] == 1024
+    assert plan["continuation_max_judge_tokens"] == 1024
+    assert plan["truncation_repair_max_judge_tokens"] == 1280
     report = json.loads((DESIGN_DIR / "cost_analysis.json").read_text(encoding="utf-8"))
     repair = report["standard_fallback"]["adaptive_truncation_repair"]
     assert repair["rubric_or_reasoning_effort_change"] is False
-    assert repair["conservative_whole_job_repairs_within_reserve"] >= 80
+    assert repair["conservative_whole_job_repairs_within_reserve"] >= 60
+    assert (
+        report["standard_fallback"]["continuation_maximum_1024_output_tokens_per_job"][
+            "total_cost_usd"
+        ]
+        > 4.50
+    )
 
 
 def test_deferred_complement_is_exactly_disjoint_and_complete() -> None:

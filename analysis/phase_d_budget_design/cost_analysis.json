@@ -82,11 +82,11 @@
       "output_cost_usd": 1.296,
       "total_cost_usd": 1.83041725
     },
-    "max_output_tokens_per_job": 768,
-    "maximum_768_output_tokens_per_job": {
+    "max_output_tokens_per_job": 1024,
+    "maximum_1024_output_tokens_per_job": {
       "input_cost_usd": 0.53441725,
-      "output_cost_usd": 1.65888,
-      "total_cost_usd": 2.1932972499999996
+      "output_cost_usd": 2.21184,
+      "total_cost_usd": 2.74625725
     },
     "overlapping_pair_ids": 0,
     "pair_model_jobs": 540,
@@ -99,11 +99,18 @@
   "standard_fallback": {
     "adaptive_truncation_repair": {
       "base_max_output_tokens": 768,
-      "conservative_whole_job_repairs_within_reserve": 81,
+      "conservative_whole_job_repairs_within_reserve": 69,
+      "continuation_max_output_tokens": 1024,
       "eligibility": "strict parse failure after completion reached the cap with reasoning tokens",
-      "maximum_single_failed_attempt_plus_repair_cost_usd": 0.006163999999999999,
-      "repair_max_output_tokens": 1024,
+      "maximum_single_failed_attempt_plus_repair_cost_usd": 0.007188,
+      "repair_max_output_tokens": 1280,
       "rubric_or_reasoning_effort_change": false
+    },
+    "continuation_max_output_tokens_per_job": 1024,
+    "continuation_maximum_1024_output_tokens_per_job": {
+      "input_cost_usd": 0.95910175,
+      "output_cost_usd": 3.981312,
+      "total_cost_usd": 4.94041375
     },
     "expected_600_output_tokens_per_job": {
       "input_cost_usd": 0.95910175,

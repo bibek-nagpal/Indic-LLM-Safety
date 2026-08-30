@@ -1,6 +1,8 @@
 {
+  "budget_enforcement": "Before every request, known actual spend plus all ambiguous reservations plus the next request's maximum reservation must not exceed the hard ceiling.",
+  "continuation_max_judge_tokens": 1024,
   "cost_analysis": "analysis/phase_d_budget_design/cost_analysis.json",
-  "cost_analysis_sha256": "de36e787c38f517031ff7bde39ba328f59458d2c97baed005a855a1d6cd1658d",
+  "cost_analysis_sha256": "47a32735e20c6a173cd1fcede0e01299a02ae4686f245613d3367743475b384d",
   "execution_mode": "synchronous_resumable",
   "expected_cost_usd": 3.29190175,
   "expected_jobs": 1944,
@@ -104,6 +106,6 @@
   "smoke_test_jobs": 2,
   "status": "recommended_after_batch_unavailable",
   "target_inference_calls": 0,
-  "truncation_repair_max_judge_tokens": 1024,
+  "truncation_repair_max_judge_tokens": 1280,
   "truncation_repair_policy": "Retry only when strict parsing fails after the response reaches the output cap with reasoning tokens; preserve the prompt, rubric, schema, model, and reasoning effort. Every failed paid attempt remains in total budget accounting."
 }
