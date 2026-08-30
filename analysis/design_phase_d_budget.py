@@ -450,7 +450,7 @@ def main() -> None:
             "adaptive_truncation_repair": {
                 "base_max_output_tokens": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
                 "repair_max_output_tokens": STANDARD_REPAIR_MAX_OUTPUT_TOKENS,
-                "eligibility": "empty content after all completion tokens were reasoning tokens",
+                "eligibility": "strict parse failure after completion reached the cap with reasoning tokens",
                 "maximum_single_failed_attempt_plus_repair_cost_usd": maximum_truncated_attempt_plus_repair,
                 "conservative_whole_job_repairs_within_reserve": conservative_repair_jobs,
                 "rubric_or_reasoning_effort_change": False,
@@ -563,8 +563,8 @@ def main() -> None:
         "max_judge_tokens": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
         "truncation_repair_max_judge_tokens": STANDARD_REPAIR_MAX_OUTPUT_TOKENS,
         "truncation_repair_policy": (
-            "Retry only when the base-cap response has empty content and all completion "
-            "tokens were reasoning tokens; preserve the prompt, rubric, schema, model, and "
+            "Retry only when strict parsing fails after the response reaches the output cap "
+            "with reasoning tokens; preserve the prompt, rubric, schema, model, and "
             "reasoning effort. Every failed paid attempt remains in total budget accounting."
         ),
         "response_format_sha256": canonical_sha256(judge.JUDGE_RESPONSE_FORMAT),
@@ -656,8 +656,8 @@ def main() -> None:
         "12 category×strategy cells for all three target models, retaining both languages. "
         "This preserves pair-level between-model comparisons while reserving $0.50 for retries.",
         "",
-        f"If a response spends all {STANDARD_FALLBACK_MAX_OUTPUT_TOKENS} output tokens on internal "
-        f"reasoning and returns no JSON, the runner may retry only that item at "
+        f"If a response reaches the {STANDARD_FALLBACK_MAX_OUTPUT_TOKENS}-token cap after internal "
+        f"reasoning and fails strict JSON parsing, the runner may retry only that item at "
         f"{STANDARD_REPAIR_MAX_OUTPUT_TOKENS} tokens. The rubric, schema, prompt, model, and reasoning "
         f"effort remain unchanged; all failed paid attempts count toward the $4.50 ceiling. The "
         f"$0.50 reserve covers at least {conservative_repair_jobs} such whole-job repairs even at "

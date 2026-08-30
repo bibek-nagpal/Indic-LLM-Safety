@@ -2,17 +2,17 @@
   "active_recommendation": "standard_fallback_shared_pairs",
   "api_calls": 0,
   "batch_live_validation_available": false,
-  "design_script_sha256": "b7e9ea587cca258386c8579fcf35d27aa2c11d5bb0807929064572b84b6af915",
+  "design_script_sha256": "83b000884afac604f982502c751740d5ced278d138fc1828b2066aebea8b006d",
   "files": [
     {
-      "bytes": 2461,
+      "bytes": 2471,
       "path": "budget_design_summary.md",
-      "sha256": "64a3a805cf4a6bb72f89969f36d86674b06fed84f623f1b33792b6c34696ff39"
+      "sha256": "9655b25a48530dfdd0f88edce7fb6a508beca19e921f1362514d376454f58f78"
     },
     {
-      "bytes": 5553,
+      "bytes": 5565,
       "path": "cost_analysis.json",
-      "sha256": "93b9bdb1f472164b872669565b016ab3d7a53de32a2c638058d924bea51b43c4"
+      "sha256": "de36e787c38f517031ff7bde39ba328f59458d2c97baed005a855a1d6cd1658d"
     },
     {
       "bytes": 3463443,
@@ -22,7 +22,7 @@
     {
       "bytes": 4407,
       "path": "gpt5mini_batch_full_plan.json",
-      "sha256": "726c498d5562214a599e5a81c18de76dd0c59087d3773cc947f3222029a8a962"
+      "sha256": "0b0f924edee966ee811aed5eab9b2c50c2c3ab24b60533a9349c2a5afee9a462"
     },
     {
       "bytes": 1240170,
@@ -32,7 +32,7 @@
     {
       "bytes": 3931,
       "path": "gpt5mini_standard_complement_plan.json",
-      "sha256": "f74d34739780a9215cf7eb3a11b305f79a4acd71d8d0865adf7b4e09c304294a"
+      "sha256": "8c1ab82c87111c48c4423c5ce152ba84e21584e0d6062f493f3c66b453dbf964"
     },
     {
       "bytes": 2232345,
@@ -40,9 +40,9 @@
       "sha256": "5d34087cad2934e27efa482b9d20e56e8ccb1d2fad4f78ae9af77770b10857d4"
     },
     {
-      "bytes": 3872,
+      "bytes": 3869,
       "path": "gpt5mini_standard_fallback_plan.json",
-      "sha256": "2d080c5db45324b43ea5a84115e3f5d99adc79e3335e2f24771567a15544083e"
+      "sha256": "c58068f2c539127866118d1b248258455957f19e4139bee76bd030f7af4d1dda"
     }
   ],
   "hard_budget_usd": 4.5,

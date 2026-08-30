@@ -147,9 +147,9 @@ def next_token_cap(job_id: str, state: dict[str, Any], plan: dict[str, Any]) -> 
     details = usage.get("completion_tokens_details") or {}
     completion = int(usage.get("completion_tokens") or 0)
     reasoning = int(details.get("reasoning_tokens") or 0)
-    eligible = latest.get("truncation_repair_eligible")
-    if eligible is None:
-        eligible = completion >= used and reasoning >= completion
+    eligible = bool(latest.get("truncation_repair_eligible")) or (
+        completion >= used and reasoning > 0
+    )
     if eligible and used < repair:
         return repair
     raise RuntimeError(
@@ -542,6 +542,7 @@ def main() -> None:
         content = ""
         try:
             choice = payload["choices"][0]
+            attempt["finish_reason"] = choice.get("finish_reason")
             content = choice["message"].get("content") or ""
             parsed = parse_judgment(content, json_loader=safe_json_loads)
         except Exception as exc:  # noqa: BLE001
@@ -552,9 +553,8 @@ def main() -> None:
                 or 0
             )
             attempt["truncation_repair_eligible"] = (
-                not content.strip()
-                and completion_tokens >= token_cap
-                and reasoning_tokens >= completion_tokens
+                completion_tokens >= token_cap
+                and reasoning_tokens > 0
                 and token_cap
                 < int(plan.get("truncation_repair_max_judge_tokens", token_cap))
             )

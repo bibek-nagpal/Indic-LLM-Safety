@@ -1,6 +1,6 @@
 {
   "cost_analysis": "analysis/phase_d_budget_design/cost_analysis.json",
-  "cost_analysis_sha256": "93b9bdb1f472164b872669565b016ab3d7a53de32a2c638058d924bea51b43c4",
+  "cost_analysis_sha256": "de36e787c38f517031ff7bde39ba328f59458d2c97baed005a855a1d6cd1658d",
   "execution_mode": "synchronous_resumable",
   "expected_cost_usd": 3.29190175,
   "expected_jobs": 1944,
@@ -105,5 +105,5 @@
   "status": "recommended_after_batch_unavailable",
   "target_inference_calls": 0,
   "truncation_repair_max_judge_tokens": 1024,
-  "truncation_repair_policy": "Retry only when the base-cap response has empty content and all completion tokens were reasoning tokens; preserve the prompt, rubric, schema, model, and reasoning effort. Every failed paid attempt remains in total budget accounting."
+  "truncation_repair_policy": "Retry only when strict parsing fails after the response reaches the output cap with reasoning tokens; preserve the prompt, rubric, schema, model, and reasoning effort. Every failed paid attempt remains in total budget accounting."
 }

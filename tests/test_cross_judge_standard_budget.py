@@ -92,6 +92,25 @@ def test_reasoning_only_truncation_gets_one_larger_cap() -> None:
         next_token_cap("job", state, plan)
 
 
+def test_partial_json_truncation_is_repairable_from_token_evidence() -> None:
+    plan = {"max_judge_tokens": 768, "truncation_repair_max_judge_tokens": 1024}
+    state = {
+        "attempts": [
+            {
+                "job_id": "job",
+                "status": "completed_parse_error",
+                "max_tokens_used": 768,
+                "truncation_repair_eligible": False,
+                "usage": {
+                    "completion_tokens": 768,
+                    "completion_tokens_details": {"reasoning_tokens": 640},
+                },
+            }
+        ]
+    }
+    assert next_token_cap("job", state, plan) == 1024
+
+
 def test_repair_cost_uses_actual_cap() -> None:
     job = {"costed_input_tokens": 1000}
     plan = {

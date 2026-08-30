@@ -100,7 +100,7 @@
     "adaptive_truncation_repair": {
       "base_max_output_tokens": 768,
       "conservative_whole_job_repairs_within_reserve": 81,
-      "eligibility": "empty content after all completion tokens were reasoning tokens",
+      "eligibility": "strict parse failure after completion reached the cap with reasoning tokens",
       "maximum_single_failed_attempt_plus_repair_cost_usd": 0.006163999999999999,
       "repair_max_output_tokens": 1024,
       "rubric_or_reasoning_effort_change": false
