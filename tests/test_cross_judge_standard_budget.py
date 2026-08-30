@@ -137,6 +137,30 @@ def test_partial_json_truncation_is_repairable_from_token_evidence() -> None:
     assert next_token_cap("job", state, plan) == 1024
 
 
+def test_length_stop_repairs_inconsistent_zero_token_usage() -> None:
+    plan = {
+        "max_judge_tokens": 768,
+        "continuation_max_judge_tokens": 1024,
+        "truncation_repair_max_judge_tokens": 1280,
+        "final_truncation_repair_max_judge_tokens": 2048,
+    }
+    state = {
+        "attempts": [
+            {
+                "job_id": "job",
+                "status": "completed_parse_error",
+                "max_tokens_used": 1024,
+                "finish_reason": "length",
+                "usage": {
+                    "completion_tokens": 0,
+                    "completion_tokens_details": {"reasoning_tokens": 581},
+                },
+            }
+        ]
+    }
+    assert next_token_cap("job", state, plan) == 1280
+
+
 def test_repair_cost_uses_actual_cap() -> None:
     job = {"costed_input_tokens": 1000}
     plan = {
