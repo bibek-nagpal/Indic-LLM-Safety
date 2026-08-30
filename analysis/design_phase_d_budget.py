@@ -54,7 +54,7 @@ BATCH_PRICING = {
     "execution_contract": "https://openrouter.ai/docs/batch-quickstart",
     "provider_tier": "OpenAI Flex",
 }
-PRICING_VERIFIED_ON = "2026-08-29"
+PRICING_VERIFIED_ON = "2026-08-30"
 
 
 def sha256_text(value: str) -> str:
@@ -318,8 +318,19 @@ def main() -> None:
     per_cell, fallback_rows, fallback_maximum = fallback_subset(
         rows, prices=STANDARD_PRICING
     )
-    fallback_rows = [
-        {
+    fallback_pair_ids = {row["pair_id"] for row in fallback_rows}
+    complement_rows = [row for row in rows if row["pair_id"] not in fallback_pair_ids]
+    complement_pair_ids = {row["pair_id"] for row in complement_rows}
+    all_pair_ids = {row["pair_id"] for row in rows}
+    if fallback_pair_ids & complement_pair_ids:
+        raise RuntimeError("standard fallback and future complement overlap")
+    if fallback_pair_ids | complement_pair_ids != all_pair_ids:
+        raise RuntimeError("standard fallback and future complement do not cover the bank")
+    if len(fallback_pair_ids) != 324 or len(complement_pair_ids) != 180:
+        raise RuntimeError("unexpected standard fallback/complement pair counts")
+
+    def as_standard_row(row: dict[str, Any]) -> dict[str, Any]:
+        return {
             **{key: value for key, value in row.items() if key != "batch_request_sha256"},
             "standard_request_sha256": canonical_sha256(
                 {
@@ -332,14 +343,31 @@ def main() -> None:
                 }
             ),
         }
-        for row in fallback_rows
-    ]
+
+    fallback_rows = [as_standard_row(row) for row in fallback_rows]
+    complement_rows = [as_standard_row(row) for row in complement_rows]
+    complement_rows.sort(
+        key=lambda row: (row["pair_id"], row["target_model"], row["language"])
+    )
     fallback_path = output_dir / "gpt5mini_standard_fallback_jobs.jsonl"
     write_jsonl(fallback_path, fallback_rows)
+    complement_path = output_dir / "gpt5mini_standard_complement_jobs.jsonl"
+    write_jsonl(complement_path, complement_rows)
     fallback_input = sum(row["costed_input_tokens"] for row in fallback_rows)
     fallback_expected = cost(
         fallback_input,
         len(fallback_rows) * EXPECTED_OUTPUT_TOKENS,
+        STANDARD_PRICING,
+    )
+    complement_input = sum(row["costed_input_tokens"] for row in complement_rows)
+    complement_expected = cost(
+        complement_input,
+        len(complement_rows) * EXPECTED_OUTPUT_TOKENS,
+        STANDARD_PRICING,
+    )
+    complement_maximum = cost(
+        complement_input,
+        len(complement_rows) * STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
         STANDARD_PRICING,
     )
 
@@ -403,6 +431,19 @@ def main() -> None:
             f"maximum_{STANDARD_FALLBACK_MAX_OUTPUT_TOKENS}_output_tokens_per_job": fallback_maximum,
             "max_output_tokens_per_job": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
             "reserved_for_retries_usd": FALLBACK_RETRY_RESERVE_USD,
+        },
+        "standard_complement_after_top_up": {
+            "selection_rule": "exact set complement of the active 324-pair selection",
+            "selected_pair_ids": len(fallback_pair_ids),
+            "complement_pair_ids": len(complement_pair_ids),
+            "overlapping_pair_ids": 0,
+            "union_pair_ids": len(fallback_pair_ids | complement_pair_ids),
+            "pair_model_jobs": len(complement_rows) // 2,
+            "response_jobs": len(complement_rows),
+            "expected_600_output_tokens_per_job": complement_expected,
+            f"maximum_{STANDARD_FALLBACK_MAX_OUTPUT_TOKENS}_output_tokens_per_job": complement_maximum,
+            "max_output_tokens_per_job": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
+            "requires_new_explicit_paid_approval": True,
         },
         "costing_assumptions": {
             "actual_stored_text_tokenized": True,
@@ -509,6 +550,46 @@ def main() -> None:
         json.dumps(fallback_plan, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
 
+    complement_plan = {
+        "schema_version": 1,
+        "phase": "D1 deferred exact-complement completion",
+        "execution_mode": "synchronous_resumable",
+        "judge_model": GPT_MODEL,
+        "request_contract": standard_request_contract,
+        "request_contract_sha256": canonical_sha256(standard_request_contract),
+        "jobs_manifest": str(complement_path.relative_to(repo)).replace("\\", "/"),
+        "jobs_manifest_sha256": sha256_file(complement_path),
+        "expected_jobs": len(complement_rows),
+        "expected_pair_model_jobs": len(complement_rows) // 2,
+        "expected_pair_ids": len(complement_pair_ids),
+        "pair_model_jobs_per_cell": 42 - per_cell,
+        "selection_rule": "all frozen pair IDs absent from the active 324-pair selection",
+        "selected_pair_ids_manifest": str(fallback_path.relative_to(repo)).replace("\\", "/"),
+        "selected_pair_ids_manifest_sha256": sha256_file(fallback_path),
+        "overlapping_pair_ids": 0,
+        "combined_pair_ids": len(fallback_pair_ids | complement_pair_ids),
+        "same_pair_ids_across_target_models": True,
+        "input_snapshot": snapshot.name,
+        "input_freeze_manifest_sha256": sha256_file(snapshot / "FREEZE_MANIFEST.json"),
+        "input_bank_id": BANK_ID,
+        "input_run_id": RUN_ID,
+        "rubric_sha256": sha256_text(judge.JUDGE_SYSTEM),
+        "pricing": STANDARD_PRICING,
+        "max_judge_tokens": STANDARD_FALLBACK_MAX_OUTPUT_TOKENS,
+        "response_format_sha256": canonical_sha256(judge.JUDGE_RESPONSE_FORMAT),
+        "cost_analysis": str(report_path.relative_to(repo)).replace("\\", "/"),
+        "cost_analysis_sha256": sha256_file(report_path),
+        "expected_incremental_cost_usd": complement_expected["total_cost_usd"],
+        "maximum_incremental_no_retry_cost_usd": complement_maximum["total_cost_usd"],
+        "output_dir": "runs/cross_judge/gpt5mini_standard_complement",
+        "target_inference_calls": 0,
+        "requires_new_explicit_paid_approval": True,
+        "status": "deferred_until_additional_budget_approved",
+    }
+    (output_dir / "gpt5mini_standard_complement_plan.json").write_text(
+        json.dumps(complement_plan, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+
     summary = [
         "# Phase D Budget Redesign",
         "",
@@ -543,6 +624,13 @@ def main() -> None:
         f"The standard-price contingency selects the same {per_cell} pair IDs in each of the "
         "12 category×strategy cells for all three target models, retaining both languages. "
         "This preserves pair-level between-model comparisons while reserving $0.50 for retries.",
+        "",
+        f"A hash-locked deferred complement contains exactly the other {len(complement_pair_ids)} "
+        f"pair IDs ({42 - per_cell} per category×strategy cell), with zero overlap and a "
+        f"{len(fallback_pair_ids | complement_pair_ids)}-pair union. It costs approximately "
+        f"${complement_expected['total_cost_usd']:.3f} at 600 output tokens/job or at most "
+        f"${complement_maximum['total_cost_usd']:.3f} before retries at the current cap. It cannot "
+        "run without new explicit paid approval.",
         "",
         "The strict JSON schema constrains only the response format already required by the frozen rubric. "
         "Reasoning effort is unchanged; prompt caching is automatic provider-side upside and contributes "

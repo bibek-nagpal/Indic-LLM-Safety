@@ -52,7 +52,7 @@
     "response_judging_calls": 2
   },
   "pair_model_jobs": 1512,
-  "pricing_verified_on": "2026-08-29",
+  "pricing_verified_on": "2026-08-30",
   "schema_version": 1,
   "standard": {
     "conservative_retry_allowance_usd": 0.0,
@@ -74,6 +74,27 @@
       "output_usd_per_million_tokens": 2.0,
       "source": "https://openrouter.ai/openai/gpt-5-mini/pricing"
     }
+  },
+  "standard_complement_after_top_up": {
+    "complement_pair_ids": 180,
+    "expected_600_output_tokens_per_job": {
+      "input_cost_usd": 0.53441725,
+      "output_cost_usd": 1.296,
+      "total_cost_usd": 1.83041725
+    },
+    "max_output_tokens_per_job": 768,
+    "maximum_768_output_tokens_per_job": {
+      "input_cost_usd": 0.53441725,
+      "output_cost_usd": 1.65888,
+      "total_cost_usd": 2.1932972499999996
+    },
+    "overlapping_pair_ids": 0,
+    "pair_model_jobs": 540,
+    "requires_new_explicit_paid_approval": true,
+    "response_jobs": 1080,
+    "selected_pair_ids": 324,
+    "selection_rule": "exact set complement of the active 324-pair selection",
+    "union_pair_ids": 504
   },
   "standard_fallback": {
     "expected_600_output_tokens_per_job": {

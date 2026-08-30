@@ -89,3 +89,37 @@ def test_standard_contingency_is_balanced_in_every_cell() -> None:
     assert plan["status"] == "recommended_after_batch_unavailable"
     assert plan["request_contract"]["response_format"]["json_schema"]["strict"] is True
     assert plan["maximum_no_retry_cost_usd"] + plan["retry_reserve_usd"] < 4.50
+
+
+def test_deferred_complement_is_exactly_disjoint_and_complete() -> None:
+    selected = _jsonl(DESIGN_DIR / "gpt5mini_standard_fallback_jobs.jsonl")
+    complement = _jsonl(DESIGN_DIR / "gpt5mini_standard_complement_jobs.jsonl")
+    selected_pairs = {row["pair_id"] for row in selected}
+    complement_pairs = {row["pair_id"] for row in complement}
+    assert len(selected_pairs) == 324
+    assert len(complement_pairs) == 180
+    assert selected_pairs.isdisjoint(complement_pairs)
+    assert len(selected_pairs | complement_pairs) == 504
+    assert len(complement) == 1080
+    pair_models = {
+        (row["pair_id"], row["target_model"], row["category"], row["strategy"])
+        for row in complement
+    }
+    cells = Counter((model, category, strategy) for _, model, category, strategy in pair_models)
+    assert len(pair_models) == 540
+    assert len(cells) == 36
+    assert set(cells.values()) == {15}
+    for pair_id, model, _, _ in pair_models:
+        assert {
+            row["language"]
+            for row in complement
+            if row["pair_id"] == pair_id and row["target_model"] == model
+        } == {"en", "rh"}
+
+    plan = json.loads(
+        (DESIGN_DIR / "gpt5mini_standard_complement_plan.json").read_text(encoding="utf-8")
+    )
+    assert plan["status"] == "deferred_until_additional_budget_approved"
+    assert plan["requires_new_explicit_paid_approval"] is True
+    assert plan["overlapping_pair_ids"] == 0
+    assert plan["combined_pair_ids"] == 504
