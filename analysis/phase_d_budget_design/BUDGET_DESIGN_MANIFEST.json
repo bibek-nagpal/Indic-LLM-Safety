@@ -2,17 +2,17 @@
   "active_recommendation": "standard_fallback_shared_pairs",
   "api_calls": 0,
   "batch_live_validation_available": false,
-  "design_script_sha256": "2ffe6b394d9ad75f8088a559a69d21b324eb958b29c1b55a715b869ffac633af",
+  "design_script_sha256": "8856819db75e15314e6efce04a23b3cc13890c13d582a4c2f1f3e8a8daeffed0",
   "files": [
     {
-      "bytes": 2572,
+      "bytes": 2654,
       "path": "budget_design_summary.md",
-      "sha256": "0ca0ee647c1a82209e425c204e0952a5e3497e89e88cc2ccbbe974eb06c5c10b"
+      "sha256": "47d74eb66cf4f2cea512fbb32ca0cb11616bfee183381287679a13c4b901b6ec"
     },
     {
-      "bytes": 5822,
+      "bytes": 5869,
       "path": "cost_analysis.json",
-      "sha256": "47a32735e20c6a173cd1fcede0e01299a02ae4686f245613d3367743475b384d"
+      "sha256": "afe6165c34f4344da460ae3751e4682cf1f92e9db6018556e4b5ed9aa7a9302e"
     },
     {
       "bytes": 3463443,
@@ -22,7 +22,7 @@
     {
       "bytes": 4407,
       "path": "gpt5mini_batch_full_plan.json",
-      "sha256": "9157af0cd3f276187f5d7f8bbc69ff46bb12ff7df8d44e0925779542c3482880"
+      "sha256": "8b28647fedfb28448b92a1a86f941393bb375a43a811d0c3b4f7b8f164091f6e"
     },
     {
       "bytes": 1240170,
@@ -30,9 +30,9 @@
       "sha256": "7f1a816e2b1b74cbd7c0ca14baf8ae6b0bb8c37a6c6ffc5e8609a9ec30f43679"
     },
     {
-      "bytes": 3965,
+      "bytes": 4018,
       "path": "gpt5mini_standard_complement_plan.json",
-      "sha256": "5eb4ed031658a39eb357b4ec8dbd4252947a47f9267e5b17705b872b1aec8e15"
+      "sha256": "1204c601ee9b8cd22babf1396638a74d3f2f67b01b2dfb033111bd7e0db4d296"
     },
     {
       "bytes": 2232345,
@@ -40,9 +40,9 @@
       "sha256": "5d34087cad2934e27efa482b9d20e56e8ccb1d2fad4f78ae9af77770b10857d4"
     },
     {
-      "bytes": 4090,
+      "bytes": 4143,
       "path": "gpt5mini_standard_fallback_plan.json",
-      "sha256": "7dd49d7f10cbaf82557070176602beae20ca04438f4978ff06e50fe33b2b9042"
+      "sha256": "e1bc79fead6c298effd9e8fd0ce71b442b51b37f460aec3ae32e0f3a044b9f55"
     }
   ],
   "hard_budget_usd": 4.5,

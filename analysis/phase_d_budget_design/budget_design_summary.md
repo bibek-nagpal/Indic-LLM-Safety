@@ -14,7 +14,7 @@ However, live OpenRouter validation rejected both GPT-5 Mini Batch identifiers b
 
 The standard-price contingency selects the same 27 pair IDs in each of the 12 category×strategy cells for all three target models, retaining both languages. This preserves pair-level between-model comparisons while reserving $0.50 for retries.
 
-After live truncation evidence, remaining items use a 1024-token ceiling. If a response reaches that cap after internal reasoning and fails strict JSON parsing, the runner may retry only that item at 1280 tokens. The rubric, schema, prompt, model, and reasoning effort remain unchanged; all failed paid attempts count toward the $4.50 ceiling. The $0.50 reserve covers at least 69 such whole-job repairs even at the single most expensive input size.
+After live truncation evidence, remaining items use a 1024-token ceiling. If a response reaches that cap after internal reasoning and fails strict JSON parsing, the runner may retry only that item at 1280 tokens, with one final 2048-token escape hatch only after another documented length stop. The rubric, schema, prompt, model, and reasoning effort remain unchanged; all failed paid attempts count toward the $4.50 ceiling. The $0.50 reserve covers at least 54 such whole-job repairs even at the single most expensive input size.
 
 A hash-locked deferred complement contains exactly the other 180 pair IDs (15 per category×strategy cell), with zero overlap and a 504-pair union. It costs approximately $1.830 at 600 output tokens/job or at most $2.746 before retries at the continuation cap. It cannot run without new explicit paid approval.
 

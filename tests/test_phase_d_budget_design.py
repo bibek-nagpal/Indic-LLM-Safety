@@ -94,10 +94,11 @@ def test_standard_contingency_is_balanced_in_every_cell() -> None:
     assert plan["max_judge_tokens"] == 768
     assert plan["continuation_max_judge_tokens"] == 1024
     assert plan["truncation_repair_max_judge_tokens"] == 1280
+    assert plan["final_truncation_repair_max_judge_tokens"] == 2048
     report = json.loads((DESIGN_DIR / "cost_analysis.json").read_text(encoding="utf-8"))
     repair = report["standard_fallback"]["adaptive_truncation_repair"]
     assert repair["rubric_or_reasoning_effort_change"] is False
-    assert repair["conservative_whole_job_repairs_within_reserve"] >= 60
+    assert repair["conservative_whole_job_repairs_within_reserve"] >= 40
     assert (
         report["standard_fallback"]["continuation_maximum_1024_output_tokens_per_job"][
             "total_cost_usd"

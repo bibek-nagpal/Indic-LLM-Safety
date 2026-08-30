@@ -77,6 +77,7 @@ def test_reasoning_only_truncation_gets_one_larger_cap() -> None:
         "max_judge_tokens": 768,
         "continuation_max_judge_tokens": 1024,
         "truncation_repair_max_judge_tokens": 1280,
+        "final_truncation_repair_max_judge_tokens": 2048,
     }
     state = {
         "attempts": [
@@ -96,6 +97,8 @@ def test_reasoning_only_truncation_gets_one_larger_cap() -> None:
     state["attempts"][0]["max_tokens_used"] = 1024
     assert next_token_cap("job", state, plan) == 1280
     state["attempts"][0]["max_tokens_used"] = 1280
+    assert next_token_cap("job", state, plan) == 2048
+    state["attempts"][0]["max_tokens_used"] = 2048
     with pytest.raises(RuntimeError):
         next_token_cap("job", state, plan)
 
@@ -105,6 +108,7 @@ def test_unattempted_continuation_uses_live_validated_cap() -> None:
         "max_judge_tokens": 768,
         "continuation_max_judge_tokens": 1024,
         "truncation_repair_max_judge_tokens": 1280,
+        "final_truncation_repair_max_judge_tokens": 2048,
     }
     assert next_token_cap("new-job", {"attempts": []}, plan) == 1024
 
@@ -114,6 +118,7 @@ def test_partial_json_truncation_is_repairable_from_token_evidence() -> None:
         "max_judge_tokens": 768,
         "continuation_max_judge_tokens": 1024,
         "truncation_repair_max_judge_tokens": 1280,
+        "final_truncation_repair_max_judge_tokens": 2048,
     }
     state = {
         "attempts": [

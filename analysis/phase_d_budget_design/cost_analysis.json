@@ -99,10 +99,11 @@
   "standard_fallback": {
     "adaptive_truncation_repair": {
       "base_max_output_tokens": 768,
-      "conservative_whole_job_repairs_within_reserve": 69,
+      "conservative_whole_job_repairs_within_reserve": 54,
       "continuation_max_output_tokens": 1024,
       "eligibility": "strict parse failure after completion reached the cap with reasoning tokens",
-      "maximum_single_failed_attempt_plus_repair_cost_usd": 0.007188,
+      "final_repair_max_output_tokens": 2048,
+      "maximum_single_failed_attempt_plus_repair_cost_usd": 0.009236,
       "repair_max_output_tokens": 1280,
       "rubric_or_reasoning_effort_change": false
     },

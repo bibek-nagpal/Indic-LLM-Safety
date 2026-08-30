@@ -3,7 +3,7 @@
   "batch_model": "openai/gpt-5-mini:batch",
   "colon_batch_slug_investigation": "The live Batch API validator requires the :batch model variant for GPT-5 Mini; a base-slug smoke submission was rejected with HTTP 400 before persistence.",
   "cost_analysis": "analysis/phase_d_budget_design/cost_analysis.json",
-  "cost_analysis_sha256": "47a32735e20c6a173cd1fcede0e01299a02ae4686f245613d3367743475b384d",
+  "cost_analysis_sha256": "afe6165c34f4344da460ae3751e4682cf1f92e9db6018556e4b5ed9aa7a9302e",
   "deferred_claude_plan": "analysis/phase_d_preparation/claude_sample_plan.json",
   "deferred_claude_plan_sha256": "23ef166ec627e5fbcc3324d6b74e9f4caeabf271043342494d6979aff4bc5e36",
   "execution_mode": "openrouter_asynchronous_batch_api",
