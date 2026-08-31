@@ -74,8 +74,15 @@ probe_banks/*
 frozen_final_*/bank/
 frozen_final_*/run/
 
+# Annotation workbooks embed full harmful prompts and target responses, so they
+# follow the same gated-release policy as the bank and the frozen run. Their
+# SHA-256 hashes are recorded in human_validation/HUMAN_VALIDATION_MANIFEST.json,
+# and human_validation/private/*.csv (identifiers, hashes and scores only, no
+# prompt or response text) stays tracked so the sample remains auditable.
+human_validation/outputs/**/*.xlsx
+
 # Node toolchain for the human-validation workbook builder
-human_validation/node_modules/
+human_validation/node_modules
 
 # Excel lock files
 ~$*
