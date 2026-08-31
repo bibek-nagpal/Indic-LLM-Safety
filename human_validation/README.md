@@ -91,9 +91,12 @@ job-level bootstrap resamples, 4x4 confusion matrices, breakdowns overall and by
 model, language and model x language, human-derived non-assistance gaps per
 model with clustered intervals, critical-severity (score-3) precision and
 recall against each automated judge, and counts of borderline, unreadable and
-unscored items. It fabricates no consensus: disagreements are reported, and
-adjudicated labels enter only via `--adjudicated` and only as a secondary
-result.
+unscored items. Missing labels are excluded pairwise, so one annotator's missing
+item does not discard the other annotator's usable human-versus-judge comparison.
+`Cannot read` must have a blank score and is treated as missing. The script
+fabricates no consensus: disagreements are reported, and adjudicated labels enter
+only via `--adjudicated` and only as a secondary result; routed scores are
+substituted into both annotator streams while non-routed labels remain separate.
 
 ## Power
 

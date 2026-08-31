@@ -107,6 +107,32 @@ def cluster_bootstrap_ci(
     return float(low), float(high)
 
 
+def cluster_bootstrap_pair_ci(
+    left: Sequence[int],
+    right: Sequence[int],
+    clusters: Sequence[str],
+    statistic,
+    rng: np.random.Generator,
+    n_boot: int = N_BOOT,
+) -> tuple[float, float]:
+    """Percentile CI for a statistic of two paired vectors, clustered by job."""
+    grouped: dict[str, list[int]] = defaultdict(list)
+    for index, cluster in enumerate(clusters):
+        grouped[cluster].append(index)
+    keys = sorted(grouped)
+    if len(keys) < 2:
+        return float("nan"), float("nan")
+    index_lists = [np.asarray(grouped[key]) for key in keys]
+    a, b = np.asarray(left, dtype=int), np.asarray(right, dtype=int)
+    draws = rng.integers(0, len(keys), size=(n_boot, len(keys)))
+    estimates = np.empty(n_boot, dtype=float)
+    for draw_index in range(n_boot):
+        picked = np.concatenate([index_lists[i] for i in draws[draw_index]])
+        estimates[draw_index] = statistic(a[picked], b[picked])
+    low, high = np.nanpercentile(estimates, [2.5, 97.5])
+    return float(low), float(high)
+
+
 def agreement_with_ci(
     left: Sequence[int],
     right: Sequence[int],
@@ -116,14 +142,15 @@ def agreement_with_ci(
     stats = agreement_statistics(left, right)
     if stats["n"] >= 2:
         a, b = np.asarray(left, dtype=int), np.asarray(right, dtype=int)
-        exact_low, exact_high = cluster_bootstrap_ci(
-            (a == b).astype(float), clusters, np.mean, rng
-        )
-        adj_low, adj_high = cluster_bootstrap_ci(
-            (np.abs(a - b) <= 1).astype(float), clusters, np.mean, rng
-        )
-        stats["exact_agreement_ci"] = [exact_low, exact_high]
-        stats["adjacent_agreement_ci"] = [adj_low, adj_high]
+        statistics = {
+            "exact_agreement": lambda x, y: float(np.mean(x == y)),
+            "adjacent_agreement": lambda x, y: float(np.mean(np.abs(x - y) <= 1)),
+            "unweighted_kappa": lambda x, y: _kappa_from_matrix(confusion(x, y), UNWEIGHTED),
+            "quadratic_weighted_kappa": lambda x, y: _kappa_from_matrix(confusion(x, y), QUADRATIC),
+        }
+        for name, statistic in statistics.items():
+            low, high = cluster_bootstrap_pair_ci(a, b, clusters, statistic, rng)
+            stats[f"{name}_ci"] = [low, high]
     return stats
 
 
@@ -154,6 +181,25 @@ def severity_metrics(reference: Sequence[int], predicted: Sequence[int]) -> dict
     }
 
 
+def severity_metrics_with_ci(
+    reference: Sequence[int],
+    predicted: Sequence[int],
+    clusters: Sequence[str],
+    rng: np.random.Generator,
+) -> dict[str, Any]:
+    metrics: dict[str, Any] = severity_metrics(reference, predicted)
+    for name in ("precision_judge_vs_human", "recall_judge_vs_human", "f1"):
+        low, high = cluster_bootstrap_pair_ci(
+            reference,
+            predicted,
+            clusters,
+            lambda x, y, key=name: severity_metrics(x, y)[key],
+            rng,
+        )
+        metrics[f"{name}_ci"] = [low, high]
+    return metrics
+
+
 # --------------------------------------------------------------------------
 # I/O
 
@@ -179,6 +225,11 @@ def read_workbook_scores(path: Path) -> tuple[dict[int, int | None], dict[int, d
         if score is None or str(score).strip() == "":
             scores[item] = None
             continue
+        if flags[item]["unreadable"]:
+            raise ValueError(
+                f"{path}: item {item} is marked Cannot read but also has score {score!r}; "
+                "leave the score blank so unreadability is treated as missing"
+            )
         if isinstance(score, bool) or int(score) != score or int(score) not in range(4):
             raise ValueError(f"{path}: item {item} has invalid score {score!r}")
         scores[item] = int(score)
@@ -275,6 +326,22 @@ def main() -> None:
     usable = [rid for rid in ids if labels["Human A"][rid] is not None and labels["Human B"][rid] is not None]
     data_quality["items_usable_for_human_human"] = len(usable)
 
+    def pairing_subset(subset: Sequence[str], left: str, right: str) -> list[str]:
+        def available(name: str, rid: str) -> bool:
+            return not name.startswith("Human") or labels[name][rid] is not None
+        return [rid for rid in subset if available(left, rid) and available(right, rid)]
+
+    data_quality["items_usable_by_comparison"] = {
+        f"{left} vs {right}": len(pairing_subset(ids, left, right))
+        for left, right in (
+            ("Human A", "Human B"),
+            ("Human A", "Primary pipeline"),
+            ("Human B", "Primary pipeline"),
+            ("Human A", "GPT-5 Mini"),
+            ("Human B", "GPT-5 Mini"),
+        )
+    }
+
     # ---- vectors ---------------------------------------------------------
     def vectors(subset: Sequence[str]) -> dict[str, list[int]]:
         return {
@@ -301,16 +368,18 @@ def main() -> None:
     def analyse(subset: Sequence[str]) -> dict[str, Any]:
         if not subset:
             return {}
-        vecs = vectors(subset)
-        cl = clusters_for(subset)
-        return {
-            f"{left} vs {right}": agreement_with_ci(vecs[left], vecs[right], cl, rng)
-            for left, right in PAIRINGS
-        }
+        block = {}
+        for left, right in PAIRINGS:
+            eligible = pairing_subset(subset, left, right)
+            vecs = vectors(eligible)
+            block[f"{left} vs {right}"] = agreement_with_ci(
+                vecs[left], vecs[right], clusters_for(eligible), rng
+            )
+        return block
 
     def subset_where(**criteria: str) -> list[str]:
         out = []
-        for rid in usable:
+        for rid in ids:
             row = reconciliation[rid]
             if all(row[key] == value for key, value in criteria.items()):
                 out.append(rid)
@@ -323,7 +392,7 @@ def main() -> None:
         "bootstrap_resamples": N_BOOT,
         "seed": SEED,
         "data_quality": data_quality,
-        "overall": analyse(usable),
+        "overall": analyse(ids),
         "by_model": {
             MODEL_NAMES[model]: analyse(subset_where(target_model=model))
             for model in MODEL_NAMES
@@ -340,8 +409,10 @@ def main() -> None:
             for language in LANGUAGE_NAMES
         },
         "score_distributions": {
-            name: dict(sorted(Counter(values).items()))
-            for name, values in vectors(usable).items()
+            name: dict(sorted(Counter(
+                value for value in values if value is not None
+            ).items()))
+            for name, values in vectors(ids).items()
         },
     }
 
@@ -351,7 +422,11 @@ def main() -> None:
         entry: dict[str, Any] = {}
         for scorer in ("Human A", "Human B", "Primary pipeline", "GPT-5 Mini"):
             per_job: dict[str, dict[str, int]] = defaultdict(dict)
-            for rid in usable:
+            scorer_ids = (
+                [rid for rid in ids if labels[scorer][rid] is not None]
+                if scorer.startswith("Human") else ids
+            )
+            for rid in scorer_ids:
                 row = reconciliation[rid]
                 if row["target_model"] != model:
                     continue
@@ -380,14 +455,17 @@ def main() -> None:
     results["human_derived_non_assistance_gaps"] = gap_rows
 
     # ---- critical-severity agreement -------------------------------------
-    vecs_all = vectors(usable)
-    results["critical_severity"] = {
-        f"{human} vs {judge}": severity_metrics(vecs_all[human], vecs_all[judge])
-        for human in ("Human A", "Human B")
-        for judge in ("Primary pipeline", "GPT-5 Mini")
-    }
-    results["critical_severity"]["Human A vs Human B"] = severity_metrics(
-        vecs_all["Human A"], vecs_all["Human B"]
+    results["critical_severity"] = {}
+    for human in ("Human A", "Human B"):
+        for judge in ("Primary pipeline", "GPT-5 Mini"):
+            eligible = pairing_subset(ids, human, judge)
+            vecs = vectors(eligible)
+            results["critical_severity"][f"{human} vs {judge}"] = severity_metrics_with_ci(
+                vecs[human], vecs[judge], clusters_for(eligible), rng
+            )
+    vecs_hh = vectors(usable)
+    results["critical_severity"]["Human A vs Human B"] = severity_metrics_with_ci(
+        vecs_hh["Human A"], vecs_hh["Human B"], clusters_for(usable), rng
     )
 
     # ---- confusion matrices ---------------------------------------------
@@ -395,9 +473,11 @@ def main() -> None:
     matrices_dir.mkdir(parents=True, exist_ok=True)
     slug = lambda s: s.lower().replace(" ", "_").replace("-", "")
     for left, right in PAIRINGS:
+        eligible = pairing_subset(ids, left, right)
+        vecs = vectors(eligible)
         write_matrix(
             matrices_dir / f"confusion_{slug(left)}_vs_{slug(right)}.csv",
-            confusion(vecs_all[left], vecs_all[right]),
+            confusion(vecs[left], vecs[right]),
             left,
             right,
         )
@@ -435,35 +515,50 @@ def main() -> None:
     # ---- secondary: adjudicated ------------------------------------------
     if args.adjudicated is not None:
         with args.adjudicated.resolve().open(encoding="utf-8") as handle:
-            adjudicated = {
-                row["reconciliation_id"]: int(row["adjudicated_score"])
-                for row in csv.DictReader(handle)
-            }
+            adjudicated = {}
+            for row in csv.DictReader(handle):
+                score = int(row["adjudicated_score"])
+                if score not in range(4):
+                    raise ValueError(f"invalid adjudicated score {score!r}")
+                adjudicated[row["reconciliation_id"]] = score
         required = {d["reconciliation_id"] for d in disagreements if d["routed_to_adjudication"]}
-        if not required <= set(adjudicated):
+        if set(adjudicated) != required:
             raise RuntimeError(
-                f"adjudication file is missing {len(required - set(adjudicated))} routed items"
+                "adjudication IDs must exactly match routed items: "
+                f"missing {len(required - set(adjudicated))}, extra {len(set(adjudicated) - required)}"
             )
-        consensus = {
-            rid: adjudicated.get(rid, labels["Human A"][rid])
-            if rid in required
-            else labels["Human A"][rid]
-            for rid in usable
+        adjudicated_streams = {
+            human: {
+                rid: adjudicated[rid] if rid in required else labels[human][rid]
+                for rid in usable
+            }
+            for human in ("Human A", "Human B")
         }
         vecs = vectors(usable)
-        vecs["Adjudicated human"] = [consensus[rid] for rid in usable]
+        vecs["Adjudicated Human A"] = [adjudicated_streams["Human A"][rid] for rid in usable]
+        vecs["Adjudicated Human B"] = [adjudicated_streams["Human B"][rid] for rid in usable]
         cl = clusters_for(usable)
+        secondary_pairings = (
+            ("Adjudicated Human A", "Adjudicated Human B"),
+            ("Adjudicated Human A", "Primary pipeline"),
+            ("Adjudicated Human B", "Primary pipeline"),
+            ("Adjudicated Human A", "GPT-5 Mini"),
+            ("Adjudicated Human B", "GPT-5 Mini"),
+        )
         results["secondary_adjudicated"] = {
-            "note": "secondary; pre-adjudication labels above remain primary",
+            "note": (
+                "secondary; the adjudicator's score replaces routed items in each human stream; "
+                "pre-adjudication labels above remain primary"
+            ),
             "adjudicated_items": len(required),
             "adjudicated_score_distribution": dict(
                 sorted(Counter(adjudicated[rid] for rid in required).items())
             ),
             "comparisons": {
-                f"Adjudicated human vs {judge}": agreement_with_ci(
-                    vecs["Adjudicated human"], vecs[judge], cl, rng
+                f"{left} vs {right}": agreement_with_ci(
+                    vecs[left], vecs[right], cl, rng
                 )
-                for judge in ("Primary pipeline", "GPT-5 Mini")
+                for left, right in secondary_pairings
             },
         }
 
@@ -475,11 +570,17 @@ def main() -> None:
     def fmt(entry: dict[str, Any]) -> str:
         if not entry or entry.get("n", 0) == 0:
             return "| n/a | | | | |"
-        ci = entry.get("exact_agreement_ci", [float("nan")] * 2)
+        exact_ci = entry.get("exact_agreement_ci", [float("nan")] * 2)
+        adjacent_ci = entry.get("adjacent_agreement_ci", [float("nan")] * 2)
+        kappa_ci = entry.get("unweighted_kappa_ci", [float("nan")] * 2)
+        quadratic_ci = entry.get("quadratic_weighted_kappa_ci", [float("nan")] * 2)
         return (
             f"| {entry['n']} | {entry['exact_agreement']:.1%} "
-            f"[{ci[0]:.1%}, {ci[1]:.1%}] | {entry['adjacent_agreement']:.1%} | "
-            f"{entry['unweighted_kappa']:.3f} | {entry['quadratic_weighted_kappa']:.3f} |"
+            f"[{exact_ci[0]:.1%}, {exact_ci[1]:.1%}] | {entry['adjacent_agreement']:.1%} "
+            f"[{adjacent_ci[0]:.1%}, {adjacent_ci[1]:.1%}] | "
+            f"{entry['unweighted_kappa']:.3f} [{kappa_ci[0]:.3f}, {kappa_ci[1]:.3f}] | "
+            f"{entry['quadratic_weighted_kappa']:.3f} "
+            f"[{quadratic_ci[0]:.3f}, {quadratic_ci[1]:.3f}] |"
         )
 
     lines = [
@@ -492,13 +593,13 @@ def main() -> None:
         "",
         "## Overall",
         "",
-        "| Comparison | n | Exact [95% CI] | Adjacent | Kappa | Quadratic kappa |",
+        "| Comparison | n | Exact [95% CI] | Adjacent [95% CI] | Kappa [95% CI] | Quadratic kappa [95% CI] |",
         "|---|---:|---:|---:|---:|---:|",
     ]
     for key, entry in results["overall"].items():
         lines.append(f"| {key} " + fmt(entry))
     lines += ["", "## By target model and language", "",
-              "| Stratum | Comparison | n | Exact [95% CI] | Adjacent | Kappa | Quadratic kappa |",
+              "| Stratum | Comparison | n | Exact [95% CI] | Adjacent [95% CI] | Kappa [95% CI] | Quadratic kappa [95% CI] |",
               "|---|---|---:|---:|---:|---:|---:|"]
     for stratum, block in results["by_model_language"].items():
         for key, entry in block.items():
@@ -543,7 +644,7 @@ def main() -> None:
     if "secondary_adjudicated" in results:
         lines += ["", "## Secondary: adjudicated labels", "",
                   f"Adjudicated items: {results['secondary_adjudicated']['adjudicated_items']}.",
-                  "", "| Comparison | n | Exact [95% CI] | Adjacent | Kappa | Quadratic kappa |",
+                  "", "| Comparison | n | Exact [95% CI] | Adjacent [95% CI] | Kappa [95% CI] | Quadratic kappa [95% CI] |",
                   "|---|---:|---:|---:|---:|---:|"]
         for key, entry in results["secondary_adjudicated"]["comparisons"].items():
             lines.append(f"| {key} " + fmt(entry))

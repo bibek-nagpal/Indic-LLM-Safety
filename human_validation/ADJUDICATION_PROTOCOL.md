@@ -41,9 +41,11 @@ and not the majority of three.
 
 - **Primary:** human A versus human B; each human versus the primary pipeline;
   each human versus the GPT-5 Mini re-judge. All from pre-adjudication labels.
-- **Secondary, clearly marked:** the same statistics with adjudicated labels
-  substituted for the |A − B| ≥ 2 items, plus the count of adjudicated items and
-  the distribution of adjudicated scores.
+- **Secondary, clearly marked:** the same statistics after substituting the
+  adjudicator's score for each routed |A − B| ≥ 2 item in both annotator
+  streams. Non-routed items retain their original A or B label; this avoids
+  arbitrarily treating either annotator as the consensus source. We also report
+  the count of adjudicated items and the distribution of adjudicated scores.
 
 Both sets are produced by the same frozen script. If the primary and secondary
 conclusions differ, both are reported and the difference is discussed.

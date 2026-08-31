@@ -356,8 +356,8 @@ def plot_main_gap(main_results: pd.DataFrame, figures_dir: Path) -> None:
     ax.axvline(0, color="black", linewidth=0.8, linestyle="--")
     ax.set_yticks(y, [MODEL_NAMES[model] for model in frame["model"]])
     ax.invert_yaxis()
-    ax.set_xlabel("English refusal rate − Hinglish/RH refusal rate (percentage points)")
-    ax.set_title("Paired refusal asymmetry with 95% pair-bootstrap CIs")
+    ax.set_xlabel("English non-assistance rate − Hinglish/RH non-assistance rate (percentage points)")
+    ax.set_title("Paired non-assistance asymmetry with 95% pair-bootstrap CIs")
     ax.grid(axis="x", color="#dddddd", linewidth=0.6)
     save_figure(fig, figures_dir, "model_refusal_gap")
 
@@ -547,8 +547,8 @@ def write_summary(
     lines.extend(
         [
             "",
-            "The qualitative three-regime conclusion is unchanged: Qwen is strongly asymmetric, "
-            "GPT-OSS is mildly asymmetric, and Nemotron is near-symmetric with a slight aggregate reversal.",
+            "Qwen remains robustly distinct from both other targets. GPT-OSS is mildly asymmetric "
+            "and Nemotron has a slight aggregate reversal descriptively, but their difference is not robust.",
             "",
             "Cell-level estimates localize the effect but should not be overinterpreted because each "
             "category×strategy cell contains only 42 pairs. No cell-level multiplicity-adjusted claims "
@@ -905,7 +905,7 @@ def main() -> None:
     heatmap_panel(
         cell_results,
         value_column="refusal_gap_pp",
-        title="Refusal gap by category and strategy",
+        title="Non-assistance gap by category and strategy",
         color_map="RdBu_r",
         figures_dir=figures_dir,
         stem="cell_refusal_gap_heatmap",

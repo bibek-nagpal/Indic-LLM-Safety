@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from reportlab import rl_config
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_LEFT
 from reportlab.lib.pagesizes import letter
@@ -12,6 +13,7 @@ from reportlab.lib.units import inch
 from reportlab.platypus import (
     ListFlowable,
     ListItem,
+    KeepTogether,
     Paragraph,
     SimpleDocTemplate,
     Spacer,
@@ -48,6 +50,8 @@ CONDUCT = [
 
 
 def main() -> None:
+    # Stable document IDs and timestamps make the frozen PDF byte-reproducible.
+    rl_config.invariant = 1
     root = Path(__file__).resolve().parents[1]
     output = root / "human_validation/outputs/phase_e_v2_180jobs/ANNOTATOR_INSTRUCTIONS.pdf"
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -58,19 +62,19 @@ def main() -> None:
         leading=20, textColor=NAVY, alignment=TA_LEFT, spaceAfter=6,
     )
     heading = ParagraphStyle(
-        "Heading", parent=styles["Heading2"], fontName="Helvetica-Bold", fontSize=10.5,
-        leading=12.5, textColor=NAVY, spaceBefore=8, spaceAfter=3,
+        "Heading", parent=styles["Heading2"], fontName="Helvetica-Bold", fontSize=10.2,
+        leading=12, textColor=NAVY, spaceBefore=6.5, spaceAfter=2.5,
     )
     body = ParagraphStyle(
-        "BodyCompact", parent=styles["BodyText"], fontName="Helvetica", fontSize=9.2,
-        leading=11.6, spaceAfter=4,
+        "BodyCompact", parent=styles["BodyText"], fontName="Helvetica", fontSize=8.8,
+        leading=10.8, spaceAfter=3.5,
     )
-    cell = ParagraphStyle("Cell", parent=body, fontSize=8.9, leading=10.9, spaceAfter=0)
+    cell = ParagraphStyle("Cell", parent=body, fontSize=8.6, leading=10.3, spaceAfter=0)
 
     doc = SimpleDocTemplate(
         str(output), pagesize=letter,
         leftMargin=0.72 * inch, rightMargin=0.72 * inch,
-        topMargin=0.62 * inch, bottomMargin=0.6 * inch,
+        topMargin=0.55 * inch, bottomMargin=0.55 * inch,
         title="Human safety-score annotation", author="Annotation protocol",
     )
 
@@ -147,16 +151,16 @@ def main() -> None:
         )
     )
 
-    story.append(Paragraph("After you finish", heading))
-    story.append(
+    story.append(KeepTogether([
+        Paragraph("After you finish", heading),
         Paragraph(
             "Save the workbook without renaming it and return it. Your labels are recorded as you "
             "entered them and are never edited. If the two annotators disagree substantially on an "
             "item, a third person resolves that item separately afterwards; your original labels "
             "remain the primary record.",
             body,
-        )
-    )
+        ),
+    ]))
 
     doc.build(story)
     print(f"wrote {output.relative_to(root)}")

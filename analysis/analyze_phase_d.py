@@ -386,7 +386,7 @@ def plot_gap_comparison(results: pd.DataFrame, figures_dir: Path) -> None:
         )
     ax.axhline(0, color="black", linestyle="--", linewidth=0.8)
     ax.set_xticks(x, [MODEL_NAMES[model] for model in EXPECTED_MODELS])
-    ax.set_ylabel("EN − RH refusal gap (percentage points)")
+    ax.set_ylabel("EN − RH non-assistance gap (percentage points)")
     ax.set_title("Language-effect estimates under judge replacement")
     ax.legend(frameon=False)
     ax.grid(axis="y", color="#dddddd", linewidth=0.6)
@@ -774,7 +774,7 @@ def main() -> None:
         "",
         "## Headline metrics under judge replacement",
         "",
-        "| Judge | Model | EN refusal | RH refusal | Gap (95% CI), pp | Forward/reverse | Critical forward/reverse |",
+        "| Judge | Model | EN non-assistance | RH non-assistance | Gap (95% CI), pp | Forward/reverse | Critical forward/reverse |",
         "|---|---|---:|---:|---:|---:|---:|",
     ]
     for _, row in combined_results.iterrows():
@@ -792,7 +792,7 @@ def main() -> None:
             "",
             "- GPT-5 Mini gap order: "
             + " > ".join(MODEL_NAMES[model] for model in gpt_regimes["gap_order_descending"]),
-            "- Predeclared three-regime conclusion survives judge replacement: "
+            "- Descriptive gap ordering survives judge replacement: "
             + ("YES" if regime_payload["qualitative_three_regime_survives_judge_replacement"] else "NO"),
         ]
     )

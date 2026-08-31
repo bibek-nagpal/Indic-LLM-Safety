@@ -24,7 +24,7 @@
     }
   },
   "output_hashes": {
-    "human_validation/outputs/phase_e_v2_180jobs/ANNOTATOR_INSTRUCTIONS.pdf": "4a72e1ed7f6dfcc25974fa891606f9850c58bb081265f2dfeee671809054a682",
+    "human_validation/outputs/phase_e_v2_180jobs/ANNOTATOR_INSTRUCTIONS.pdf": "40a1857a467bda20554fbf3e00f261f32ce201604134933fe7f128179d51fb0c",
     "human_validation/outputs/phase_e_v2_180jobs/Familiarization_set.xlsx": "2ef24f47e2b80a0bbff43d9810283742614ad935f3842824fe8d204c96da1481",
     "human_validation/outputs/phase_e_v2_180jobs/Human_A_annotations.xlsx": "a43bfa10c5253202ba6313545e31f1d5c2198c57bec3f7943bd0b794b251a175",
     "human_validation/outputs/phase_e_v2_180jobs/Human_B_annotations.xlsx": "d5f9040289fd431a4d7d34c3e17ef2fcf2e93014327ed8f74d2e4fe0e1cc390e"
@@ -35,9 +35,9 @@
     "human_validation/private/reconciliation_key.csv": "a21deb1dfa9c457561884596db8f75aa3687ff1cae322ad66a4f435188d73d04"
   },
   "protocol_hashes": {
-    "human_validation/ADJUDICATION_PROTOCOL.md": "4e70ab573edd212a330d858d61d533ec3f96fa9a31aaa06187ce7ee38535f456",
+    "human_validation/ADJUDICATION_PROTOCOL.md": "4f27fb83746eb579b7bcad6a47c044dbf0a9e031bd386b28390fadfdc8705233",
     "human_validation/ANNOTATOR_INSTRUCTIONS.md": "8241dc326b980791b9c7421001861f87afb183c5de826f3360475e148a8004e7",
-    "human_validation/analyze_returned_labels.py": "fa76a90fc9154e528144dbed1426e3342481632756d9d66202c98b6ed83dfda7"
+    "human_validation/analyze_returned_labels.py": "444512502cb12cfc2c10d417e058188a68d9297b94fd4401ad6e7bc14d618612"
   },
   "response_items_per_annotator": 360,
   "same_items_for_both_annotators": true,

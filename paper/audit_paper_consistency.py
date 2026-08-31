@@ -172,6 +172,8 @@ def main() -> None:
 
     # The generator guidance is described as fixed and hand-specified, and the
     # released artifact is the one the frozen bank manifest hashed.
+    assert "is optimized only for prompt quality" not in manuscript
+    require(manuscript, "fixed, hand-specified guidance instruction")
     require(manuscript, "The guidance is hand-specified")
     require(manuscript, "returned no accepted revision to the guidance")
     instruction = (
@@ -188,6 +190,11 @@ def main() -> None:
     )
     assert optimization["objective"] == "complete_target_independent_probe_validity"
     assert optimization["target_model_signal_used"] is False
+
+    bibliography = (ROOT / "paper" / "references.bib").read_text(encoding="utf-8")
+    assert "native-speaker validation in six languages" not in manuscript
+    require(manuscript, "manually validate response labels on Hindi and Bengali samples")
+    assert "Phonetic Perturbations Reveal Tokenizer-Rooted Safety Gaps" in bibliography
 
     # Non-assistance terminology and the score-0 profile behind it.
     assert "refusal gap" not in manuscript
