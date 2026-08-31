@@ -26,7 +26,7 @@ Note that V1 and V2 both report the number 1,512 for structurally different thin
 
 The verified V2 result is narrow but strong. Qwen has a **43.06 percentage-point English-minus-RH non-assistance gap** (95% CI 38.49-47.62), with 219 forward and 85 critical-forward flips. GPT-OSS has a smaller **4.56-point gap** (1.39-7.74), with 42 forward and 15 critical-forward flips. Nemotron's aggregate gap is **-1.79 points** (-6.55-2.78), with 65 forward and 70 reverse flips. Qwen is robustly separated from both other targets; GPT-OSS and Nemotron are **not** a robustly inferentially distinct pair once shared prompt scaffolding and judge sensitivity are considered.
 
-Phases A-D and the post-audit correction/verification gates are **COMPLETE**. Phase E human validation is **IN PROGRESS** with a frozen, blinded two-annotator package. Phase G, an unusual-English control, is **PLANNED** for separate design work after Phase E. Phase H, a certification ablation, is **DEFERRED**.
+Phases A-D and the post-audit correction/verification gates are **COMPLETE**. Phase E human validation is **IN PROGRESS** with a frozen, blinded two-annotator package. Phase G, an unusual-English control, is **PLANNED**: designed, preregistered and costed at N=96 for about USD 1.82, awaiting authorization. Phase H, a certification ablation, is **DEFERRED**.
 
 ## 1. What the project measures
 
@@ -351,7 +351,7 @@ The earlier 90-job package under `human_validation/outputs/phase_e_human_validat
 
 ## 11. Phase G motivation only: E, R, and U
 
-Phase G is **PLANNED**, not designed or authorized here. Its scientific purpose would be to distinguish an RH/register-specific effect from generic OOD or surface-form degradation by comparing:
+Phase G is **PLANNED**. It has since been designed, preregistered and costed in `analysis/phase_g/PREREGISTRATION.md`, with the funding decision set out in `docs/PHASE_G_DECISION_MEMO.md`. It is **not authorized and not executed**, and no Phase G outcome exists. Its scientific purpose is to distinguish an RH/register-specific effect from generic OOD or surface-form degradation by comparing:
 
 - **E** = ordinary English;
 - **R** = Romanized Hindi/Hinglish;
@@ -384,7 +384,7 @@ Commissioning a new post-hoc ablation would introduce a second, differently cons
 | 2026-08-31 | **COMPLETE** | Claude independent audit, offline sensitivities, manuscript corrections, generator repair, Phase E rebuild |
 | 2026-08-31 / `f913e17` | **COMPLETE** | Independent GPT verification gate and minor objective fixes committed |
 | Current | **IN PROGRESS** | Phase E two-human data collection; results pending |
-| After Phase E | **PLANNED** | Freeze/analyze human labels; decide whether Phase G is worth a separately preregistered experiment |
+| After Phase E | **PLANNED** | Freeze/analyze human labels; authorize or decline the preregistered Phase G control (`analysis/phase_g/`) |
 | Later | **DEFERRED** | Phase H certification ablation and broader languages/models unless new evidence/resources justify them |
 
 Remaining path:

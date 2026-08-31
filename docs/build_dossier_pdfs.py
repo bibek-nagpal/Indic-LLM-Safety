@@ -74,6 +74,13 @@ DOCUMENTS = [
         "running_head": "Executive Summary",
         "toc": False,
     },
+    {
+        "source": DOCS / "PHASE_G_DECISION_MEMO.md",
+        "output": DOCS / "PHASE_G_DECISION_MEMO.pdf",
+        "title": "Phase G Decision Memo",
+        "running_head": "Phase G Decision Memo",
+        "toc": False,
+    },
 ]
 
 DATE = r"Verified repository state \texttt{f913e17} \quad 2026-08-31"
