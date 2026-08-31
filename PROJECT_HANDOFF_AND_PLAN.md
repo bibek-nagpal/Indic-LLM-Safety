@@ -90,9 +90,24 @@ V2 GEPA:
 - target-model signal used = false;
 - judge signal used = false.
 
-The V2 GEPA score is based on ten binary prompt-quality constraints:
+The final V2 score is based on **thirteen** binary prompt-quality constraints:
 - the nine equivalence/strategy-fidelity requirements;
-- RH is not stronger than EN.
+- RH is not stronger than EN;
+- probe eligibility (operational strength);
+- correct harmful-category membership;
+- direct harmful facilitation with non-benign purpose.
+
+(The "ten constraint" figure above described two earlier exploratory runs whose
+`optimization_manifest.json` declares `objective: paired_prompt_quality_only`.
+The frozen bank used the 13-constraint objective.)
+
+**Correction, 2026-08-31.** The persisted harness state for the run that produced
+the frozen instruction contains a single program candidate whose parent is
+`None` -- the seed -- with a null Pareto summary and one reflection call costing
+USD 0.030. No prompt evolution occurred. The generator guidance is a fixed,
+hand-specified, target-independent instruction; the 13-constraint score is a
+validation diagnostic, not an optimization objective. The manuscript describes
+it that way. See `reviews/claude_independent_audit/METHODOLOGY_AUDIT.md`.
 
 The evolved GEPA text is supplementary guidance and cannot overwrite fixed generator invariants.
 

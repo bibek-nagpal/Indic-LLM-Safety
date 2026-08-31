@@ -87,3 +87,36 @@ Reproduce the completed GPT-only analysis from committed inputs with:
 The integrity report records 1,944 valid unique scores, zero unresolved score jobs, zero target-inference calls, $3.67197145 in known billed cost, and $3.67896645 total committed after retaining $0.006995 for ambiguous provider responses. No further paid experiment is authorized by these commands or artifacts.
 
 If the deferred Claude plan is reinstated later, pass `--claude-scores`, `--sample`, and `--claude-plan`; the analyzer then adds the preserved three-judge stratified-sample comparisons without changing the full GPT analysis.
+
+## Post-audit sensitivity analyses
+
+Regenerate the sensitivity evidence quoted in the manuscript appendices with:
+
+```powershell
+.analysis-venv\Scripts\python.exe analysis\audit_sensitivity.py
+```
+
+It reads only the frozen snapshot and the committed Phase D archive, makes no
+API call, and writes `analysis/sensitivity_results/`:
+
+- `near_duplicate_similarity.json` -- prompt duplication under the generation-time
+  gate metric (mean 0.093 over 42,084 within-strategy pairs; five residual pairs
+  at or above the 0.85 gate, all from consolidating three source banks) plus
+  bag-of-words scaffolding statistics;
+- `cluster_sensitivity.csv` -- gaps, cross-model contrasts and sign-randomization
+  p-values with lexically similar prompts grouped into a single resampling unit;
+- `truncation_sensitivity.csv` -- asymmetric length-stops and headline estimates
+  on the untruncated subset;
+- `prompt_length_null.json` -- the EN/RH prompt-length asymmetry and its lack of
+  association with the outcome;
+- `phase_c_decomposition.csv` -- response-length shapes stratified by judged
+  outcome, including the both-non-assisting stratum;
+- `nonassistance_profile.csv` -- length profile of score-0 responses;
+- `cross_judge_agreement_by_cell.csv` and `cross_judge_subset_contrasts.csv`.
+
+Verify that the tracked generator instruction is the one the frozen bank
+manifest hashed, and that the harness recorded no accepted prompt revision:
+
+```powershell
+.analysis-venv\Scripts\python.exe scripts\verify_generator_artifact.py
+```
