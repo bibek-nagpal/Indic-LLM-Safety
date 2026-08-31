@@ -1,0 +1,724 @@
+{
+  "designs": {
+    "conservative|N=120|dual=False|xjudge=False": {
+      "calls": {
+        "cross_judging": 0,
+        "generation": 525.6,
+        "primary_audit": 525.6,
+        "response_judging": 380.4,
+        "secondary_audit": 0.0,
+        "target_inference": 380.4
+      },
+      "dual_certification": false,
+      "gpt5_cross_judge": false,
+      "n_base_pairs": 120,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 126.8,
+          "usd": 0.03438
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 126.8,
+          "usd": 0.03229
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 126.8,
+          "usd": 0.01755
+        }
+      },
+      "total_usd": 1.8939,
+      "usd": {
+        "cross_judging": 0.0,
+        "generation": 0.7399,
+        "primary_audit": 0.3898,
+        "response_judging": 0.68,
+        "secondary_audit": 0.0,
+        "target_inference": 0.0842
+      }
+    },
+    "conservative|N=120|dual=True|xjudge=False": {
+      "calls": {
+        "cross_judging": 0,
+        "generation": 525.6,
+        "primary_audit": 525.6,
+        "response_judging": 380.4,
+        "secondary_audit": 280.7,
+        "target_inference": 380.4
+      },
+      "dual_certification": true,
+      "gpt5_cross_judge": false,
+      "n_base_pairs": 120,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 126.8,
+          "usd": 0.03438
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 126.8,
+          "usd": 0.03229
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 126.8,
+          "usd": 0.01755
+        }
+      },
+      "total_usd": 3.5587,
+      "usd": {
+        "cross_judging": 0.0,
+        "generation": 0.7399,
+        "primary_audit": 0.3898,
+        "response_judging": 0.68,
+        "secondary_audit": 1.6648,
+        "target_inference": 0.0842
+      }
+    },
+    "conservative|N=120|dual=True|xjudge=True": {
+      "calls": {
+        "cross_judging": 380.4,
+        "generation": 525.6,
+        "primary_audit": 525.6,
+        "response_judging": 380.4,
+        "secondary_audit": 280.7,
+        "target_inference": 380.4
+      },
+      "dual_certification": true,
+      "gpt5_cross_judge": true,
+      "n_base_pairs": 120,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 126.8,
+          "usd": 0.03438
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 126.8,
+          "usd": 0.03229
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 126.8,
+          "usd": 0.01755
+        }
+      },
+      "total_usd": 4.2387,
+      "usd": {
+        "cross_judging": 0.68,
+        "generation": 0.7399,
+        "primary_audit": 0.3898,
+        "response_judging": 0.68,
+        "secondary_audit": 1.6648,
+        "target_inference": 0.0842
+      }
+    },
+    "conservative|N=72|dual=False|xjudge=False": {
+      "calls": {
+        "cross_judging": 0,
+        "generation": 315.4,
+        "primary_audit": 315.4,
+        "response_judging": 228.2,
+        "secondary_audit": 0.0,
+        "target_inference": 228.2
+      },
+      "dual_certification": false,
+      "gpt5_cross_judge": false,
+      "n_base_pairs": 72,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 76.1,
+          "usd": 0.02063
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 76.1,
+          "usd": 0.01938
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 76.1,
+          "usd": 0.01053
+        }
+      },
+      "total_usd": 1.1363,
+      "usd": {
+        "cross_judging": 0.0,
+        "generation": 0.4439,
+        "primary_audit": 0.2339,
+        "response_judging": 0.408,
+        "secondary_audit": 0.0,
+        "target_inference": 0.0505
+      }
+    },
+    "conservative|N=72|dual=True|xjudge=False": {
+      "calls": {
+        "cross_judging": 0,
+        "generation": 315.4,
+        "primary_audit": 315.4,
+        "response_judging": 228.2,
+        "secondary_audit": 168.4,
+        "target_inference": 228.2
+      },
+      "dual_certification": true,
+      "gpt5_cross_judge": false,
+      "n_base_pairs": 72,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 76.1,
+          "usd": 0.02063
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 76.1,
+          "usd": 0.01938
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 76.1,
+          "usd": 0.01053
+        }
+      },
+      "total_usd": 2.1352,
+      "usd": {
+        "cross_judging": 0.0,
+        "generation": 0.4439,
+        "primary_audit": 0.2339,
+        "response_judging": 0.408,
+        "secondary_audit": 0.9989,
+        "target_inference": 0.0505
+      }
+    },
+    "conservative|N=72|dual=True|xjudge=True": {
+      "calls": {
+        "cross_judging": 228.2,
+        "generation": 315.4,
+        "primary_audit": 315.4,
+        "response_judging": 228.2,
+        "secondary_audit": 168.4,
+        "target_inference": 228.2
+      },
+      "dual_certification": true,
+      "gpt5_cross_judge": true,
+      "n_base_pairs": 72,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 76.1,
+          "usd": 0.02063
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 76.1,
+          "usd": 0.01938
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 76.1,
+          "usd": 0.01053
+        }
+      },
+      "total_usd": 2.5432,
+      "usd": {
+        "cross_judging": 0.408,
+        "generation": 0.4439,
+        "primary_audit": 0.2339,
+        "response_judging": 0.408,
+        "secondary_audit": 0.9989,
+        "target_inference": 0.0505
+      }
+    },
+    "conservative|N=96|dual=False|xjudge=False": {
+      "calls": {
+        "cross_judging": 0,
+        "generation": 420.5,
+        "primary_audit": 420.5,
+        "response_judging": 304.3,
+        "secondary_audit": 0.0,
+        "target_inference": 304.3
+      },
+      "dual_certification": false,
+      "gpt5_cross_judge": false,
+      "n_base_pairs": 96,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 101.4,
+          "usd": 0.0275
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 101.4,
+          "usd": 0.02583
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 101.4,
+          "usd": 0.01404
+        }
+      },
+      "total_usd": 1.5151,
+      "usd": {
+        "cross_judging": 0.0,
+        "generation": 0.5919,
+        "primary_audit": 0.3118,
+        "response_judging": 0.544,
+        "secondary_audit": 0.0,
+        "target_inference": 0.0674
+      }
+    },
+    "conservative|N=96|dual=True|xjudge=False": {
+      "calls": {
+        "cross_judging": 0,
+        "generation": 420.5,
+        "primary_audit": 420.5,
+        "response_judging": 304.3,
+        "secondary_audit": 224.5,
+        "target_inference": 304.3
+      },
+      "dual_certification": true,
+      "gpt5_cross_judge": false,
+      "n_base_pairs": 96,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 101.4,
+          "usd": 0.0275
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 101.4,
+          "usd": 0.02583
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 101.4,
+          "usd": 0.01404
+        }
+      },
+      "total_usd": 2.847,
+      "usd": {
+        "cross_judging": 0.0,
+        "generation": 0.5919,
+        "primary_audit": 0.3118,
+        "response_judging": 0.544,
+        "secondary_audit": 1.3318,
+        "target_inference": 0.0674
+      }
+    },
+    "conservative|N=96|dual=True|xjudge=True": {
+      "calls": {
+        "cross_judging": 304.3,
+        "generation": 420.5,
+        "primary_audit": 420.5,
+        "response_judging": 304.3,
+        "secondary_audit": 224.5,
+        "target_inference": 304.3
+      },
+      "dual_certification": true,
+      "gpt5_cross_judge": true,
+      "n_base_pairs": 96,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 101.4,
+          "usd": 0.0275
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 101.4,
+          "usd": 0.02583
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 101.4,
+          "usd": 0.01404
+        }
+      },
+      "total_usd": 3.391,
+      "usd": {
+        "cross_judging": 0.544,
+        "generation": 0.5919,
+        "primary_audit": 0.3118,
+        "response_judging": 0.544,
+        "secondary_audit": 1.3318,
+        "target_inference": 0.0674
+      }
+    },
+    "expected|N=120|dual=False|xjudge=False": {
+      "calls": {
+        "cross_judging": 0,
+        "generation": 264.0,
+        "primary_audit": 264.0,
+        "response_judging": 380.4,
+        "secondary_audit": 0.0,
+        "target_inference": 380.4
+      },
+      "dual_certification": false,
+      "gpt5_cross_judge": false,
+      "n_base_pairs": 120,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 126.8,
+          "usd": 0.03438
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 126.8,
+          "usd": 0.03229
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 126.8,
+          "usd": 0.01755
+        }
+      },
+      "total_usd": 1.3316,
+      "usd": {
+        "cross_judging": 0.0,
+        "generation": 0.3716,
+        "primary_audit": 0.1958,
+        "response_judging": 0.68,
+        "secondary_audit": 0.0,
+        "target_inference": 0.0842
+      }
+    },
+    "expected|N=120|dual=True|xjudge=False": {
+      "calls": {
+        "cross_judging": 0,
+        "generation": 264.0,
+        "primary_audit": 264.0,
+        "response_judging": 380.4,
+        "secondary_audit": 158.4,
+        "target_inference": 380.4
+      },
+      "dual_certification": true,
+      "gpt5_cross_judge": false,
+      "n_base_pairs": 120,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 126.8,
+          "usd": 0.03438
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 126.8,
+          "usd": 0.03229
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 126.8,
+          "usd": 0.01755
+        }
+      },
+      "total_usd": 2.2712,
+      "usd": {
+        "cross_judging": 0.0,
+        "generation": 0.3716,
+        "primary_audit": 0.1958,
+        "response_judging": 0.68,
+        "secondary_audit": 0.9396,
+        "target_inference": 0.0842
+      }
+    },
+    "expected|N=120|dual=True|xjudge=True": {
+      "calls": {
+        "cross_judging": 380.4,
+        "generation": 264.0,
+        "primary_audit": 264.0,
+        "response_judging": 380.4,
+        "secondary_audit": 158.4,
+        "target_inference": 380.4
+      },
+      "dual_certification": true,
+      "gpt5_cross_judge": true,
+      "n_base_pairs": 120,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 126.8,
+          "usd": 0.03438
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 126.8,
+          "usd": 0.03229
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 126.8,
+          "usd": 0.01755
+        }
+      },
+      "total_usd": 2.9512,
+      "usd": {
+        "cross_judging": 0.68,
+        "generation": 0.3716,
+        "primary_audit": 0.1958,
+        "response_judging": 0.68,
+        "secondary_audit": 0.9396,
+        "target_inference": 0.0842
+      }
+    },
+    "expected|N=72|dual=False|xjudge=False": {
+      "calls": {
+        "cross_judging": 0,
+        "generation": 158.4,
+        "primary_audit": 158.4,
+        "response_judging": 228.2,
+        "secondary_audit": 0.0,
+        "target_inference": 228.2
+      },
+      "dual_certification": false,
+      "gpt5_cross_judge": false,
+      "n_base_pairs": 72,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 76.1,
+          "usd": 0.02063
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 76.1,
+          "usd": 0.01938
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 76.1,
+          "usd": 0.01053
+        }
+      },
+      "total_usd": 0.799,
+      "usd": {
+        "cross_judging": 0.0,
+        "generation": 0.223,
+        "primary_audit": 0.1175,
+        "response_judging": 0.408,
+        "secondary_audit": 0.0,
+        "target_inference": 0.0505
+      }
+    },
+    "expected|N=72|dual=True|xjudge=False": {
+      "calls": {
+        "cross_judging": 0,
+        "generation": 158.4,
+        "primary_audit": 158.4,
+        "response_judging": 228.2,
+        "secondary_audit": 95.0,
+        "target_inference": 228.2
+      },
+      "dual_certification": true,
+      "gpt5_cross_judge": false,
+      "n_base_pairs": 72,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 76.1,
+          "usd": 0.02063
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 76.1,
+          "usd": 0.01938
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 76.1,
+          "usd": 0.01053
+        }
+      },
+      "total_usd": 1.3627,
+      "usd": {
+        "cross_judging": 0.0,
+        "generation": 0.223,
+        "primary_audit": 0.1175,
+        "response_judging": 0.408,
+        "secondary_audit": 0.5637,
+        "target_inference": 0.0505
+      }
+    },
+    "expected|N=72|dual=True|xjudge=True": {
+      "calls": {
+        "cross_judging": 228.2,
+        "generation": 158.4,
+        "primary_audit": 158.4,
+        "response_judging": 228.2,
+        "secondary_audit": 95.0,
+        "target_inference": 228.2
+      },
+      "dual_certification": true,
+      "gpt5_cross_judge": true,
+      "n_base_pairs": 72,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 76.1,
+          "usd": 0.02063
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 76.1,
+          "usd": 0.01938
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 76.1,
+          "usd": 0.01053
+        }
+      },
+      "total_usd": 1.7707,
+      "usd": {
+        "cross_judging": 0.408,
+        "generation": 0.223,
+        "primary_audit": 0.1175,
+        "response_judging": 0.408,
+        "secondary_audit": 0.5637,
+        "target_inference": 0.0505
+      }
+    },
+    "expected|N=96|dual=False|xjudge=False": {
+      "calls": {
+        "cross_judging": 0,
+        "generation": 211.2,
+        "primary_audit": 211.2,
+        "response_judging": 304.3,
+        "secondary_audit": 0.0,
+        "target_inference": 304.3
+      },
+      "dual_certification": false,
+      "gpt5_cross_judge": false,
+      "n_base_pairs": 96,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 101.4,
+          "usd": 0.0275
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 101.4,
+          "usd": 0.02583
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 101.4,
+          "usd": 0.01404
+        }
+      },
+      "total_usd": 1.0653,
+      "usd": {
+        "cross_judging": 0.0,
+        "generation": 0.2973,
+        "primary_audit": 0.1566,
+        "response_judging": 0.544,
+        "secondary_audit": 0.0,
+        "target_inference": 0.0674
+      }
+    },
+    "expected|N=96|dual=True|xjudge=False": {
+      "calls": {
+        "cross_judging": 0,
+        "generation": 211.2,
+        "primary_audit": 211.2,
+        "response_judging": 304.3,
+        "secondary_audit": 126.7,
+        "target_inference": 304.3
+      },
+      "dual_certification": true,
+      "gpt5_cross_judge": false,
+      "n_base_pairs": 96,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 101.4,
+          "usd": 0.0275
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 101.4,
+          "usd": 0.02583
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 101.4,
+          "usd": 0.01404
+        }
+      },
+      "total_usd": 1.817,
+      "usd": {
+        "cross_judging": 0.0,
+        "generation": 0.2973,
+        "primary_audit": 0.1566,
+        "response_judging": 0.544,
+        "secondary_audit": 0.7516,
+        "target_inference": 0.0674
+      }
+    },
+    "expected|N=96|dual=True|xjudge=True": {
+      "calls": {
+        "cross_judging": 304.3,
+        "generation": 211.2,
+        "primary_audit": 211.2,
+        "response_judging": 304.3,
+        "secondary_audit": 126.7,
+        "target_inference": 304.3
+      },
+      "dual_certification": true,
+      "gpt5_cross_judge": true,
+      "n_base_pairs": 96,
+      "per_target": {
+        "nvidia/nemotron-3-nano-30b-a3b": {
+          "calls": 101.4,
+          "usd": 0.0275
+        },
+        "openai/gpt-oss-20b": {
+          "calls": 101.4,
+          "usd": 0.02583
+        },
+        "qwen/qwen3-30b-a3b-instruct-2507": {
+          "calls": 101.4,
+          "usd": 0.01404
+        }
+      },
+      "total_usd": 2.3609,
+      "usd": {
+        "cross_judging": 0.544,
+        "generation": 0.2973,
+        "primary_audit": 0.1566,
+        "response_judging": 0.544,
+        "secondary_audit": 0.7516,
+        "target_inference": 0.0674
+      }
+    }
+  },
+  "measured_unit_economics": {
+    "generation": {
+      "calls": 2206,
+      "in_per_call": 2346.57615593835,
+      "out_per_call": 399.49728014505894,
+      "total_usd": 3.1054087099999994,
+      "usd_per_call": 0.0014077102039891203
+    },
+    "primary_audit": {
+      "calls": 2234,
+      "in_per_call": 1809.8912264995524,
+      "out_per_call": 2256.2833482542524,
+      "total_usd": 1.656765338036,
+      "usd_per_call": 0.0007416138487179946
+    },
+    "response_judging_gpt5mini": {
+      "calls": 2054,
+      "in_per_call": 1982.738558909445,
+      "out_per_call": 652.157740993184,
+      "total_usd": 3.6719714499999982,
+      "usd_per_call": 0.0017877173563777987
+    },
+    "secondary_audit": {
+      "calls": 1192,
+      "in_per_call": 1734.3171140939598,
+      "out_per_call": 2761.7139261744965,
+      "total_usd": 7.070397300000007,
+      "usd_per_call": 0.005931541359060408
+    },
+    "v2_bank_funnel": {
+      "accepted_pairs": 504,
+      "generation_calls_per_accepted_pair": 4.376984126984127,
+      "overall_acceptance_rate": 0.22560429722470904,
+      "primary_audits_per_accepted_pair": 4.432539682539683,
+      "primary_pass_rate": 0.5335720680393913,
+      "secondary_audits_per_accepted_pair": 2.365079365079365,
+      "secondary_pass_rate": 0.4228187919463087
+    }
+  },
+  "retry_factor": 1.0565843621399178,
+  "scenarios": {
+    "conservative": {
+      "gen_per_accepted": 4.38,
+      "primary_pass": 0.534,
+      "secondary_pass": 0.423
+    },
+    "expected": {
+      "gen_per_accepted": 2.2,
+      "primary_pass": 0.6,
+      "secondary_pass": 0.6
+    }
+  },
+  "target_prices": {
+    "nvidia/nemotron-3-nano-30b-a3b": {
+      "in_usd_per_m": 0.05,
+      "mean_out_tokens": 1329,
+      "out_usd_per_m": 0.2,
+      "price_source": "openrouter.ai model page (verified)"
+    },
+    "openai/gpt-oss-20b": {
+      "in_usd_per_m": 0.1,
+      "mean_out_tokens": 488,
+      "out_usd_per_m": 0.5,
+      "price_source": "UNVERIFIED: page not retrievable; deliberately conservative upper bound, ~2x the two verified targets"
+    },
+    "qwen/qwen3-30b-a3b-instruct-2507": {
+      "in_usd_per_m": 0.04815,
+      "mean_out_tokens": 690,
+      "out_usd_per_m": 0.1931,
+      "price_source": "openrouter.ai model page (verified)"
+    }
+  }
+}

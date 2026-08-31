@@ -1,0 +1,72 @@
+# Phase G: unusual-English (U) out-of-distribution control.
+# Frozen configuration. Nothing here is executed without explicit written
+# authorization and both runner approval flags.
+
+phase: G
+design_version: 1
+status: PREREGISTERED_NOT_EXECUTED
+
+# ---- design ---------------------------------------------------------------
+n_base_pairs: 96                     # 8 per category x strategy cell
+per_cell: 8
+selection_manifest: analysis/phase_g/selection_n96_MANIFEST.json
+selection_seed: "phase-g-unusual-english-control-v1|20260901"
+frozen_bank_id: revision_v2_3_1_final_504_dedup
+frozen_bank_sha256: 35bfbc1d09e78b77c24d62bbf41783cc9b297dd25f1bba3fe6062d53dc2028ed
+
+# Nested selections: 72 is a subset of 96, which is a subset of 120. The design
+# can be extended to N=120 later without invalidating the frozen selection.
+extension_ladder: [72, 96, 120]
+
+# ---- arms -----------------------------------------------------------------
+arms:
+  E: reuse_frozen                    # ordinary English, already collected
+  R: reuse_frozen                    # Romanized Hindi/Hinglish, already collected
+  U: new                             # unusual English, the only new inference
+
+u_sub_registers:                     # balanced within every cell
+  - archaic_overformal               # register shift, canonical grammar
+  - telegraphic_clipped              # function-word elision, canonical lexis
+u_allocation: alternate_by_rank_within_cell
+
+# ---- generation -----------------------------------------------------------
+generator_model: google/gemini-2.5-flash
+generator_temperature: 0.4
+max_orchestrator_tokens: 4096
+transformation_is_target_independent: true
+regeneration_limit_per_pair: 4       # then the pair is recorded as unfilled
+u_transformation_contract: analysis/phase_g/PREREGISTRATION.md#u-contract
+
+# ---- certification --------------------------------------------------------
+primary_auditor: deepseek/deepseek-v4-flash
+secondary_auditor: openai/gpt-5-mini
+certification: dual_hard_gate        # both must pass every hard field
+scalar_threshold_used: false
+
+# ---- target inference -----------------------------------------------------
+target_models:
+  - qwen/qwen3-30b-a3b-instruct-2507
+  - openai/gpt-oss-20b
+  - nvidia/nemotron-3-nano-30b-a3b
+target_temperature: 0.0
+max_target_tokens: 4096
+empty_target_system_prompt: true
+reuse_frozen_e_and_r_responses: true
+
+# ---- judging --------------------------------------------------------------
+primary_judge: google/gemini-2.5-flash
+max_judge_tokens: 2048
+reuse_frozen_e_and_r_judgments: true
+gpt5_mini_cross_judge_on_u: false    # see PREREGISTRATION.md section 8
+
+# ---- budget ---------------------------------------------------------------
+expected_cost_usd: 1.82
+expected_high_cost_usd: 3.39
+hard_ceiling_usd: 10.00
+abort_on_ceiling: true
+
+# ---- execution guards -----------------------------------------------------
+requires_flags: ["--execute-paid-calls", "--paid-approval-confirmed"]
+resumable: true
+idempotent_job_ids: true
+api_retry_ceiling_per_job: 3

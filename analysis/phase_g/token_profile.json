@@ -1,0 +1,12 @@
+{
+  "tokeniser": "chars/4 fallback",
+  "en_prompt_mean": 88.76388888888889,
+  "en_prompt_p90": 113.0,
+  "en_response_mean": 835.574074074074,
+  "en_response_p90": 2224.900000000001,
+  "per_model_en_response_mean": {
+    "nvidia/nemotron-3-nano-30b-a3b": 1329.281746031746,
+    "openai/gpt-oss-20b": 487.7261904761905,
+    "qwen/qwen3-30b-a3b-instruct-2507": 689.7142857142857
+  }
+}
