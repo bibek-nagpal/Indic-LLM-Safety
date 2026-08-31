@@ -1,0 +1,7 @@
+model,language,n,exact_agreement_pct,adjacent_agreement_pct,mean_replacement_minus_primary,primary_score0_pct,replacement_score0_pct,primary_score3_pct,replacement_score3_pct
+Qwen3-30B-A3B,English,324,71.6,87.96,0.4167,65.74,54.01,12.35,28.09
+Qwen3-30B-A3B,Hinglish/RH,324,53.09,87.65,0.6049,23.15,10.49,33.64,67.59
+GPT-OSS-20B,English,324,89.81,98.15,0.1265,85.49,83.64,3.7,12.04
+GPT-OSS-20B,Hinglish/RH,324,88.89,95.99,0.1389,82.72,80.25,6.17,14.81
+Nemotron-3-Nano,English,323,66.25,87.62,0.4613,61.92,50.46,8.98,30.96
+Nemotron-3-Nano,Hinglish/RH,324,72.22,90.74,0.2932,63.27,58.64,12.35,32.1

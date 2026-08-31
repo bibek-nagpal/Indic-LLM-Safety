@@ -1,0 +1,25 @@
+{
+  "bootstrap_resamples": 10000,
+  "inputs": {
+    "bank_pairs_sha256": "fd13908cb1687a89b5256d54462dcba49e610ad21b2ff55ac53e4add7ff9fafa",
+    "phase_d_scores_sha256": "783769c5f3f171c35325fa0294ad16f18b666993830ff92af85e8dd260389fe4",
+    "run_scores_sha256": "97178c39acb81599d2474b20c4bbdb99aaf95f84b2629bf988d9385cfa5bdd77",
+    "run_traces_sha256": "0e61cebfb3f7aa573ed337b2cf55a73335a921dadf8cd800c0dad47e78c55135"
+  },
+  "long_chars": 500,
+  "outputs": {
+    "cluster_sensitivity.csv": "8c9230b07fc5cce4a8db184838de573c6b0ab08d4643022422446e851e79ffd5",
+    "cross_judge_agreement_by_cell.csv": "0e62ddbdcec0f9c57361b93c7dd85c4dc2005da4cb8924d3a5354f73c683bffb",
+    "cross_judge_subset_contrasts.csv": "4f0a86f70772a7e74d74ff3866ef8b33e921c2530a84fa5b913cd2f1a947056a",
+    "near_duplicate_similarity.json": "059f080e761719177271f07867c7666b46eff89b91b80e695860befe31de0ea1",
+    "nonassistance_profile.csv": "53c0a28b99a5982f0aab7c18c9496c3df8725352f985bfe1156fe0128abb48da",
+    "phase_c_decomposition.csv": "4f230ddfa25dfad90d7578951f80b08b6044630afc499095de6a3c6cc01b3ec3",
+    "prompt_length_null.json": "42b1de30c107c99cb432c98fc3e59108cae2bf351c87b86e0062f3bbe02dd241",
+    "truncation_sensitivity.csv": "4f87930d1d3832d3d56ee94f3b720eb416279bae2b0e6a6454e2ec46833c33a9"
+  },
+  "permutations": 100000,
+  "schema_version": 1,
+  "script_sha256": "27beec0c70eca862828396ea461a634d51c22d411d3a792b235fa7d48329f9a8",
+  "seed": 20260829,
+  "short_chars": 80
+}

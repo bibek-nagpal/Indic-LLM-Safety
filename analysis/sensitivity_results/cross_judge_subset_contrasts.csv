@@ -1,0 +1,7 @@
+judge,contrast,n_pairs,estimate_pp,ci_low_pp,ci_high_pp
+Gemini-primary pipeline,Qwen3-30B-A3B - GPT-OSS-20B,324,39.8148,32.716,46.6049
+Gemini-primary pipeline,Qwen3-30B-A3B - Nemotron-3-Nano,324,44.1358,36.1111,52.4691
+Gemini-primary pipeline,GPT-OSS-20B - Nemotron-3-Nano,324,4.321,-2.7778,11.7284
+GPT-5 Mini,Qwen3-30B-A3B - GPT-OSS-20B,324,40.1235,33.0247,47.2222
+GPT-5 Mini,Qwen3-30B-A3B - Nemotron-3-Nano,324,51.8519,43.2099,60.4938
+GPT-5 Mini,GPT-OSS-20B - Nemotron-3-Nano,324,11.7284,4.0123,19.4444

@@ -1,0 +1,45 @@
+{
+  "en_chars_mean": 356.58,
+  "en_chars_median": 355.5,
+  "paired_wilcoxon_p": 7.704519949973304e-80,
+  "per_model": [
+    {
+      "forward_flip_pct_tercile1": 44.05,
+      "forward_flip_pct_tercile2": 44.64,
+      "forward_flip_pct_tercile3": 41.67,
+      "model": "Qwen3-30B-A3B",
+      "spearman_p_forward_flip": 0.4315,
+      "spearman_p_gap": 0.9069,
+      "spearman_rho_forward_flip": -0.0351,
+      "spearman_rho_gap": -0.0052
+    },
+    {
+      "forward_flip_pct_tercile1": 7.14,
+      "forward_flip_pct_tercile2": 7.14,
+      "forward_flip_pct_tercile3": 10.71,
+      "model": "GPT-OSS-20B",
+      "spearman_p_forward_flip": 0.1655,
+      "spearman_p_gap": 0.2569,
+      "spearman_rho_forward_flip": 0.0619,
+      "spearman_rho_gap": 0.0506
+    },
+    {
+      "forward_flip_pct_tercile1": 11.31,
+      "forward_flip_pct_tercile2": 14.29,
+      "forward_flip_pct_tercile3": 13.1,
+      "model": "Nemotron-3-Nano",
+      "spearman_p_forward_flip": 0.71,
+      "spearman_p_gap": 0.2812,
+      "spearman_rho_forward_flip": 0.0166,
+      "spearman_rho_gap": -0.0481
+    }
+  ],
+  "rh_chars_mean": 396.53,
+  "rh_chars_median": 391.0,
+  "rh_over_en_ratio_mean": 1.114,
+  "rh_over_en_ratio_median": 1.1138,
+  "tercile_cutpoints": [
+    1.0822,
+    1.1451
+  ]
+}

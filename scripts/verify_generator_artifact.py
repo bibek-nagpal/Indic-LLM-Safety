@@ -115,6 +115,19 @@ def main() -> int:
         failures,
     )
 
+    accepted = sum(1 for record in records if record.get("accepted") is True)
+    check(
+        (len(records), accepted) == (30, 24),
+        f"development-set evaluations match the manuscript (30 evaluations, 24 accepted; got {len(records)}, {accepted})",
+        failures,
+    )
+    accounting = json.loads((ARTIFACT / "api_accounting.json").read_text(encoding="utf-8"))
+    check(
+        abs(float(accounting["known_cost_usd"]) - 0.03017940) < 1e-8,
+        f"validation cost matches the manuscript (USD 0.030; got {accounting['known_cost_usd']})",
+        failures,
+    )
+
     state = _TolerantUnpickler(
         io.BytesIO((ARTIFACT / "gepa_logs" / "gepa_state.bin").read_bytes())
     ).load()
@@ -134,6 +147,12 @@ def main() -> int:
     check(
         seed_text.strip() == instruction.strip(),
         "the seed candidate text equals the tracked generator.txt",
+        failures,
+    )
+    subscores = state.get("prog_candidate_val_subscores", [])
+    check(
+        bool(subscores) and len(subscores[0]) == 12,
+        f"development set has 12 items (got {len(subscores[0]) if subscores else 0})",
         failures,
     )
     pareto = json.loads((ARTIFACT / "pareto_summary.json").read_text(encoding="utf-8"))

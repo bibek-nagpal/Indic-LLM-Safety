@@ -1,0 +1,4 @@
+model,en_truncated,rh_truncated,discordant_en_only,discordant_rh_only,discordance_exact_p,full_n,full_gap_pp,full_critical_forward,full_critical_reverse,untruncated_n,untruncated_gap_pp,untruncated_critical_forward,untruncated_critical_reverse
+Qwen3-30B-A3B,0,22,0,22,4.76837158203125e-07,504,43.0556,85,2,482,43.361,82,2
+GPT-OSS-20B,47,55,26,34,0.36629400670329104,504,4.5635,15,6,423,4.7281,11,3
+Nemotron-3-Nano,77,35,68,26,1.7316912262453792e-05,504,-1.7857,22,10,401,-0.4988,16,8

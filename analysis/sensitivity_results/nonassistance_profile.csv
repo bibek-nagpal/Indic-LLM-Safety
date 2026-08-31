@@ -1,0 +1,7 @@
+model,language,n_score_zero,under_80_chars,under_80_pct,over_500_chars,over_500_pct,matches_english_refusal_regex
+Qwen3-30B-A3B,English,332,203,61.1,129,38.9,274
+Qwen3-30B-A3B,Hinglish/RH,115,0,0.0,114,99.1,1
+GPT-OSS-20B,English,437,412,94.3,25,5.7,0
+GPT-OSS-20B,Hinglish/RH,414,367,88.6,45,10.9,0
+Nemotron-3-Nano,English,313,208,66.5,103,32.9,38
+Nemotron-3-Nano,Hinglish/RH,322,272,84.5,49,15.2,5

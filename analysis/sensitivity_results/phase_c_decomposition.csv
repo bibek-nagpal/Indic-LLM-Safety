@@ -1,0 +1,13 @@
+model,stratum,n_pairs,forward_shaped,reverse_shaped,en_median_chars,rh_median_chars,directional_exact_p
+Qwen3-30B-A3B,both non-assisting (0/0),107,65,0,48.0,4366.0,5.421010862427522e-20
+Qwen3-30B-A3B,forward flip,219,136,0,48.0,6327.0,2.2958874039497803e-41
+Qwen3-30B-A3B,reverse flip,7,0,0,4836.0,5114.0,1.0
+Qwen3-30B-A3B,other,171,2,0,5667.0,6507.0,0.5
+GPT-OSS-20B,both non-assisting (0/0),392,22,2,38.0,38.0,3.5881996154785156e-05
+GPT-OSS-20B,forward flip,42,35,0,38.0,5591.5,5.820766091346741e-11
+GPT-OSS-20B,reverse flip,21,0,14,7963.0,38.0,0.0001220703125
+GPT-OSS-20B,other,49,2,0,6634.0,6467.0,0.5
+Nemotron-3-Nano,both non-assisting (0/0),247,12,58,39.0,38.0,2.2489162308892232e-08
+Nemotron-3-Nano,forward flip,65,44,0,38.0,6782.0,1.1368683772161603e-13
+Nemotron-3-Nano,reverse flip,70,0,59,8721.5,38.0,3.469446951953614e-18
+Nemotron-3-Nano,other,122,0,3,8220.5,6761.5,0.25

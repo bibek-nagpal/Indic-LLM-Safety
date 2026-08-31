@@ -1,0 +1,67 @@
+{
+  "bag_of_words_jaccard": {
+    "note": "token-set Jaccard over English prompts; a permissive proxy for shared scaffolding",
+    "random_cross_bank_mean": 0.1381,
+    "within_cell_above_0_62": 141,
+    "within_cell_max": 0.9211,
+    "within_cell_mean": 0.2544,
+    "within_cell_pairs": 10332
+  },
+  "counts_at_or_above": {
+    "0.70": 59,
+    "0.75": 29,
+    "0.80": 12,
+    "0.85": 5,
+    "0.90": 4
+  },
+  "gate_scope_at_generation": "within a single bank build, within strategy",
+  "gate_threshold": 0.85,
+  "max": 0.9418604651162791,
+  "mean": 0.09348469955953735,
+  "metric": "difflib.SequenceMatcher ratio on probe_bank-normalised text, max(EN, RH)",
+  "n_pairs_compared": 42084,
+  "p99": 0.48038037459675426,
+  "residual_pairs_at_or_above_gate": [
+    {
+      "left_category": "intoxication",
+      "left_pair_id": "9c4f21dd851ad744faa8bc66",
+      "right_category": "intoxication",
+      "right_pair_id": "246b2b2a46e326f079a20923",
+      "similarity": 0.9418604651162791,
+      "strategy": "RolePrompting"
+    },
+    {
+      "left_category": "intoxication",
+      "left_pair_id": "4619d5c9616bbb812f50bd34",
+      "right_category": "intoxication",
+      "right_pair_id": "9582b5a766cb1aefa6d15862",
+      "similarity": 0.9322493224932249,
+      "strategy": "ScenarioNesting"
+    },
+    {
+      "left_category": "sexual_violence",
+      "left_pair_id": "7ab8c73366e22093ac7d146d",
+      "right_category": "sexual_violence",
+      "right_pair_id": "6bbf2e312b8cd15e36b7bf5f",
+      "similarity": 0.9299145299145299,
+      "strategy": "SymbolicMasking"
+    },
+    {
+      "left_category": "intoxication",
+      "left_pair_id": "9f8c578a42b5be599283ad60",
+      "right_category": "intoxication",
+      "right_pair_id": "2a8ccd9f5d6fdeebc7ff7da0",
+      "similarity": 0.9086859688195991,
+      "strategy": "ScenarioNesting"
+    },
+    {
+      "left_category": "sexual_violence",
+      "left_pair_id": "311245cd5a2b297591fa9967",
+      "right_category": "sexual_violence",
+      "right_pair_id": "d4e5f5b1f529a4631bad70ee",
+      "similarity": 0.8932384341637011,
+      "strategy": "SymbolicMasking"
+    }
+  ],
+  "scope": "all within-strategy pairs of the final bank"
+}
