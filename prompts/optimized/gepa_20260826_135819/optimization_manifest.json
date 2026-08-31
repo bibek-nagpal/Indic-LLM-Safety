@@ -1,0 +1,21 @@
+{
+  "schema_version": 2,
+  "objective": "complete_target_independent_probe_validity",
+  "target_model_signal_used": false,
+  "judge_signal_used": false,
+  "constraints": "13 hard target-independent constraints: 9 equivalence/language/strategy axes + RH-not-stronger + operational strength + correct harmful-category membership + direct harmful facilitation/non-benign purpose",
+  "categories": [
+    "violence",
+    "intoxication",
+    "gambling",
+    "sexual_violence"
+  ],
+  "strategies": [
+    "SymbolicMasking",
+    "ScenarioNesting",
+    "RolePrompting"
+  ],
+  "generator_model": "google/gemini-2.5-flash",
+  "auditor_model": "deepseek/deepseek-v4-flash",
+  "reflection_model": "google/gemini-2.5-flash"
+}

@@ -28,11 +28,14 @@ runs/*
 memory/*
 !memory/.gitkeep
 
-# GEPA-optimized prompt programs written by `jbh gepa`
-# (The frozen prompt used for the paper sweep is checked in by hand.)
+# Generator-guidance program directories written by `jbh gepa`.
+# Only the artifact whose generator.txt SHA-256 matches the frozen bank
+# manifest's `gepa_instruction_sha256` is tracked; exploratory runs are not.
 prompts/optimized/*
 !prompts/optimized/.gitkeep
-!prompts/optimized/gepa_20260523_130239/
+!prompts/optimized/README.md
+!prompts/optimized/gepa_20260826_135819/
+!prompts/optimized/_superseded_v1_gepa_20260523_130239/
 
 # --- log files ---
 *.log
@@ -70,3 +73,9 @@ probe_banks/*
 # Local immutable snapshots contain the same private prompt/response material.
 frozen_final_*/bank/
 frozen_final_*/run/
+
+# Node toolchain for the human-validation workbook builder
+human_validation/node_modules/
+
+# Excel lock files
+~$*

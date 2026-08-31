@@ -1,0 +1,250 @@
+{
+  "schema_version": 1,
+  "gepa_metric_evaluations": 30,
+  "successful_metric_evaluations": 24,
+  "dspy_history_calls": 29,
+  "known_cost_usd": 0.030179400000000006,
+  "note": "Cost is exact only when the provider/LiteLLM returned cost metadata; token counts are retained for reconstruction otherwise.",
+  "by_model": {
+    "openrouter/google/gemini-2.5-flash": {
+      "calls": 29,
+      "prompt_tokens": 25448,
+      "completion_tokens": 9018,
+      "known_cost_usd": 0.030179400000000006
+    }
+  },
+  "calls": [
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 819,
+      "completion_tokens": 186,
+      "total_tokens": 1005,
+      "cost_usd": 0.0007107
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 844,
+      "completion_tokens": 305,
+      "total_tokens": 1149,
+      "cost_usd": 0.0010157
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 847,
+      "completion_tokens": 277,
+      "total_tokens": 1124,
+      "cost_usd": 0.0009466
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 845,
+      "completion_tokens": 319,
+      "total_tokens": 1164,
+      "cost_usd": 0.001051
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 822,
+      "completion_tokens": 338,
+      "total_tokens": 1160,
+      "cost_usd": 0.0010916
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 847,
+      "completion_tokens": 321,
+      "total_tokens": 1168,
+      "cost_usd": 0.0010566
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 845,
+      "completion_tokens": 351,
+      "total_tokens": 1196,
+      "cost_usd": 0.001131
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 842,
+      "completion_tokens": 370,
+      "total_tokens": 1212,
+      "cost_usd": 0.0011776
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 822,
+      "completion_tokens": 377,
+      "total_tokens": 1199,
+      "cost_usd": 0.0011891
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 845,
+      "completion_tokens": 310,
+      "total_tokens": 1155,
+      "cost_usd": 0.0010285
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 843,
+      "completion_tokens": 327,
+      "total_tokens": 1170,
+      "cost_usd": 0.0010704
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 820,
+      "completion_tokens": 304,
+      "total_tokens": 1124,
+      "cost_usd": 0.001006
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 847,
+      "completion_tokens": 241,
+      "total_tokens": 1088,
+      "cost_usd": 0.0008566
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 842,
+      "completion_tokens": 480,
+      "total_tokens": 1322,
+      "cost_usd": 0.0014526
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 843,
+      "completion_tokens": 339,
+      "total_tokens": 1182,
+      "cost_usd": 0.0011004
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 842,
+      "completion_tokens": 381,
+      "total_tokens": 1223,
+      "cost_usd": 0.0012051
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 822,
+      "completion_tokens": 205,
+      "total_tokens": 1027,
+      "cost_usd": 0.0007591
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 845,
+      "completion_tokens": 325,
+      "total_tokens": 1170,
+      "cost_usd": 0.001066
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 822,
+      "completion_tokens": 220,
+      "total_tokens": 1042,
+      "cost_usd": 0.0007966
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 819,
+      "completion_tokens": 186,
+      "total_tokens": 1005,
+      "cost_usd": 0.0007107
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 820,
+      "completion_tokens": 358,
+      "total_tokens": 1178,
+      "cost_usd": 0.001141
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 819,
+      "completion_tokens": 195,
+      "total_tokens": 1014,
+      "cost_usd": 0.0007332
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 847,
+      "completion_tokens": 235,
+      "total_tokens": 1082,
+      "cost_usd": 0.0008416
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 845,
+      "completion_tokens": 358,
+      "total_tokens": 1203,
+      "cost_usd": 0.0011485
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 822,
+      "completion_tokens": 287,
+      "total_tokens": 1109,
+      "cost_usd": 0.0009641
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 845,
+      "completion_tokens": 364,
+      "total_tokens": 1209,
+      "cost_usd": 0.0011635
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 1163,
+      "completion_tokens": 203,
+      "total_tokens": 1366,
+      "cost_usd": 0.0008564
+    },
+    {
+      "purpose": "gepa_task_generation",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 1186,
+      "completion_tokens": 324,
+      "total_tokens": 1510,
+      "cost_usd": 0.0011658
+    },
+    {
+      "purpose": "gepa_reflection",
+      "model": "openrouter/google/gemini-2.5-flash",
+      "prompt_tokens": 1378,
+      "completion_tokens": 532,
+      "total_tokens": 1910,
+      "cost_usd": 0.0017434
+    }
+  ]
+}
