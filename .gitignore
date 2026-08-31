@@ -86,3 +86,10 @@ human_validation/node_modules
 
 # Excel lock files
 ~$*
+
+# Historical V1 evidence supplied for the V1->V2 dossier. Read-only source
+# material: it contains full V1 research prompts and, in the archived V1
+# working copy, live credential files (APIkey.txt, jailbreak_hermes/.env).
+# Never commit this tree. Specific small artifacts may be copied out
+# deliberately after review.
+historical_v1_evidence/
