@@ -38,9 +38,11 @@ def cohort():
 def config(rows=None, ceiling=1_000_000_000):
     rows = rows or cohort()
     return dict(hard_ceiling_nusd=ceiling,cohort_payload_hashes={"sanity":r.identifier(rows),"main_construction":r.identifier(rows)},
+                stage_budgets_nusd=dict(sanity=ceiling,main_construction=0,target_inference=0,judging=0),
                 roles={role:dict(model=model,temperature=.4 if role=="generation" else 0,max_tokens=4096,
+                                 allowed_stages=["sanity","main_construction"],
                                  maximum_call_nusd=1000,request_parameters={"stream":False,
-                                     "provider":{"order":["fixture-provider"],"allow_fallbacks":False,"require_parameters":True}})
+                                     "provider":{"order":["fixture-provider"],"only":["fixture-provider"],"allow_fallbacks":False,"require_parameters":True}})
                        for role,model in r.MODELS.items()})
 
 
@@ -74,12 +76,13 @@ def envelope(request, content, **extra):
 
 
 class FixtureTransport:
-    def __init__(self, fail_first=0, fail_until=1, always_reject=False, duplicate=False):
+    def __init__(self, fail_first=0, fail_until=1, always_reject=False, duplicate=False, reject_role="deepseek_audit"):
         self.calls=[]
         self.gens=Counter()
         self.items={}
         self.fail_first,self.fail_until=fail_first,fail_until
         self.always_reject,self.duplicate=always_reject,duplicate
+        self.reject_role=reject_role
 
     def __call__(self, job, request):
         self.calls.append((job,copy.deepcopy(request)))
@@ -97,7 +100,7 @@ class FixtureTransport:
             obj=audit_fixture(item,payload["metadata"]["strategy"])
             index=int(source.rsplit(" ",1)[1])
             reject=self.always_reject or (index<self.fail_first and attempt<=self.fail_until)
-            if reject and request["model"]==r.MODELS["deepseek_audit"]:
+            if reject and request["model"]==r.MODELS[self.reject_role]:
                 obj["axes"]["strong_archaization"]["pass"]=False
                 obj["failed_axes"]=["strong_archaization"]
                 obj["verdict"]="reject"
@@ -160,10 +163,12 @@ def test_readiness_floor_four_attempts_and_resume(tmp_path,fail_first,fail_until
     assert report["verdict"].endswith("NOT READY") is (not ready)
     assert report["first_attempt_passes"]==12-fail_first
     assert report["costs"]["generation"]["calls"]==gen_count
-    assert all(report["costs"][role]["calls"]==gen_count for role in r.ROLES)
+    assert report["costs"]["deepseek_audit"]["calls"]==gen_count
+    assert report["costs"]["mini_audit"]["calls"]==12
     for item in {json.loads(req["messages"][1]["content"])["item_id"] for _,req in mock.calls}:
         audits=[req["messages"] for _,req in mock.calls if req["model"]!=r.MODELS["generation"] and json.loads(req["messages"][1]["content"])["item_id"]==item]
-        assert len(audits)==2 and audits[0]==audits[1]
+        assert len(audits) in (1,2)
+        if len(audits)==2: assert audits[0]==audits[1]
     before=len(mock.calls)
     j.close(); j=journal(tmp_path)
     replay=r.construction(j,cohort(),mock)
@@ -180,7 +185,7 @@ def test_rejection_and_duplicate_never_repolled(tmp_path,duplicate,expected_audi
     assert not report["accepted"]
     assert report["costs"]["generation"]["calls"]==48
     assert report["costs"]["deepseek_audit"]["calls"]==expected_audits
-    assert report["costs"]["mini_audit"]["calls"]==expected_audits
+    assert report["costs"]["mini_audit"]["calls"]==0
     j.close()
 
 
@@ -364,7 +369,7 @@ def test_exact_call_cost_arithmetic():
 @pytest.mark.parametrize("reject_all,expected_calls",[(False,105),(True,240)])
 def test_actual_success_and_failure_call_ceilings(tmp_path,reject_all,expected_calls):
     j=journal(tmp_path)
-    mock=FixtureTransport(fail_first=3,fail_until=3,always_reject=reject_all)
+    mock=FixtureTransport(fail_first=3,fail_until=3,always_reject=reject_all,reject_role="mini_audit")
     counts=Counter()
     def transport(job,req):
         reply=mock(job,req)

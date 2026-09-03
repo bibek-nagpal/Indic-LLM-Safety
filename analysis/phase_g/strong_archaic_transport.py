@@ -15,13 +15,16 @@ from analysis.phase_g.strong_archaic_runtime import Stop, MODELS
 
 
 class SingleDispatchTransport:
-    def __init__(self, *, api_key, approved, routes, client=None):
+    def __init__(self, *, api_key, approved, routes, provider_names=None, client=None):
         if approved is not True or not api_key or not routes or any(not r for r in routes.values()):
             raise Stop("separate paid approval, credentials and verified pinned routes required")
         if not set(routes) <= set(MODELS.values()):
             raise Stop("construction transport cannot enable a target model")
         self.api_key = api_key
         self.routes = routes
+        self.provider_names = provider_names or {m: r for m,r in routes.items()}
+        if set(self.provider_names) != set(routes) or any(not n for n in self.provider_names.values()):
+            raise Stop("pinned provider display names required for every route")
         # HTTPTransport defaults to retries=0. Explicit no redirects, timeout120.
         self.client = client or httpx.Client(transport=httpx.HTTPTransport(retries=0),
                                             timeout=120, follow_redirects=False, trust_env=False)
@@ -34,7 +37,7 @@ class SingleDispatchTransport:
         model = request["model"]
         route = self.routes.get(model)
         provider = request.get("provider", {})
-        if (not route or provider.get("order") != [route] or provider.get("allow_fallbacks") is not False
+        if (not route or provider.get("order") != [route] or provider.get("only") != [route] or provider.get("allow_fallbacks") is not False
                 or provider.get("require_parameters") is not True or request.get("stream") is not False):
             raise Stop("transport request routing must match verified frozen route")
         # A client job ID header is diagnostic ONLY, not server idempotency.
@@ -54,7 +57,7 @@ class SingleDispatchTransport:
         usage = raw.get("usage")
         result.update(request_id=raw.get("id") or reply.headers.get("x-request-id"),
                       provider=raw.get("provider"), model=raw.get("model", model),
-                      usage=usage, content="", finish_reason=None)
+                      service_tier=raw.get("service_tier"), usage=usage, content="", finish_reason=None)
         # Even HTTP 4xx/429/5xx are not presumed free. Without explicit cost metadata
         # they remain unresolved until separately reconciled with provider records.
         if isinstance(usage, dict) and usage.get("cost") is not None:
@@ -76,6 +79,10 @@ class SingleDispatchTransport:
             result["status"] = "error"
             result["definitely_unbilled"] = result.get("billed_nusd") == 0
         # Provider mismatch is evidence, not an automatic request to another route.
-        if result.get("provider") != route:
+        if result.get("provider") != self.provider_names[model]:
             result["status"] = "provider_mismatch"
+        elif request.get("service_tier") == "flex" and raw.get("service_tier") != "flex":
+            # Do not silently keep paying standard rates. The ledger reserves
+            # standard rates, saves the billed result, then quarantines for review.
+            result["status"] = "service_tier_mismatch"
         return result

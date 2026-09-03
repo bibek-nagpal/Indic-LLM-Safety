@@ -1,0 +1,74 @@
+{
+  "blockers": [
+    "mini_audit: pinned openai/gpt-5-mini on openai/flex does not support ['temperature']; approval required before changing sampling, no silent omission",
+    "Sanity paid approval not supplied in this task; no inference entry point enabled",
+    "Before targets: prospectively reconcile old preregistration/SAP and implement/test target/judge adapters against SAME ledger",
+    "Public quotes cannot prove an actual paid request; rate caps/no fallback/receipt checks must stay enabled",
+    "Completion at maximum permitted retries is not guaranteed for $5.50; stop incomplete rather than weaken gates"
+  ],
+  "cohort_unchanged": true,
+  "costs": {
+    "full": {
+      "expected_cost_usd": 1.4398904811,
+      "hard_authorized_usd": 5.5,
+      "standard_tier_expected_usd": 2.6358619810999997,
+      "unconstrained_protocol_reservation_sum_usd": 1024.698723084
+    },
+    "judging": {
+      "expected_cost_usd": 0.55638375,
+      "hard_authorized_usd": 1.5,
+      "standard_tier_expected_usd": 1.1127675,
+      "unconstrained_protocol_reservation_sum_usd": 417.7701792
+    },
+    "main_construction": {
+      "expected_cost_usd": 0.68634921,
+      "hard_authorized_usd": 2.6,
+      "standard_tier_expected_usd": 1.2556809599999998,
+      "unconstrained_protocol_reservation_sum_usd": 549.444672
+    },
+    "sanity": {
+      "expected_cost_usd": 0.08511104,
+      "hard_authorized_usd": 0.65,
+      "standard_tier_expected_usd": 0.15536704,
+      "unconstrained_protocol_reservation_sum_usd": 30.0477555
+    },
+    "target_inference": {
+      "expected_cost_usd": 0.11204648110000001,
+      "hard_authorized_usd": 0.75,
+      "standard_tier_expected_usd": 0.1120464811,
+      "unconstrained_protocol_reservation_sum_usd": 27.436116383999998
+    }
+  },
+  "current_paid_approval_usd": 0,
+  "frozen_files_checked": 82,
+  "frozen_mismatches": [],
+  "generated_u": 0,
+  "hard_authorized_full_cost_usd": 5.5,
+  "old_g_byte_locks_checked": 10,
+  "paid_inference_calls": 0,
+  "parent_commit": "8a7498445d651fcdcb30681e58f142f637f91cdd",
+  "pre_outcome_amendment": true,
+  "preserved_parent_file_hashes": {
+    "analysis/phase_g/specs/strong_archaic_v3_audit.txt": "511c046c75fa9eec7dcdc85bda5b5a39c974f7ad7850031c9d07f2665fa55c0e",
+    "analysis/phase_g/specs/strong_archaic_v3_generation.txt": "a97d80f934552eed8363a236399c1865140fc46602fab7c8ba23e8aee4c9d186",
+    "analysis/phase_g/specs/strong_archaic_v3_schemas.json": "2077b7866ff4d362adfe451ca53fb2b687175dab45cea0a4644e0b805d1bfd13",
+    "analysis/phase_g/u_arch_v3_preflight/COST_PREFLIGHT.json": "a9f2bd2f790c68c981fc943537a305dc8de79e31ec94a2f1d3371a09c6dd01d7",
+    "analysis/phase_g/u_arch_v3_preflight/EXECUTION_PLAN.json": "e71efcbdc2f47979065d4a9ba8679aac046b228f5d82880c93450a3a156c878a",
+    "analysis/phase_g/u_arch_v3_preflight/PREFLIGHT.json": "b2f96a8477d803cd89f60b8292f9fa917ccee5a99bafba38825cbed9c06014f4",
+    "analysis/phase_g/u_arch_v3_preflight/SANITY_COHORT_MANIFEST.json": "3bca87426d10f3d4946d05711ed56608932eca5ccf551b1be776cb382bd8338c",
+    "analysis/phase_g/u_arch_v3_preflight/VALIDATION.json": "c18fdf9fa101990b373bdd03b3fadae72b87df0e0cba106c0162e7b42b2b746c"
+  },
+  "public_metadata_gets": 7,
+  "sanity_cohort_valid": true,
+  "sanity_execution_preflight": "FAIL",
+  "sanity_run": false,
+  "schemas_valid": true,
+  "scientific_gates_changed": false,
+  "source_urls": {
+    "flex_actual_tier_billing": "https://openrouter.ai/docs/guides/features/service-tiers",
+    "google_dynamic_thinking": "https://ai.google.dev/gemini-api/docs/generate-content/thinking?hl=en",
+    "parameters": "https://openrouter.ai/docs/api_reference/parameters",
+    "provider_routing_and_max_price": "https://openrouter.ai/docs/guides/routing/provider-selection",
+    "reasoning_and_billing": "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens"
+  }
+}

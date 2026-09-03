@@ -12,6 +12,11 @@ construct and all three instruction/schema files remain byte-identical. The old
 first-attempt-only rule is preserved at `b647e29`. See
 [amendment and preflight record](STRONG_ARCHAIC_PREFLIGHT_AMENDMENT.md).
 
+**Current amendment 2 (2026-09-03), parent `8a74984`:** sequential auditing and
+a $5.50 cumulative ceiling supersede amendment 1's call graph/$10 budget only.
+The construct, 17 gates, N12 rule and four-generation limit remain unchanged.
+See [current budget/preflight](BUDGET550_AMENDMENT.md). No inference is approved.
+
 ## 1. Authoritative specification files and scope
 
 Use these files verbatim, without old RH guidance or five-family inventories:
@@ -66,14 +71,19 @@ The amendment freezes an identifier/source-hash sanity manifest in
 | Primary auditor | `deepseek/deepseek-v4-flash` | 0 | 4096 |
 | Secondary auditor | `openai/gpt-5-mini` | 0 | 4096 |
 
-Use one fresh conversation per request. **Both auditors run for every new,
-mechanically valid candidate**, even if the first rejects it, and receive
-identical inputs without each other's reports. This supersedes the earlier
-primary-pass-only cascade to implement the user's amended call policy. Critical
+Use one fresh conversation per request. **DeepSeek runs first; GPT-5 Mini runs
+only if DeepSeek passes every gate.** Both must pass for acceptance and receive
+identical inputs without each other's reports. A skipped secondary is logged as
+not dispatched, never as agreement/rejection. This amendment removes the
+redundant Mini call on already-rejected candidates. Critical
 integrity, baseline-E, budget or infrastructure stops still halt dispatch.
 No alternate model,
 fallback certifier, larger output cap, unrecorded repair model or implicit
 best-of sampling is permitted.
+
+Live metadata now establishes that Mini does not support the pinned temperature
+parameter. The table preserves the unamended setting; dispatch is BLOCKED pending
+approval to omit it and use native sampling. No automatic parameter dropping.
 
 This reuses established roles without asserting the generator's adequacy in
 advance. The sanity check tests whether it can meet the strong-rewrite contract.
@@ -252,8 +262,8 @@ hash manifest before generation. Shared synthetic scaffolds may remain.
 For each selected source:
 
 1. Generate a first-attempt U with the fixed system/payload.
-2. Apply mechanical guards and both independent auditors on every new valid
-   candidate, using the unchanged 17-axis rubric.
+2. Apply mechanical guards, then DeepSeek; call the independent Mini auditor
+   only on a primary pass, using the unchanged 17-axis rubric in each call.
 3. Accept only a dual pass on every hard gate, then stop that pair. Otherwise
    apply the same bounded policy as main construction: at most four total
    generation requests per pair, including failures. A valid rejection requires
@@ -307,7 +317,8 @@ After a reviewed sanity pass and **separate approval** for main construction:
 At most two requests per auditor per candidate. A second is allowed only for
 malformed/incomplete output or definitely unbilled infrastructure failure,
 with the identical content contract and no disclosure of desired verdict.
-Billed auditor API errors are saved and stop for review; only explicitly proven
+Billed API errors are saved and stop for review; deterministic client/auth/model
+errors stop without repeating the same request even if free. Only explicitly proven
 unbilled infrastructure failures qualify for the second request. All malformed
 billable replies consume both their attempt slot and their actual cost.
 A valid reject is never rerun for another vote. An unresolved second report
@@ -325,7 +336,7 @@ receive bounded feedback in **sanity and main** construction. This intentionally
 the old family-selection procedure; it does not authorize metric optimization
 or whole-cohort strengthening after acceptance. Feedback reasons are truncated
 to at most 400 Unicode characters per report for bounded logging/input cost;
-at most six prior auditor reports exist before the fourth generation. Failed
+at most three prior rejecting-auditor reports exist before the fourth generation. Failed
 axis codes remain intact. This does not change candidate acceptance or the rubric.
 
 ## 8. Minimal diagnostics and complete-bank gate
@@ -389,8 +400,9 @@ Before targets:
   preregistration/SAP are not amended in this narrow preflight task.
 
 All future Phase G API costs, including sanity, main construction, retries and
-later authorized U targets/judging, remain within the existing conditional
-USD 10 ceiling unless the user explicitly changes it. No cost is inferred from
+later authorized U targets/judging, share one persisted hard **USD 5.50** ceiling,
+with stage caps $0.65 sanity /$2.60 main /$0.75 targets /$1.50 judging. No automatic
+stage borrowing or fresh journal budget is permitted. No cost is inferred from
 the obsolete USD 1.82 forecast. No new payment is authorized now. If the full
 approved procedure cannot fit, stop before spending beyond reservations.
 

@@ -13,6 +13,7 @@ import json
 import re
 import sqlite3
 from collections import Counter
+from decimal import Decimal, ROUND_CEILING
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -22,6 +23,8 @@ ROOT = Path(__file__).resolve().parents[2]
 SPECS = ROOT / "analysis/phase_g/specs"
 ROLES = ("generation", "deepseek_audit", "mini_audit")
 MODELS = dict(zip(ROLES, ("google/gemini-2.5-flash", "deepseek/deepseek-v4-flash", "openai/gpt-5-mini")))
+HARD_CEILING_NUSD = 5_500_000_000
+STAGES = ("sanity", "main_construction", "target_inference", "judging")
 SCHEMAS = json.loads((SPECS / "strong_archaic_v3_schemas.json").read_text(encoding="utf-8"))["$defs"]
 AXES = tuple(SCHEMAS["audit"]["properties"]["axes"]["properties"])
 VALIDITY = dict(correct_category_membership=True, direct_harm_facilitation=True,
@@ -52,7 +55,7 @@ def identifier(*parts):
 def candidate_id(stage, source, number):
     # Scientific candidate identity does not depend on a changing price quote.
     # The ledger separately locks the entire configuration and request bytes.
-    return identifier("U-ARCH-v3-sanity-amendment-1", stage, source["pair_id"], source["source_E_sha256"], number)
+    return identifier("U-ARCH-v3-budget550-amendment-2", stage, source["pair_id"], source["source_E_sha256"], number)
 
 
 def messages(role, payload):
@@ -65,6 +68,12 @@ def messages(role, payload):
 
 def parse(content, kind, item_id):
     # Reject duplicate JSON keys, nonstandard NaN/Infinity and prose wrappers.
+    # Deterministic wrapper-only recovery is free; never fill/alter JSON fields.
+    if not isinstance(content, str):
+        raise TypeError("structured response must be text")
+    content = content.lstrip("\ufeff").strip()
+    if content.startswith("```json\n") and content.endswith("\n```"):
+        content = content[len("```json\n"):-len("\n```")]
     def pairs(items):
         result = {}
         for key, value in items:
@@ -148,8 +157,15 @@ class Journal:
 
     def __init__(self, path, config, locks):
         ceiling = config.get("hard_ceiling_nusd")
-        if type(ceiling) is not int or not 0 < ceiling <= 10_000_000_000:
-            raise Stop("ceiling must be a positive integer and cannot exceed authorized $10")
+        if type(ceiling) is not int or not 0 < ceiling <= HARD_CEILING_NUSD:
+            raise Stop("ceiling must be a positive integer and cannot exceed authorized $5.50")
+        caps = config.get("stage_budgets_nusd", {})
+        if set(caps) != set(STAGES) or any(type(v) is not int or v < 0 for v in caps.values()) or sum(caps.values()) > ceiling:
+            raise Stop("all four nonnegative stage caps required; sum cannot exceed global ceiling")
+        if config.get("journal_path") and Path(path).resolve() != (ROOT/config["journal_path"]).resolve():
+            raise Stop("one canonical cumulative journal required; no fresh budget at another path")
+        if "locks" in config and locks != config["locks"]:
+            raise Stop("execution plan requires its entire frozen lock set")
         self.config, self.locks = config, locks
         self.scope = identifier(config, locks)
         self.db = sqlite3.connect(path, timeout=10, isolation_level=None)
@@ -159,11 +175,13 @@ class Journal:
         self.db.executescript("""
             CREATE TABLE IF NOT EXISTS run (id INTEGER PRIMARY KEY CHECK(id=1), scope TEXT NOT NULL);
             CREATE TABLE IF NOT EXISTS calls (
-              id TEXT PRIMARY KEY, role TEXT NOT NULL, request TEXT NOT NULL,
+              id TEXT PRIMARY KEY, role TEXT NOT NULL, stage TEXT NOT NULL, request TEXT NOT NULL,
               request_hash TEXT NOT NULL, reserved INTEGER NOT NULL, state TEXT NOT NULL,
               response TEXT, response_hash TEXT, billed INTEGER, created TEXT NOT NULL, finished TEXT);
             CREATE TABLE IF NOT EXISTS events (id TEXT PRIMARY KEY, payload TEXT NOT NULL, hash TEXT NOT NULL);
         """)
+        if "stage" not in {r[1] for r in self.db.execute("PRAGMA table_info(calls)")}:
+            raise Stop("legacy journal requires reviewed migration, never reset its spending")
         self.db.execute("INSERT OR IGNORE INTO run VALUES (1, ?)", (self.scope,))
         if self.db.execute("SELECT scope FROM run").fetchone()[0] != self.scope:
             raise Stop("journal configuration/hash scope changed")
@@ -173,10 +191,12 @@ class Journal:
         self.db.close()
 
     def check_locks(self):
+        if identifier(self.config, self.locks) != self.scope:
+            raise Stop("in-memory configuration/hash scope changed")
         if any(file_hash(ROOT / name) != sha for name, sha in self.locks.items()):
             raise Stop("input/specification/code hash changed")
         for row in self.db.execute("SELECT * FROM calls"):
-            if digest(row["request"]) != row["request_hash"] or (row["response"] is not None and digest(row["response"]) != row["response_hash"]):
+            if identifier(row["role"],row["stage"],row["request"]) != row["request_hash"] or (row["response"] is not None and digest(row["response"]) != row["response_hash"]):
                 raise Stop("journal payload hash mismatch")
             if row["reserved"] != self.config["roles"][row["role"]]["maximum_call_nusd"]:
                 raise Stop("journal reservation differs from frozen bound")
@@ -193,7 +213,13 @@ class Journal:
         return {role: {"calls": sum(r["role"] == role for r in rows),
                        "billed_nusd": sum(r["billed"] or 0 for r in rows if r["role"] == role),
                        "reserved_nusd": sum(r["reserved"] for r in rows if r["role"] == role and r["billed"] is None)}
-                for role in ROLES}
+                for role in self.config["roles"]}
+
+    def stage_totals(self):
+        return {stage: dict(calls=row[0], billed_nusd=row[1], reserved_nusd=row[2])
+                for stage in STAGES for row in [self.db.execute(
+                    "SELECT COUNT(*),COALESCE(SUM(billed),0),COALESCE(SUM(CASE WHEN billed IS NULL THEN reserved ELSE 0 END),0) FROM calls WHERE stage=?",
+                    (stage,)).fetchone()]}
 
     def event(self, key, payload):
         body = canonical(payload)
@@ -202,25 +228,62 @@ class Journal:
         if row[0] != body or row[1] != digest(body):
             raise Stop("decision changed on replay")
 
-    def call(self, job, role, payload, transport):
+    def call(self, job, role, payload, transport, *, stage="sanity"):
         if role not in ROLES:
             raise Stop("construction cannot dispatch targets or judges")
-        self.check_locks()
+        if stage not in ("sanity", "main_construction"):
+            raise Stop("construction call cannot spend another stage's funds")
         settings = self.config["roles"][role]
         if settings["model"] != MODELS[role] or settings["max_tokens"] != 4096 or settings["temperature"] != (0.4 if role == "generation" else 0):
             raise Stop("unapproved model or sampling settings")
         request = dict(settings["request_parameters"], model=settings["model"],
                        temperature=settings["temperature"], max_tokens=settings["max_tokens"],
                        messages=messages(role, payload))
+        return self._dispatch_request(job, role, stage, request, transport)
+
+    def _dispatch_request(self, job, role, stage, request, transport):
+        """Shared financial kernel for later target/judge adapters, not a runner.
+
+        Construction entry points cannot dispatch target/judge models. Their future
+        science/approval controllers must call this same journal, never a new cap.
+        """
+        self.check_locks()
+        if self.config.get("inference_blockers"):
+            raise Stop("live preflight blockers unresolved; no dispatch permitted")
+        if self.config.get("live_enabled") is False:
+            raise Stop("execution plan is offline-only; paid approval/promotion required")
+        if role not in self.config["roles"] or stage not in STAGES:
+            raise Stop("unplanned role or stage")
+        settings = self.config["roles"][role]
+        if stage not in settings["allowed_stages"]:
+            raise Stop("role/stage mismatch")
+        fixed = dict(settings["request_parameters"], model=settings["model"],
+                     temperature=settings["temperature"], max_tokens=settings["max_tokens"])
+        if set(request) != set(fixed) | {"messages"} or any(request[k] != v for k,v in fixed.items()):
+            raise Stop("request differs from frozen model/parameter/price configuration")
         body = canonical(request)
         reserve = settings["maximum_call_nusd"]
         if type(reserve) is not int or reserve <= 0:
             raise Stop("verified positive per-call upper bound missing")
+        proof = settings.get("reservation_proof")
+        if proof:
+            # Full endpoint context, not a cross-tokenizer heuristic; no cache
+            # discounts. Standard-tier rates also cover unexpected Flex fallback.
+            bound = int(((Decimal(str(proof["input_rate_per_token"])) * proof["input_token_bound"]
+                         + Decimal(str(proof["output_rate_per_token"])) * proof["output_token_bound"])
+                         * 1_000_000_000).to_integral_value(rounding=ROUND_CEILING))
+            price = request["provider"].get("max_price", {})
+            if (bound != reserve or proof["output_token_bound"] != settings["billed_output_token_bound"]
+                    or Decimal(str(price.get("prompt", -1))) != Decimal(str(proof["input_rate_per_token"])) * 1_000_000
+                    or Decimal(str(price.get("completion", -1))) != Decimal(str(proof["output_rate_per_token"])) * 1_000_000
+                    or price.get("request") != 0):
+                raise Stop("reservation proof or provider price ceiling mismatch")
         # One unresolved request serializes all controllers sharing this journal.
         self.db.execute("BEGIN IMMEDIATE")
         try:
             old = self.db.execute("SELECT * FROM calls WHERE id=?", (job,)).fetchone()
-            if old and old["request"] != body: raise Stop("job ID reused with different request")
+            if old and (old["request"] != body or old["role"] != role or old["stage"] != stage):
+                raise Stop("job ID reused with different request/role/stage")
             if self.db.execute("SELECT 1 FROM calls WHERE state!='received' LIMIT 1").fetchone():
                 raise Stop("pending/quarantined call requires reconciliation")
             if old:
@@ -229,8 +292,11 @@ class Journal:
             charged = self.db.execute("SELECT COALESCE(SUM(COALESCE(billed,reserved)),0) FROM calls").fetchone()[0]
             if charged + reserve > self.config["hard_ceiling_nusd"]:
                 raise Stop("hard budget stop before dispatch")
-            self.db.execute("INSERT INTO calls VALUES (?,?,?,?,?,'pending',NULL,NULL,NULL,?,NULL)",
-                            (job, role, body, digest(body), reserve, datetime.now(timezone.utc).isoformat()))
+            stage_charged = self.db.execute("SELECT COALESCE(SUM(COALESCE(billed,reserved)),0) FROM calls WHERE stage=?", (stage,)).fetchone()[0]
+            if stage_charged + reserve > self.config["stage_budgets_nusd"][stage]:
+                raise Stop("stage budget stop before dispatch; later-stage funds protected")
+            self.db.execute("INSERT INTO calls VALUES (?,?,?,?,?,?,'pending',NULL,NULL,NULL,?,NULL)",
+                            (job, role, stage, body, identifier(role,stage,body), reserve, datetime.now(timezone.utc).isoformat()))
             self.db.execute("COMMIT")
         except BaseException:
             if self.db.in_transaction: self.db.execute("ROLLBACK")
@@ -247,8 +313,10 @@ class Journal:
         usage = response.get("usage", {})
         usage_ok = (isinstance(usage, dict) and all(type(usage.get(k)) is int and usage[k] >= 0
                     for k in ("prompt_tokens", "completion_tokens")))
-        usage_ok = usage_ok and usage["completion_tokens"] <= settings["max_tokens"]
-        valid = (known and billed <= reserve and complete and usage_ok and response["model"] == settings["model"]
+        usage_ok = usage_ok and usage["completion_tokens"] <= settings.get("billed_output_token_bound", settings["max_tokens"])
+        if proof:
+            usage_ok = usage_ok and usage["prompt_tokens"] <= proof["input_token_bound"]
+        valid = (known and billed <= reserve and complete and usage_ok and response["model"] in (settings["model"], settings.get("canonical_model"))
                  and bool(response["provider"]) and bool(response["request_id"])
                  and response["status"] in ("ok", "error"))
         # Even a price-bound violation is saved and charged BEFORE halting.
@@ -287,8 +355,14 @@ def construction(journal, cohort, transport, stage="sanity", main_approval_refer
             item = candidate_id(stage, source, number)
             payload = dict(schema_version="U-ARCH-v3", item_id=item, source_E=source["source_E"],
                            metadata=source["metadata"], prior_rejections=prior.copy())
-            reply = journal.call(identifier(item, "generation"), "generation", payload, transport)
+            reply = journal.call(identifier(item, "generation"), "generation", payload, transport, stage=stage)
             attempts[pair] = number
+            if reply["status"] == "error":
+                if reply.get("http_status") in (400,401,403,404,405,422):
+                    raise Stop("deterministic generation API error; do not repeat unchanged request")
+                if reply["billed_nusd"] != 0 or reply.get("definitely_unbilled") is not True:
+                    raise Stop("billed generation API error; stop rather than waste generation slots")
+                continue  # proven-unbilled transient still consumes a bounded slot
             try:
                 if reply["status"] != "ok" or reply["finish_reason"] != "stop": raise ValueError("generation incomplete")
                 candidate = parse(reply["content"], "generator", item)
@@ -311,10 +385,12 @@ def construction(journal, cohort, transport, stage="sanity", main_approval_refer
             audit_payload = {k: v for k, v in payload.items() if k != "prior_rejections"}
             audit_payload["candidate_U"] = u
             failures = []
-            for role in ROLES[1:]:  # unconditional both, not primary-pass cascade
+            for role in ROLES[1:]:  # independent sequential AND gate
                 for repair in range(1, 3):
-                    result = journal.call(identifier(item, u_sha, role, repair), role, audit_payload, transport)
+                    result = journal.call(identifier(item, u_sha, role, repair), role, audit_payload, transport, stage=stage)
                     if result["status"] == "error":
+                        if result.get("http_status") in (400,401,403,404,405,422):
+                            raise Stop("deterministic auditor API error; no redundant repair request")
                         if result["billed_nusd"] == 0 and result.get("definitely_unbilled") is True:
                             continue
                         raise Stop("billed auditor infrastructure failure; saved and stop")
@@ -332,6 +408,11 @@ def construction(journal, cohort, transport, stage="sanity", main_approval_refer
                     break  # includes valid rejects/contradictions; no repoll
                 else:
                     raise Stop("auditor exhausted format/known-unbilled repair allowance")
+                if failures:
+                    if role == "deepseek_audit":
+                        journal.event(identifier(item,"mini_audit","not_dispatched"),
+                                      {"reason":"primary_hard_reject", "not_a_mini_verdict":True})
+                    break  # Mini cannot rescue a primary reject; no second opinion
             if failures:
                 prior.extend(failures)
                 journal.event(identifier(item, "decision"), {"status": "rejected", "failures": failures})

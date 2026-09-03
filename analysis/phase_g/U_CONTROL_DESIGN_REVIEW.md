@@ -11,6 +11,11 @@ rule and prepares offline execution safeguards. See
 [amendment record](STRONG_ARCHAIC_PREFLIGHT_AMENDMENT.md). The strong-archaic
 construct, generator, auditor rubric and schemas are unchanged.
 
+Current pre-outcome amendment 2 from `8a74984` removes redundant secondary
+auditing after primary rejection and imposes a cumulative $5.50 ceiling with
+protected stage budgets. See [current budget/preflight](BUDGET550_AMENDMENT.md).
+No construct, model identity, acceptance gate or sanity readiness rule changes.
+
 ## 1. Final U definition
 
 U is **strongly archaized/literary English**: unmistakably English, substantially
@@ -122,8 +127,8 @@ Use the existing two auditor roles, independently:
 
 Both use temperature 0 and 4096 maximum output tokens. The secondary sees the
 same E/U and contract, never the generator's reasoning or the primary report.
-Under amendment 1 both auditors assess every mechanically valid new candidate,
-including candidates the first auditor rejects. Neither sees the other's report. Both must
+Under current amendment 2 DeepSeek assesses each mechanically valid new candidate;
+Mini assesses only primary passes. Neither sees the other's report. Both must
 accept; there is no majority vote, scalar threshold or adjudication-to-pass.
 
 The exact rubric is
@@ -280,13 +285,15 @@ failure policy are specified. The three specification files are the only new
 files required to make the revised design explicit.
 
 The amended sanity source selection and synthetic execution tests are offline.
-No sanity check, new U generation, API call, human annotation, target inference,
+Amendment 2 additionally retrieves public provider metadata, not inference.
+No sanity check, new U generation, paid API call, human annotation, target inference,
 paid judge experiment or stochastic published analysis was run. Historical
 development files, frozen E/R, main preregistration, SAP, legacy runner/configuration
 and manuscript remain unchanged. A separate preparatory controller is added.
 
 **Design ready for review: YES. Live sanity-check execution ready: NO.**
-Separate API approval, current-price/input-budget checks and a safe, offline-tested
-execution adapter are still required. The legacy runner is not certified;
+Separate API approval and the approval-required Mini temperature compatibility
+correction remain necessary; public prices/routes and offline budgets are now
+checked in amendment 2. The legacy runner is not certified;
 the amendment records exactly which new offline safeguards pass and which
 live checks remain blocked.

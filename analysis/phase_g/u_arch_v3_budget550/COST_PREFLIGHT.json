@@ -1,0 +1,1093 @@
+{
+  "assumptions": [
+    "No cache savings credited; Flex contingent on actually served tier; standard rates reserved",
+    "Expected lengths/candidate failure locations/retry rates are scenarios, not observed U results",
+    "Four generation requests total; at most two requests per dispatched auditor; valid rejects never repolled",
+    "Protocol maxima may be cut short by financial stops; no paid approval in this task",
+    "No fee top-ups, tax, other tasks or provider billing-contract violation can be controlled by this local ledger"
+  ],
+  "expected_call_count": 1011,
+  "expected_rejection_locations": {
+    "main": {
+      "deepseek": 12,
+      "mini": 12
+    },
+    "sanity": {
+      "deepseek": 2,
+      "mini": 1
+    }
+  },
+  "expected_scenario_fits": true,
+  "failed_sanity_protocol_max_calls": 240,
+  "failed_sanity_unconstrained_reservation_sum_usd": 68.680584,
+  "full_completion_guaranteed_under_550": false,
+  "full_protocol_output_caps_only_flex_usd": 8.8292081664,
+  "hard_limits_are_abort_caps_not_completion_quotes": true,
+  "input_envelopes": {
+    "main": {
+      "audit_expected": 4175,
+      "audit_high": 12366,
+      "generation_expected": 1585,
+      "generation_high": 9626,
+      "generation_output_expected": 362,
+      "u_expected": 106,
+      "u_high": 8192
+    },
+    "sanity": {
+      "audit_expected": 4172,
+      "audit_high": 12348,
+      "generation_expected": 1582,
+      "generation_high": 9608,
+      "generation_output_expected": 362,
+      "u_expected": 106,
+      "u_high": 8192
+    }
+  },
+  "rows": [
+    {
+      "assumptions": "75% first /25% second generation; visible U+JSON proxy plus 512 billed thinking tokens, assumed not measured",
+      "expected_billed_output_tokens_per_call": 874,
+      "expected_calls": 15,
+      "expected_input_cost_usd": 0.0035595,
+      "expected_input_tokens_per_call": 1582,
+      "expected_output_cost_usd": 0.0163875,
+      "expected_standard_tier_cost_usd": 0.039894,
+      "protocol_max_calls": 21,
+      "role": "generation",
+      "stage": "sanity",
+      "unconstrained_sum_of_call_reservations_usd": 10.2616563
+    },
+    {
+      "assumptions": "all 17 axes in one response; output includes reasoning; 5% extra billed repairs rounded up separately",
+      "expected_billed_output_tokens_per_call": 3072,
+      "expected_calls": 16,
+      "expected_input_cost_usd": 0.00600768,
+      "expected_input_tokens_per_call": 4172,
+      "expected_output_cost_usd": 0.00884736,
+      "expected_standard_tier_cost_usd": 0.014855040000000002,
+      "protocol_max_calls": 42,
+      "role": "deepseek_audit",
+      "stage": "sanity",
+      "unconstrained_sum_of_call_reservations_usd": 4.4900352
+    },
+    {
+      "assumptions": "all 17 axes in one response; output includes reasoning; 5% extra billed repairs rounded up separately",
+      "expected_billed_output_tokens_per_call": 3072,
+      "expected_calls": 14,
+      "expected_input_cost_usd": 0.007301,
+      "expected_input_tokens_per_call": 4172,
+      "expected_output_cost_usd": 0.043008,
+      "expected_standard_tier_cost_usd": 0.100618,
+      "protocol_max_calls": 42,
+      "role": "mini_audit",
+      "stage": "sanity",
+      "unconstrained_sum_of_call_reservations_usd": 15.296064
+    },
+    {
+      "assumptions": "75% first /25% second generation; visible U+JSON proxy plus 512 billed thinking tokens, assumed not measured",
+      "expected_billed_output_tokens_per_call": 874,
+      "expected_calls": 120,
+      "expected_input_cost_usd": 0.02853,
+      "expected_input_tokens_per_call": 1585,
+      "expected_output_cost_usd": 0.1311,
+      "expected_standard_tier_cost_usd": 0.31926,
+      "protocol_max_calls": 384,
+      "role": "generation",
+      "stage": "main_construction",
+      "unconstrained_sum_of_call_reservations_usd": 187.6417152
+    },
+    {
+      "assumptions": "all 17 axes in one response; output includes reasoning; 5% extra billed repairs rounded up separately",
+      "expected_billed_output_tokens_per_call": 3072,
+      "expected_calls": 126,
+      "expected_input_cost_usd": 0.0473445,
+      "expected_input_tokens_per_call": 4175,
+      "expected_output_cost_usd": 0.06967295999999999,
+      "expected_standard_tier_cost_usd": 0.11701746,
+      "protocol_max_calls": 768,
+      "role": "deepseek_audit",
+      "stage": "main_construction",
+      "unconstrained_sum_of_call_reservations_usd": 82.1035008
+    },
+    {
+      "assumptions": "all 17 axes in one response; output includes reasoning; 5% extra billed repairs rounded up separately",
+      "expected_billed_output_tokens_per_call": 3072,
+      "expected_calls": 114,
+      "expected_input_cost_usd": 0.05949375,
+      "expected_input_tokens_per_call": 4175,
+      "expected_output_cost_usd": 0.350208,
+      "expected_standard_tier_cost_usd": 0.8194035,
+      "protocol_max_calls": 768,
+      "role": "mini_audit",
+      "stage": "main_construction",
+      "unconstrained_sum_of_call_reservations_usd": 279.699456
+    },
+    {
+      "assumptions": "96 U-only jobs/model plus ceil(5%)=5 retries; output includes reasoning; zero E/R repeats",
+      "expected_billed_output_tokens_per_call": 2048,
+      "expected_calls": 101,
+      "expected_input_cost_usd": 0.0006711147,
+      "expected_input_tokens_per_call": 138,
+      "expected_output_cost_usd": 0.0399320064,
+      "expected_standard_tier_cost_usd": 0.04060312109999999,
+      "protocol_max_calls": 288,
+      "role": "target_qwen",
+      "stage": "target_inference",
+      "unconstrained_sum_of_call_reservations_usd": 3.781881504
+    },
+    {
+      "assumptions": "96 U-only jobs/model plus ceil(5%)=5 retries; output includes reasoning; zero E/R repeats",
+      "expected_billed_output_tokens_per_call": 2048,
+      "expected_calls": 101,
+      "expected_input_cost_usd": 0.00041814,
+      "expected_input_tokens_per_call": 138,
+      "expected_output_cost_usd": 0.02895872,
+      "expected_standard_tier_cost_usd": 0.02937686,
+      "protocol_max_calls": 288,
+      "role": "target_oss",
+      "stage": "target_inference",
+      "unconstrained_sum_of_call_reservations_usd": 6.05392128
+    },
+    {
+      "assumptions": "96 U-only jobs/model plus ceil(5%)=5 retries; output includes reasoning; zero E/R repeats",
+      "expected_billed_output_tokens_per_call": 2048,
+      "expected_calls": 101,
+      "expected_input_cost_usd": 0.0006969000000000001,
+      "expected_input_tokens_per_call": 138,
+      "expected_output_cost_usd": 0.041369600000000006,
+      "expected_standard_tier_cost_usd": 0.0420665,
+      "protocol_max_calls": 288,
+      "role": "target_nemotron",
+      "stage": "target_inference",
+      "unconstrained_sum_of_call_reservations_usd": 17.6003136
+    },
+    {
+      "assumptions": "288 U-only scores plus ceil(5%)=15 retries; frozen judge prompt, 600 visible +512 thinking planning tokens",
+      "expected_billed_output_tokens_per_call": 1112,
+      "expected_calls": 303,
+      "expected_input_cost_usd": 0.13521375,
+      "expected_input_tokens_per_call": 2975,
+      "expected_output_cost_usd": 0.42117,
+      "expected_standard_tier_cost_usd": 1.1127675,
+      "protocol_max_calls": 864,
+      "role": "gemini_judge",
+      "stage": "judging",
+      "unconstrained_sum_of_call_reservations_usd": 417.7701792
+    }
+  ],
+  "source_profiles": {
+    "main": [
+      {
+        "audit_empty_u_messages_cl100k": 3894,
+        "audit_empty_u_messages_o200k": 4049,
+        "generation_messages_cl100k": 1310,
+        "generation_messages_o200k": 1309,
+        "pair_id": "004d0365696e6a0f7fe6606d",
+        "source_tokens": 77
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3909,
+        "audit_empty_u_messages_o200k": 4063,
+        "generation_messages_cl100k": 1325,
+        "generation_messages_o200k": 1323,
+        "pair_id": "0579f42246db6c369a39f1ef",
+        "source_tokens": 90
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3882,
+        "audit_empty_u_messages_o200k": 4037,
+        "generation_messages_cl100k": 1298,
+        "generation_messages_o200k": 1297,
+        "pair_id": "0a20a541cac556192d2afef6",
+        "source_tokens": 73
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3872,
+        "audit_empty_u_messages_o200k": 4024,
+        "generation_messages_cl100k": 1288,
+        "generation_messages_o200k": 1284,
+        "pair_id": "0fc520fa31404f8040cb8ec9",
+        "source_tokens": 55
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3864,
+        "audit_empty_u_messages_o200k": 4017,
+        "generation_messages_cl100k": 1280,
+        "generation_messages_o200k": 1277,
+        "pair_id": "126db8899d6dce85e65ea154",
+        "source_tokens": 43
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3879,
+        "audit_empty_u_messages_o200k": 4033,
+        "generation_messages_cl100k": 1295,
+        "generation_messages_o200k": 1293,
+        "pair_id": "16bc2dc05679b56b9fdadb42",
+        "source_tokens": 73
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3872,
+        "audit_empty_u_messages_o200k": 4024,
+        "generation_messages_cl100k": 1288,
+        "generation_messages_o200k": 1284,
+        "pair_id": "18ac232110c96f85eda3be84",
+        "source_tokens": 60
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3857,
+        "audit_empty_u_messages_o200k": 4012,
+        "generation_messages_cl100k": 1273,
+        "generation_messages_o200k": 1272,
+        "pair_id": "1c1c7e5b76456da589821806",
+        "source_tokens": 59
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3866,
+        "audit_empty_u_messages_o200k": 4018,
+        "generation_messages_cl100k": 1282,
+        "generation_messages_o200k": 1278,
+        "pair_id": "1d9a538889900c0d198af5fb",
+        "source_tokens": 51
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3858,
+        "audit_empty_u_messages_o200k": 4011,
+        "generation_messages_cl100k": 1274,
+        "generation_messages_o200k": 1271,
+        "pair_id": "1df02c5b0993a9e9e152289a",
+        "source_tokens": 48
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3899,
+        "audit_empty_u_messages_o200k": 4051,
+        "generation_messages_cl100k": 1315,
+        "generation_messages_o200k": 1311,
+        "pair_id": "229175042a2d1132c6944a8b",
+        "source_tokens": 84
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3886,
+        "audit_empty_u_messages_o200k": 4039,
+        "generation_messages_cl100k": 1302,
+        "generation_messages_o200k": 1299,
+        "pair_id": "23d171935582d607863f44c1",
+        "source_tokens": 75
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3841,
+        "audit_empty_u_messages_o200k": 3996,
+        "generation_messages_cl100k": 1257,
+        "generation_messages_o200k": 1256,
+        "pair_id": "246b2b2a46e326f079a20923",
+        "source_tokens": 43
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3885,
+        "audit_empty_u_messages_o200k": 4039,
+        "generation_messages_cl100k": 1301,
+        "generation_messages_o200k": 1299,
+        "pair_id": "25fb193b6f6b7f1cfc0208f0",
+        "source_tokens": 79
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3869,
+        "audit_empty_u_messages_o200k": 4023,
+        "generation_messages_cl100k": 1285,
+        "generation_messages_o200k": 1283,
+        "pair_id": "26f6a578d8097de6b3f5f851",
+        "source_tokens": 60
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3902,
+        "audit_empty_u_messages_o200k": 4058,
+        "generation_messages_cl100k": 1318,
+        "generation_messages_o200k": 1318,
+        "pair_id": "27a8434d97e2c0b2e7581a2b",
+        "source_tokens": 88
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3927,
+        "audit_empty_u_messages_o200k": 4078,
+        "generation_messages_cl100k": 1343,
+        "generation_messages_o200k": 1338,
+        "pair_id": "27d74d4afe322642a6489b34",
+        "source_tokens": 102
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3872,
+        "audit_empty_u_messages_o200k": 4022,
+        "generation_messages_cl100k": 1288,
+        "generation_messages_o200k": 1282,
+        "pair_id": "28b5b662d5467f27c36a297a",
+        "source_tokens": 49
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3870,
+        "audit_empty_u_messages_o200k": 4022,
+        "generation_messages_cl100k": 1286,
+        "generation_messages_o200k": 1282,
+        "pair_id": "28c240a549350d1505f9f301",
+        "source_tokens": 61
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3870,
+        "audit_empty_u_messages_o200k": 4023,
+        "generation_messages_cl100k": 1286,
+        "generation_messages_o200k": 1283,
+        "pair_id": "2bc2f34c0537c93734211d85",
+        "source_tokens": 66
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3901,
+        "audit_empty_u_messages_o200k": 4057,
+        "generation_messages_cl100k": 1317,
+        "generation_messages_o200k": 1317,
+        "pair_id": "2ccbd0f205d3138addf84c5d",
+        "source_tokens": 87
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3888,
+        "audit_empty_u_messages_o200k": 4043,
+        "generation_messages_cl100k": 1304,
+        "generation_messages_o200k": 1303,
+        "pair_id": "305e4f4360a5547f0edfaf3e",
+        "source_tokens": 82
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3904,
+        "audit_empty_u_messages_o200k": 4056,
+        "generation_messages_cl100k": 1320,
+        "generation_messages_o200k": 1316,
+        "pair_id": "319e473a9469dcd5c207a30e",
+        "source_tokens": 98
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3890,
+        "audit_empty_u_messages_o200k": 4043,
+        "generation_messages_cl100k": 1306,
+        "generation_messages_o200k": 1303,
+        "pair_id": "35636401ad9d0b4df4093a63",
+        "source_tokens": 75
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3886,
+        "audit_empty_u_messages_o200k": 4038,
+        "generation_messages_cl100k": 1302,
+        "generation_messages_o200k": 1298,
+        "pair_id": "39a226aed6dbe47dddf79edd",
+        "source_tokens": 69
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3903,
+        "audit_empty_u_messages_o200k": 4057,
+        "generation_messages_cl100k": 1319,
+        "generation_messages_o200k": 1317,
+        "pair_id": "3a2808f8fdb6f3360e33bb91",
+        "source_tokens": 95
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3907,
+        "audit_empty_u_messages_o200k": 4061,
+        "generation_messages_cl100k": 1323,
+        "generation_messages_o200k": 1321,
+        "pair_id": "3b086082e0e3eef1e395fd6f",
+        "source_tokens": 93
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3841,
+        "audit_empty_u_messages_o200k": 3998,
+        "generation_messages_cl100k": 1257,
+        "generation_messages_o200k": 1258,
+        "pair_id": "3bc3ec5c5b625a7edd8589dc",
+        "source_tokens": 38
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3874,
+        "audit_empty_u_messages_o200k": 4026,
+        "generation_messages_cl100k": 1290,
+        "generation_messages_o200k": 1286,
+        "pair_id": "40c98bfdd812588542f99e25",
+        "source_tokens": 68
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3894,
+        "audit_empty_u_messages_o200k": 4049,
+        "generation_messages_cl100k": 1310,
+        "generation_messages_o200k": 1309,
+        "pair_id": "43458a58dc55f90281790130",
+        "source_tokens": 79
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3896,
+        "audit_empty_u_messages_o200k": 4051,
+        "generation_messages_cl100k": 1312,
+        "generation_messages_o200k": 1311,
+        "pair_id": "43ce77dde7f3f8041da30b7b",
+        "source_tokens": 79
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3849,
+        "audit_empty_u_messages_o200k": 4005,
+        "generation_messages_cl100k": 1265,
+        "generation_messages_o200k": 1265,
+        "pair_id": "43d401b5fb5fa3f0876b2a45",
+        "source_tokens": 38
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3858,
+        "audit_empty_u_messages_o200k": 4012,
+        "generation_messages_cl100k": 1274,
+        "generation_messages_o200k": 1272,
+        "pair_id": "44f455fabf7393c0796db3cc",
+        "source_tokens": 50
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3902,
+        "audit_empty_u_messages_o200k": 4054,
+        "generation_messages_cl100k": 1318,
+        "generation_messages_o200k": 1314,
+        "pair_id": "4adc9b89ad96a6c3991912df",
+        "source_tokens": 72
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3871,
+        "audit_empty_u_messages_o200k": 4025,
+        "generation_messages_cl100k": 1287,
+        "generation_messages_o200k": 1285,
+        "pair_id": "4bdaf74de83bd50f6da254d3",
+        "source_tokens": 65
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3885,
+        "audit_empty_u_messages_o200k": 4037,
+        "generation_messages_cl100k": 1301,
+        "generation_messages_o200k": 1297,
+        "pair_id": "4f081e59e9bc00c55dbebef8",
+        "source_tokens": 82
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3914,
+        "audit_empty_u_messages_o200k": 4068,
+        "generation_messages_cl100k": 1330,
+        "generation_messages_o200k": 1328,
+        "pair_id": "50cf1034828e64d591aad222",
+        "source_tokens": 98
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3853,
+        "audit_empty_u_messages_o200k": 4008,
+        "generation_messages_cl100k": 1269,
+        "generation_messages_o200k": 1268,
+        "pair_id": "5109a90cacf70ae716c20134",
+        "source_tokens": 45
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3886,
+        "audit_empty_u_messages_o200k": 4040,
+        "generation_messages_cl100k": 1302,
+        "generation_messages_o200k": 1300,
+        "pair_id": "546c0103035e1b6c32084ca4",
+        "source_tokens": 71
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3897,
+        "audit_empty_u_messages_o200k": 4051,
+        "generation_messages_cl100k": 1313,
+        "generation_messages_o200k": 1311,
+        "pair_id": "55f16ef861bcaa7b865229b8",
+        "source_tokens": 84
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3923,
+        "audit_empty_u_messages_o200k": 4077,
+        "generation_messages_cl100k": 1339,
+        "generation_messages_o200k": 1337,
+        "pair_id": "5680e5ba448f9ebc2e6e0c76",
+        "source_tokens": 117
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3879,
+        "audit_empty_u_messages_o200k": 4032,
+        "generation_messages_cl100k": 1295,
+        "generation_messages_o200k": 1292,
+        "pair_id": "595d4d0a6e6d1908a144e267",
+        "source_tokens": 73
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3885,
+        "audit_empty_u_messages_o200k": 4035,
+        "generation_messages_cl100k": 1301,
+        "generation_messages_o200k": 1295,
+        "pair_id": "5ae63a49ca78e13150bdc968",
+        "source_tokens": 59
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3867,
+        "audit_empty_u_messages_o200k": 4021,
+        "generation_messages_cl100k": 1283,
+        "generation_messages_o200k": 1281,
+        "pair_id": "5ba8ab55d75d032705e62080",
+        "source_tokens": 63
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3866,
+        "audit_empty_u_messages_o200k": 4020,
+        "generation_messages_cl100k": 1282,
+        "generation_messages_o200k": 1280,
+        "pair_id": "6124ea36fe9a9c1f73bd94a5",
+        "source_tokens": 65
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3854,
+        "audit_empty_u_messages_o200k": 4010,
+        "generation_messages_cl100k": 1270,
+        "generation_messages_o200k": 1270,
+        "pair_id": "62a7db9747fe067a70e19722",
+        "source_tokens": 46
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3862,
+        "audit_empty_u_messages_o200k": 4015,
+        "generation_messages_cl100k": 1278,
+        "generation_messages_o200k": 1275,
+        "pair_id": "670a4ab654235c4c8a035221",
+        "source_tokens": 51
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3915,
+        "audit_empty_u_messages_o200k": 4069,
+        "generation_messages_cl100k": 1331,
+        "generation_messages_o200k": 1329,
+        "pair_id": "6c34b6f96c6de2775370eee9",
+        "source_tokens": 80
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3868,
+        "audit_empty_u_messages_o200k": 4021,
+        "generation_messages_cl100k": 1284,
+        "generation_messages_o200k": 1281,
+        "pair_id": "6e5023585986981e0caefdb6",
+        "source_tokens": 66
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3878,
+        "audit_empty_u_messages_o200k": 4032,
+        "generation_messages_cl100k": 1294,
+        "generation_messages_o200k": 1292,
+        "pair_id": "70d852e1ec3c80cea9bb650d",
+        "source_tokens": 71
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3889,
+        "audit_empty_u_messages_o200k": 4038,
+        "generation_messages_cl100k": 1305,
+        "generation_messages_o200k": 1298,
+        "pair_id": "75dfa96f407c712a22624f07",
+        "source_tokens": 78
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3897,
+        "audit_empty_u_messages_o200k": 4047,
+        "generation_messages_cl100k": 1313,
+        "generation_messages_o200k": 1307,
+        "pair_id": "7ab8c73366e22093ac7d146d",
+        "source_tokens": 64
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3900,
+        "audit_empty_u_messages_o200k": 4055,
+        "generation_messages_cl100k": 1316,
+        "generation_messages_o200k": 1315,
+        "pair_id": "7ef886a809f7c2977b31a230",
+        "source_tokens": 84
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3852,
+        "audit_empty_u_messages_o200k": 4006,
+        "generation_messages_cl100k": 1268,
+        "generation_messages_o200k": 1266,
+        "pair_id": "82b506f711cfd2becc2ead7f",
+        "source_tokens": 41
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3917,
+        "audit_empty_u_messages_o200k": 4073,
+        "generation_messages_cl100k": 1333,
+        "generation_messages_o200k": 1333,
+        "pair_id": "83ca2c11fbd595ee3c88e6d4",
+        "source_tokens": 89
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3905,
+        "audit_empty_u_messages_o200k": 4058,
+        "generation_messages_cl100k": 1321,
+        "generation_messages_o200k": 1318,
+        "pair_id": "849ead23909b535b13131527",
+        "source_tokens": 92
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3877,
+        "audit_empty_u_messages_o200k": 4030,
+        "generation_messages_cl100k": 1293,
+        "generation_messages_o200k": 1290,
+        "pair_id": "857905f4786f955ec47ef703",
+        "source_tokens": 69
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3869,
+        "audit_empty_u_messages_o200k": 4023,
+        "generation_messages_cl100k": 1285,
+        "generation_messages_o200k": 1283,
+        "pair_id": "89b2fc5cb0ebd36f9a190c01",
+        "source_tokens": 65
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3921,
+        "audit_empty_u_messages_o200k": 4070,
+        "generation_messages_cl100k": 1337,
+        "generation_messages_o200k": 1330,
+        "pair_id": "8d0134b87de28be8fadcd58b",
+        "source_tokens": 89
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3863,
+        "audit_empty_u_messages_o200k": 4018,
+        "generation_messages_cl100k": 1279,
+        "generation_messages_o200k": 1278,
+        "pair_id": "9075c59088121f48e5a37b04",
+        "source_tokens": 57
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3878,
+        "audit_empty_u_messages_o200k": 4032,
+        "generation_messages_cl100k": 1294,
+        "generation_messages_o200k": 1292,
+        "pair_id": "92ea72716a58afaf72ee3382",
+        "source_tokens": 58
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3902,
+        "audit_empty_u_messages_o200k": 4052,
+        "generation_messages_cl100k": 1318,
+        "generation_messages_o200k": 1312,
+        "pair_id": "9568f801c83cd56350018b79",
+        "source_tokens": 92
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3859,
+        "audit_empty_u_messages_o200k": 4012,
+        "generation_messages_cl100k": 1275,
+        "generation_messages_o200k": 1272,
+        "pair_id": "97d8f7142a151401d2be52e9",
+        "source_tokens": 52
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3864,
+        "audit_empty_u_messages_o200k": 4016,
+        "generation_messages_cl100k": 1280,
+        "generation_messages_o200k": 1276,
+        "pair_id": "9b2924f50e54f631fe4b3e50",
+        "source_tokens": 54
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3894,
+        "audit_empty_u_messages_o200k": 4049,
+        "generation_messages_cl100k": 1310,
+        "generation_messages_o200k": 1309,
+        "pair_id": "9c7375594fb2a914bdb370a6",
+        "source_tokens": 89
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3896,
+        "audit_empty_u_messages_o200k": 4049,
+        "generation_messages_cl100k": 1312,
+        "generation_messages_o200k": 1309,
+        "pair_id": "9f3b6f110f2e71e8be64e87a",
+        "source_tokens": 90
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3904,
+        "audit_empty_u_messages_o200k": 4057,
+        "generation_messages_cl100k": 1320,
+        "generation_messages_o200k": 1317,
+        "pair_id": "9f8c578a42b5be599283ad60",
+        "source_tokens": 92
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3886,
+        "audit_empty_u_messages_o200k": 4041,
+        "generation_messages_cl100k": 1302,
+        "generation_messages_o200k": 1301,
+        "pair_id": "a170b40eb212953e609cd21a",
+        "source_tokens": 78
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3902,
+        "audit_empty_u_messages_o200k": 4057,
+        "generation_messages_cl100k": 1318,
+        "generation_messages_o200k": 1317,
+        "pair_id": "a45c6602dd53371523ed1f92",
+        "source_tokens": 91
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3879,
+        "audit_empty_u_messages_o200k": 4033,
+        "generation_messages_cl100k": 1295,
+        "generation_messages_o200k": 1293,
+        "pair_id": "a599144978f65c6550d758c7",
+        "source_tokens": 67
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3915,
+        "audit_empty_u_messages_o200k": 4065,
+        "generation_messages_cl100k": 1331,
+        "generation_messages_o200k": 1325,
+        "pair_id": "a99ef591a6f6cdb054edcf6a",
+        "source_tokens": 75
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3893,
+        "audit_empty_u_messages_o200k": 4042,
+        "generation_messages_cl100k": 1309,
+        "generation_messages_o200k": 1302,
+        "pair_id": "ac62f7e92433a178e6e7d96b",
+        "source_tokens": 70
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3867,
+        "audit_empty_u_messages_o200k": 4024,
+        "generation_messages_cl100k": 1283,
+        "generation_messages_o200k": 1284,
+        "pair_id": "ae56e2682665f509532e7572",
+        "source_tokens": 66
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3860,
+        "audit_empty_u_messages_o200k": 4013,
+        "generation_messages_cl100k": 1276,
+        "generation_messages_o200k": 1273,
+        "pair_id": "b53268b59fdacbf0a7509ab4",
+        "source_tokens": 50
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3878,
+        "audit_empty_u_messages_o200k": 4032,
+        "generation_messages_cl100k": 1294,
+        "generation_messages_o200k": 1292,
+        "pair_id": "b53fe277b182cf4266e897c4",
+        "source_tokens": 77
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3924,
+        "audit_empty_u_messages_o200k": 4077,
+        "generation_messages_cl100k": 1340,
+        "generation_messages_o200k": 1337,
+        "pair_id": "b66608312f7903a7e359c412",
+        "source_tokens": 103
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3901,
+        "audit_empty_u_messages_o200k": 4052,
+        "generation_messages_cl100k": 1317,
+        "generation_messages_o200k": 1312,
+        "pair_id": "bec8a2a188b544372b13bcde",
+        "source_tokens": 80
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3901,
+        "audit_empty_u_messages_o200k": 4054,
+        "generation_messages_cl100k": 1317,
+        "generation_messages_o200k": 1314,
+        "pair_id": "c12dafb238de084e26ac906e",
+        "source_tokens": 88
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3889,
+        "audit_empty_u_messages_o200k": 4044,
+        "generation_messages_cl100k": 1305,
+        "generation_messages_o200k": 1304,
+        "pair_id": "cb390a5fce382e1651d8d9af",
+        "source_tokens": 70
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3883,
+        "audit_empty_u_messages_o200k": 4034,
+        "generation_messages_cl100k": 1299,
+        "generation_messages_o200k": 1294,
+        "pair_id": "cbdc7273b8e2f46ecdcec018",
+        "source_tokens": 62
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3855,
+        "audit_empty_u_messages_o200k": 4009,
+        "generation_messages_cl100k": 1271,
+        "generation_messages_o200k": 1269,
+        "pair_id": "cdf0e6edca6f2fe80a78c9bf",
+        "source_tokens": 53
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3890,
+        "audit_empty_u_messages_o200k": 4044,
+        "generation_messages_cl100k": 1306,
+        "generation_messages_o200k": 1304,
+        "pair_id": "d128e89743d88203b42551f3",
+        "source_tokens": 64
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3840,
+        "audit_empty_u_messages_o200k": 3994,
+        "generation_messages_cl100k": 1256,
+        "generation_messages_o200k": 1254,
+        "pair_id": "d22258a16bafd16eb255ed66",
+        "source_tokens": 45
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3877,
+        "audit_empty_u_messages_o200k": 4030,
+        "generation_messages_cl100k": 1293,
+        "generation_messages_o200k": 1290,
+        "pair_id": "d415fa5c7ac057eb41fc6808",
+        "source_tokens": 75
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3888,
+        "audit_empty_u_messages_o200k": 4043,
+        "generation_messages_cl100k": 1304,
+        "generation_messages_o200k": 1303,
+        "pair_id": "d65ed3a23b656dea368f6c85",
+        "source_tokens": 71
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3904,
+        "audit_empty_u_messages_o200k": 4059,
+        "generation_messages_cl100k": 1320,
+        "generation_messages_o200k": 1319,
+        "pair_id": "d69dab38e1d2054621891776",
+        "source_tokens": 86
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3894,
+        "audit_empty_u_messages_o200k": 4044,
+        "generation_messages_cl100k": 1310,
+        "generation_messages_o200k": 1304,
+        "pair_id": "d9f37eb64f0848657254a269",
+        "source_tokens": 79
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3918,
+        "audit_empty_u_messages_o200k": 4072,
+        "generation_messages_cl100k": 1334,
+        "generation_messages_o200k": 1332,
+        "pair_id": "dd84cf31b304665d4419d5ea",
+        "source_tokens": 88
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3865,
+        "audit_empty_u_messages_o200k": 4015,
+        "generation_messages_cl100k": 1281,
+        "generation_messages_o200k": 1275,
+        "pair_id": "ea089e5c8a4254b1bc91e0b1",
+        "source_tokens": 55
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3857,
+        "audit_empty_u_messages_o200k": 4012,
+        "generation_messages_cl100k": 1273,
+        "generation_messages_o200k": 1272,
+        "pair_id": "ee210743136dfdbb4878f8a6",
+        "source_tokens": 55
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3871,
+        "audit_empty_u_messages_o200k": 4023,
+        "generation_messages_cl100k": 1287,
+        "generation_messages_o200k": 1283,
+        "pair_id": "f1ebe8aea2ee0d3ee9e357c5",
+        "source_tokens": 48
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3866,
+        "audit_empty_u_messages_o200k": 4021,
+        "generation_messages_cl100k": 1282,
+        "generation_messages_o200k": 1281,
+        "pair_id": "f43c2d6e29453cc661c5a2b7",
+        "source_tokens": 53
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3879,
+        "audit_empty_u_messages_o200k": 4031,
+        "generation_messages_cl100k": 1295,
+        "generation_messages_o200k": 1291,
+        "pair_id": "f6b0718324f4f6707d2da462",
+        "source_tokens": 66
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3875,
+        "audit_empty_u_messages_o200k": 4028,
+        "generation_messages_cl100k": 1291,
+        "generation_messages_o200k": 1288,
+        "pair_id": "f6c0d908d243b615d8f700ef",
+        "source_tokens": 65
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3865,
+        "audit_empty_u_messages_o200k": 4019,
+        "generation_messages_cl100k": 1281,
+        "generation_messages_o200k": 1279,
+        "pair_id": "fb64d000d2201dce2a667b83",
+        "source_tokens": 65
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3899,
+        "audit_empty_u_messages_o200k": 4050,
+        "generation_messages_cl100k": 1315,
+        "generation_messages_o200k": 1310,
+        "pair_id": "fbe5ef7c052343f5d34fee37",
+        "source_tokens": 76
+      }
+    ],
+    "sanity": [
+      {
+        "audit_empty_u_messages_cl100k": 3878,
+        "audit_empty_u_messages_o200k": 4033,
+        "generation_messages_cl100k": 1294,
+        "generation_messages_o200k": 1293,
+        "pair_id": "6789189b3397968de7e4e98d",
+        "source_tokens": 63
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3891,
+        "audit_empty_u_messages_o200k": 4044,
+        "generation_messages_cl100k": 1307,
+        "generation_messages_o200k": 1304,
+        "pair_id": "028b33c54fe2a9a423207913",
+        "source_tokens": 85
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3910,
+        "audit_empty_u_messages_o200k": 4060,
+        "generation_messages_cl100k": 1326,
+        "generation_messages_o200k": 1320,
+        "pair_id": "bd34d24fd59a03289aa74136",
+        "source_tokens": 105
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3863,
+        "audit_empty_u_messages_o200k": 4019,
+        "generation_messages_cl100k": 1279,
+        "generation_messages_o200k": 1279,
+        "pair_id": "125fe8f2132dbf88e220c8ca",
+        "source_tokens": 50
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3875,
+        "audit_empty_u_messages_o200k": 4029,
+        "generation_messages_cl100k": 1291,
+        "generation_messages_o200k": 1289,
+        "pair_id": "53cb51896966718c60d66a9f",
+        "source_tokens": 62
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3879,
+        "audit_empty_u_messages_o200k": 4030,
+        "generation_messages_cl100k": 1295,
+        "generation_messages_o200k": 1290,
+        "pair_id": "3c8ce48946d2690a9293393f",
+        "source_tokens": 75
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3852,
+        "audit_empty_u_messages_o200k": 4002,
+        "generation_messages_cl100k": 1268,
+        "generation_messages_o200k": 1262,
+        "pair_id": "05e9fdc4d6e9697ef818eb5f",
+        "source_tokens": 46
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3884,
+        "audit_empty_u_messages_o200k": 4039,
+        "generation_messages_cl100k": 1300,
+        "generation_messages_o200k": 1299,
+        "pair_id": "f9dde56fc38dc3fa528a4a54",
+        "source_tokens": 76
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3899,
+        "audit_empty_u_messages_o200k": 4051,
+        "generation_messages_cl100k": 1315,
+        "generation_messages_o200k": 1311,
+        "pair_id": "7e25142d6d16663af5a7bb71",
+        "source_tokens": 84
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3873,
+        "audit_empty_u_messages_o200k": 4026,
+        "generation_messages_cl100k": 1289,
+        "generation_messages_o200k": 1286,
+        "pair_id": "bd31709e53834851772496f5",
+        "source_tokens": 57
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3879,
+        "audit_empty_u_messages_o200k": 4033,
+        "generation_messages_cl100k": 1295,
+        "generation_messages_o200k": 1293,
+        "pair_id": "19d0cbd59e46905e205331ad",
+        "source_tokens": 74
+      },
+      {
+        "audit_empty_u_messages_cl100k": 3883,
+        "audit_empty_u_messages_o200k": 4031,
+        "generation_messages_cl100k": 1299,
+        "generation_messages_o200k": 1291,
+        "pair_id": "ede0eba19a5425f6c7d3460e",
+        "source_tokens": 67
+      }
+    ]
+  },
+  "sources": {
+    "flex_actual_tier_billing": "https://openrouter.ai/docs/guides/features/service-tiers",
+    "google_dynamic_thinking": "https://ai.google.dev/gemini-api/docs/generate-content/thinking?hl=en",
+    "parameters": "https://openrouter.ai/docs/api_reference/parameters",
+    "provider_routing_and_max_price": "https://openrouter.ai/docs/guides/routing/provider-selection",
+    "reasoning_and_billing": "https://openrouter.ai/docs/guides/best-practices/reasoning-tokens"
+  },
+  "successful_sanity_protocol_max_calls": 105,
+  "tokenization": "o200k_base proxy; cl100k sensitivity; not exact Gemini/DeepSeek/target token counts",
+  "tokenizer_asset_sha256": {
+    "9b5ad71b2ce5302211f9c61530b329a4922fc6a4": "223921b76ee99bde995b7ff738513eef100fb51d18c93597a113bcffe865b2a7",
+    "fb374d419588a4632f3f557e76b4b70aebbca790": "446a9538cb6c348e3516120d7c08b09f57c36495e2acfffe59a5bf8b0cfb1a2d"
+  },
+  "totals": {
+    "full": {
+      "expected_cost_usd": 1.4398904811,
+      "hard_authorized_usd": 5.5,
+      "standard_tier_expected_usd": 2.6358619810999997,
+      "unconstrained_protocol_reservation_sum_usd": 1024.698723084
+    },
+    "judging": {
+      "expected_cost_usd": 0.55638375,
+      "hard_authorized_usd": 1.5,
+      "standard_tier_expected_usd": 1.1127675,
+      "unconstrained_protocol_reservation_sum_usd": 417.7701792
+    },
+    "main_construction": {
+      "expected_cost_usd": 0.68634921,
+      "hard_authorized_usd": 2.6,
+      "standard_tier_expected_usd": 1.2556809599999998,
+      "unconstrained_protocol_reservation_sum_usd": 549.444672
+    },
+    "sanity": {
+      "expected_cost_usd": 0.08511104,
+      "hard_authorized_usd": 0.65,
+      "standard_tier_expected_usd": 0.15536704,
+      "unconstrained_protocol_reservation_sum_usd": 30.0477555
+    },
+    "target_inference": {
+      "expected_cost_usd": 0.11204648110000001,
+      "hard_authorized_usd": 0.75,
+      "standard_tier_expected_usd": 0.1120464811,
+      "unconstrained_protocol_reservation_sum_usd": 27.436116383999998
+    }
+  }
+}

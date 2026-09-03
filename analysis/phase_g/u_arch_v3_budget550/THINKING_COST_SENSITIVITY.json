@@ -1,0 +1,18 @@
+{
+  "purpose": "Illustrate unmeasured Google dynamic-thinking uncertainty; not a new forecast or a generation cap",
+  "source_cost_preflight_sha256": "869a1045909f01216b54b826c54a85e1847a778ba5511a620c15baedeb70075d",
+  "other_counts_lengths_and_rates": "held at COST_PREFLIGHT expected scenario",
+  "google_expected_call_count": 438,
+  "google_call_count_derivation": "15 sanity generation + 120 main generation + 303 judging",
+  "google_flex_output_usd_per_million": 1.25,
+  "base_thinking_tokens_per_google_call": 512,
+  "base_full_cost_usd": 1.4398904811,
+  "reproduction_formula": "1.4398904811 + 438 * (thinking_tokens_per_google_call - 512) * 1.25 / 1000000",
+  "rows": [
+    {"thinking_tokens_per_google_call": 512, "full_cost_usd": 1.4398904811},
+    {"thinking_tokens_per_google_call": 2048, "full_cost_usd": 2.2808504811},
+    {"thinking_tokens_per_google_call": 4096, "full_cost_usd": 3.4021304811},
+    {"thinking_tokens_per_google_call": 8192, "full_cost_usd": 5.6446904811}
+  ],
+  "interpretation": "Longer billed thinking could defeat the completion forecast even without extra retries. Output-limit accounting varies across providers; this deliberately treats hidden thinking separately, conservatively. Stage reservation stops can occur before a stage's realized bill reaches its cap. None of these scenarios authorizes additional spending or changes reasoning settings."
+}

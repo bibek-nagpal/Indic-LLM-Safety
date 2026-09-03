@@ -1,0 +1,607 @@
+{
+  "auditing_mode": "DeepSeek first; Mini only on valid primary pass; identical independent payloads",
+  "auditor_requests_per_candidate_per_role": 2,
+  "cohort_payload_hashes": {
+    "main_construction": "15602f4dbaac35b36c33ea19d3d98b5eb0808a4df354fb8a9ca7616272549a1c",
+    "sanity": "2b7075fe588e3a414c765aa4d918eede580419442a85391383188a26a8fc7e2c"
+  },
+  "compatibility": {
+    "deepseek_audit": {
+      "missing_requested_parameters": [],
+      "provider_status": 0,
+      "reasoning_metadata": {
+        "default_effort": "high",
+        "mandatory": false,
+        "supported_efforts": [
+          "xhigh",
+          "high"
+        ]
+      },
+      "route": "deepinfra/fp8",
+      "sampling_and_reasoning_request": "unchanged temperature; reasoning omitted as before, not disabled or lowered",
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "stop",
+        "frequency_penalty",
+        "presence_penalty",
+        "repetition_penalty",
+        "top_k",
+        "seed",
+        "min_p",
+        "response_format",
+        "tools",
+        "tool_choice",
+        "structured_outputs",
+        "logit_bias",
+        "reasoning_effort"
+      ]
+    },
+    "gemini_judge": {
+      "missing_requested_parameters": [],
+      "provider_status": 0,
+      "reasoning_metadata": {
+        "mandatory": false
+      },
+      "route": "google-ai-studio/flex",
+      "sampling_and_reasoning_request": "unchanged temperature; reasoning omitted as before, not disabled or lowered",
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "structured_outputs",
+        "response_format",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "seed",
+        "tools",
+        "tool_choice",
+        "stop"
+      ]
+    },
+    "generation": {
+      "missing_requested_parameters": [],
+      "provider_status": 0,
+      "reasoning_metadata": {
+        "mandatory": false
+      },
+      "route": "google-ai-studio/flex",
+      "sampling_and_reasoning_request": "unchanged temperature; reasoning omitted as before, not disabled or lowered",
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "structured_outputs",
+        "response_format",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "seed",
+        "tools",
+        "tool_choice",
+        "stop"
+      ]
+    },
+    "mini_audit": {
+      "missing_requested_parameters": [
+        "temperature"
+      ],
+      "provider_status": 0,
+      "reasoning_metadata": {
+        "default_effort": "medium",
+        "mandatory": true,
+        "supported_efforts": [
+          "high",
+          "medium",
+          "low",
+          "minimal"
+        ]
+      },
+      "route": "openai/flex",
+      "sampling_and_reasoning_request": "unchanged temperature; reasoning omitted as before, not disabled or lowered",
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "structured_outputs",
+        "response_format",
+        "seed",
+        "max_tokens",
+        "tools",
+        "tool_choice",
+        "reasoning_effort"
+      ]
+    },
+    "target_nemotron": {
+      "missing_requested_parameters": [],
+      "provider_status": 0,
+      "reasoning_metadata": {
+        "mandatory": false
+      },
+      "route": "crusoe/fp8",
+      "sampling_and_reasoning_request": "unchanged temperature; reasoning omitted as before, not disabled or lowered",
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "stop",
+        "frequency_penalty",
+        "presence_penalty",
+        "seed",
+        "min_p",
+        "repetition_penalty",
+        "top_k",
+        "logit_bias",
+        "structured_outputs",
+        "tools",
+        "response_format"
+      ]
+    },
+    "target_oss": {
+      "missing_requested_parameters": [],
+      "provider_status": 0,
+      "reasoning_metadata": {
+        "default_effort": "medium",
+        "mandatory": true,
+        "supported_efforts": [
+          "high",
+          "medium",
+          "low"
+        ]
+      },
+      "route": "deepinfra/bf16",
+      "sampling_and_reasoning_request": "unchanged temperature; reasoning omitted as before, not disabled or lowered",
+      "supported_parameters": [
+        "reasoning",
+        "include_reasoning",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "stop",
+        "frequency_penalty",
+        "presence_penalty",
+        "repetition_penalty",
+        "top_k",
+        "seed",
+        "min_p",
+        "response_format",
+        "tools",
+        "tool_choice",
+        "structured_outputs",
+        "logit_bias",
+        "reasoning_effort"
+      ]
+    },
+    "target_qwen": {
+      "missing_requested_parameters": [],
+      "provider_status": 0,
+      "reasoning_metadata": null,
+      "route": "streamlake",
+      "sampling_and_reasoning_request": "unchanged temperature; reasoning omitted as before, not disabled or lowered",
+      "supported_parameters": [
+        "tools",
+        "tool_choice",
+        "response_format",
+        "structured_outputs",
+        "logprobs",
+        "top_logprobs",
+        "max_tokens",
+        "temperature",
+        "top_p",
+        "stop",
+        "presence_penalty"
+      ]
+    }
+  },
+  "current_paid_authorization_usd": 0,
+  "generation_attempts_per_pair": 4,
+  "hard_ceiling_nusd": 5500000000,
+  "inference_blockers": [
+    "mini_audit: pinned openai/gpt-5-mini on openai/flex does not support ['temperature']; approval required before changing sampling, no silent omission"
+  ],
+  "journal_path": "analysis/phase_g/u_arch_v3_private/phase_g_budget550.sqlite",
+  "judge_u_only_jobs": 288,
+  "live_enabled": false,
+  "locks": {
+    "analysis/phase_g/BUDGET550_AMENDMENT.md": "c28ef571d53e8878defbea4d461e9e6efe14f2e79035de2266aa13c8d035aa96",
+    "analysis/phase_g/U_CONTROL_PROTOCOL_PROPOSED.md": "2b45fca76d56610e2b67a78bdcd87bbacd5ddc4403010f6f6f59fe80c9079a00",
+    "analysis/phase_g/budget550_preflight.py": "2246d66e50d6ec3052f3cfa52c3496960db65a2f535b14ab24fcf5d75a7a335a",
+    "analysis/phase_g/selection_n120_MANIFEST.json": "797280e7f9157fedeb978ed23491dfa1c95fce323ccac1b357935d89fc31b98b",
+    "analysis/phase_g/selection_n96.csv": "56f0961ea0762ea0c4873f4eb2c4c04f5d0b2e0c87d57f172255f07a014b7362",
+    "analysis/phase_g/selection_n96_MANIFEST.json": "aa066ec554c047af61ea11043c8b3deedccf51a8009b1e13ad67296cbbc2da2c",
+    "analysis/phase_g/specs/strong_archaic_v3_audit.txt": "511c046c75fa9eec7dcdc85bda5b5a39c974f7ad7850031c9d07f2665fa55c0e",
+    "analysis/phase_g/specs/strong_archaic_v3_generation.txt": "a97d80f934552eed8363a236399c1865140fc46602fab7c8ba23e8aee4c9d186",
+    "analysis/phase_g/specs/strong_archaic_v3_schemas.json": "2077b7866ff4d362adfe451ca53fb2b687175dab45cea0a4644e0b805d1bfd13",
+    "analysis/phase_g/strong_archaic_runtime.py": "6664deb61857d1785c22e7bc02f5d6245a560622295739a776f4f45cd706ff60",
+    "analysis/phase_g/strong_archaic_transport.py": "da1a160645efc61eef81937f151ebbdfa31b5709bef3d1383b9b9504a74a9c4f",
+    "analysis/phase_g/u_arch_v3_budget550/provider_metadata/deepseek__deepseek-v4-flash.json": "f77fff4688b78dbbcf7490811c9354b9d91d36f354f5091217fba413811a2324",
+    "analysis/phase_g/u_arch_v3_budget550/provider_metadata/google__gemini-2.5-flash.json": "86b67a9f6cd1630efe063a24f9789c9f258361f27033a5ffc0af4bd5339cde02",
+    "analysis/phase_g/u_arch_v3_budget550/provider_metadata/nvidia__nemotron-3-nano-30b-a3b.json": "3f0874358cb3ea52cd57855923e051128d239fd60cc1e347c9be2284c81e913c",
+    "analysis/phase_g/u_arch_v3_budget550/provider_metadata/openai__gpt-5-mini.json": "47b2c0f19a2e1e9c4622336b35d65123c039d138264c63a26adf9c8fdb0c744c",
+    "analysis/phase_g/u_arch_v3_budget550/provider_metadata/openai__gpt-oss-20b.json": "3d53aee5114714a33e3296e5f5e78683e8f96cfd3b2a3a9ee63a9e0ca945f90a",
+    "analysis/phase_g/u_arch_v3_budget550/provider_metadata/qwen__qwen3-30b-a3b-instruct-2507.json": "37f3704f4ead4bfa11df3e941f65ba4c2f889b0500b26733840363da9dd813fd",
+    "analysis/phase_g/u_arch_v3_budget550/provider_metadata/selected_catalog.json": "85a194eb2df9b513e5c8cdb0ffbf584a44ad93d030390acb0fc818edcf01a98c",
+    "analysis/phase_g/u_arch_v3_preflight/COST_PREFLIGHT.json": "a9f2bd2f790c68c981fc943537a305dc8de79e31ec94a2f1d3371a09c6dd01d7",
+    "analysis/phase_g/u_arch_v3_preflight/EXECUTION_PLAN.json": "e71efcbdc2f47979065d4a9ba8679aac046b228f5d82880c93450a3a156c878a",
+    "analysis/phase_g/u_arch_v3_preflight/PREFLIGHT.json": "b2f96a8477d803cd89f60b8292f9fa917ccee5a99bafba38825cbed9c06014f4",
+    "analysis/phase_g/u_arch_v3_preflight/SANITY_COHORT_MANIFEST.json": "3bca87426d10f3d4946d05711ed56608932eca5ccf551b1be776cb382bd8338c",
+    "analysis/phase_g/u_arch_v3_preflight/VALIDATION.json": "c18fdf9fa101990b373bdd03b3fadae72b87df0e0cba106c0162e7b42b2b746c",
+    "analysis/phase_g/u_control_development/DEVELOPMENT_COHORT_MANIFEST.json": "bb0e9d8c0f958ea7d0c3fd99c2fbb14570d35a362c4e0aed7830bc1799e1712e",
+    "configs/categories/gambling.yaml": "75d39bf204a13a76d59afd6ea5f134e0837f467dc12f8eefebf542371403f233",
+    "configs/categories/intoxication.yaml": "d531d003d7bda9adb007410d978bd568f7e3496b55005ddac5452b17e7168e99",
+    "configs/categories/sexual_violence.yaml": "6db8b80504d611e2006e09b3c63e6b24a69f7848fa76b477cc2af14d933f8c70",
+    "configs/categories/violence.yaml": "d2648bfd4e462988dbfa840624006f9d3b9b04bbb5f86c88fe9a9043f14c919a",
+    "frozen_final_2026_08_29/bank/revision_v2_3_1_final_504_dedup/pairs.jsonl": "fd13908cb1687a89b5256d54462dcba49e610ad21b2ff55ac53e4add7ff9fafa",
+    "src/jailbreak_hermes/judge.py": "a42000d8fe0e478209d5a88512469036a27530b930ef1e2306be45c7dbaa7ea4"
+  },
+  "no_automatic_stage_transfer": true,
+  "parent_commit": "8a7498445d651fcdcb30681e58f142f637f91cdd",
+  "roles": {
+    "deepseek_audit": {
+      "allowed_stages": [
+        "sanity",
+        "main_construction"
+      ],
+      "billed_output_token_bound": 69632,
+      "canonical_model": "deepseek/deepseek-v4-flash-20260423",
+      "endpoint_tag": "deepinfra/fp8",
+      "expected_rates_usd_per_million": [
+        0.09,
+        0.18
+      ],
+      "max_tokens": 4096,
+      "maximum_call_nusd": 106905600,
+      "model": "deepseek/deepseek-v4-flash",
+      "provider_name": "DeepInfra",
+      "quantization": "fp8",
+      "request_parameters": {
+        "provider": {
+          "allow_fallbacks": false,
+          "max_price": {
+            "completion": 0.18,
+            "prompt": 0.09,
+            "request": 0
+          },
+          "only": [
+            "deepinfra/fp8"
+          ],
+          "order": [
+            "deepinfra/fp8"
+          ],
+          "require_parameters": true
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "stream": false
+      },
+      "reservation_proof": {
+        "basis": "full published native endpoint limits; extra visible allowance; no caching; standard-tier price reservation",
+        "input_rate_per_token": "0.00000009",
+        "input_token_bound": 1048576,
+        "output_rate_per_token": "0.00000018",
+        "output_token_bound": 69632
+      },
+      "reservation_rates_usd_per_million": [
+        0.09,
+        0.18
+      ],
+      "temperature": 0
+    },
+    "gemini_judge": {
+      "allowed_stages": [
+        "judging"
+      ],
+      "billed_output_token_bound": 67583,
+      "canonical_model": "google/gemini-2.5-flash",
+      "endpoint_tag": "google-ai-studio/flex",
+      "expected_rates_usd_per_million": [
+        0.15,
+        1.25
+      ],
+      "max_tokens": 2048,
+      "maximum_call_nusd": 483530300,
+      "model": "google/gemini-2.5-flash",
+      "provider_name": "Google AI Studio",
+      "quantization": "unknown",
+      "request_parameters": {
+        "provider": {
+          "allow_fallbacks": false,
+          "max_price": {
+            "completion": 2.5,
+            "prompt": 0.3,
+            "request": 0
+          },
+          "only": [
+            "google-ai-studio/flex"
+          ],
+          "order": [
+            "google-ai-studio/flex"
+          ],
+          "require_parameters": true
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "service_tier": "flex",
+        "stream": false
+      },
+      "reservation_proof": {
+        "basis": "full published native endpoint limits; extra visible allowance; no caching; standard-tier price reservation",
+        "input_rate_per_token": "0.0000003",
+        "input_token_bound": 1048576,
+        "output_rate_per_token": "0.0000025",
+        "output_token_bound": 67583
+      },
+      "reservation_rates_usd_per_million": [
+        0.3,
+        2.5
+      ],
+      "temperature": 0
+    },
+    "generation": {
+      "allowed_stages": [
+        "sanity",
+        "main_construction"
+      ],
+      "billed_output_token_bound": 69631,
+      "canonical_model": "google/gemini-2.5-flash",
+      "endpoint_tag": "google-ai-studio/flex",
+      "expected_rates_usd_per_million": [
+        0.15,
+        1.25
+      ],
+      "max_tokens": 4096,
+      "maximum_call_nusd": 488650300,
+      "model": "google/gemini-2.5-flash",
+      "provider_name": "Google AI Studio",
+      "quantization": "unknown",
+      "request_parameters": {
+        "provider": {
+          "allow_fallbacks": false,
+          "max_price": {
+            "completion": 2.5,
+            "prompt": 0.3,
+            "request": 0
+          },
+          "only": [
+            "google-ai-studio/flex"
+          ],
+          "order": [
+            "google-ai-studio/flex"
+          ],
+          "require_parameters": true
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "service_tier": "flex",
+        "stream": false
+      },
+      "reservation_proof": {
+        "basis": "full published native endpoint limits; extra visible allowance; no caching; standard-tier price reservation",
+        "input_rate_per_token": "0.0000003",
+        "input_token_bound": 1048576,
+        "output_rate_per_token": "0.0000025",
+        "output_token_bound": 69631
+      },
+      "reservation_rates_usd_per_million": [
+        0.3,
+        2.5
+      ],
+      "temperature": 0.4
+    },
+    "mini_audit": {
+      "allowed_stages": [
+        "sanity",
+        "main_construction"
+      ],
+      "billed_output_token_bound": 132096,
+      "canonical_model": "openai/gpt-5-mini-2025-08-07",
+      "endpoint_tag": "openai/flex",
+      "expected_rates_usd_per_million": [
+        0.125,
+        1.0
+      ],
+      "max_tokens": 4096,
+      "maximum_call_nusd": 364192000,
+      "model": "openai/gpt-5-mini",
+      "provider_name": "OpenAI",
+      "quantization": "unknown",
+      "request_parameters": {
+        "provider": {
+          "allow_fallbacks": false,
+          "max_price": {
+            "completion": 2.0,
+            "prompt": 0.25,
+            "request": 0
+          },
+          "only": [
+            "openai/flex"
+          ],
+          "order": [
+            "openai/flex"
+          ],
+          "require_parameters": true
+        },
+        "response_format": {
+          "type": "json_object"
+        },
+        "service_tier": "flex",
+        "stream": false
+      },
+      "reservation_proof": {
+        "basis": "full published native endpoint limits; extra visible allowance; no caching; standard-tier price reservation",
+        "input_rate_per_token": "0.00000025",
+        "input_token_bound": 400000,
+        "output_rate_per_token": "0.000002",
+        "output_token_bound": 132096
+      },
+      "reservation_rates_usd_per_million": [
+        0.25,
+        2.0
+      ],
+      "temperature": 0
+    },
+    "target_nemotron": {
+      "allowed_stages": [
+        "target_inference"
+      ],
+      "billed_output_token_bound": 240025,
+      "canonical_model": "nvidia/nemotron-3-nano-30b-a3b",
+      "endpoint_tag": "crusoe/fp8",
+      "expected_rates_usd_per_million": [
+        0.05,
+        0.2
+      ],
+      "max_tokens": 4096,
+      "maximum_call_nusd": 61112200,
+      "model": "nvidia/nemotron-3-nano-30b-a3b",
+      "provider_name": "Crusoe",
+      "quantization": "fp8",
+      "request_parameters": {
+        "provider": {
+          "allow_fallbacks": false,
+          "max_price": {
+            "completion": 0.2,
+            "prompt": 0.05,
+            "request": 0
+          },
+          "only": [
+            "crusoe/fp8"
+          ],
+          "order": [
+            "crusoe/fp8"
+          ],
+          "require_parameters": true
+        },
+        "stream": false
+      },
+      "reservation_proof": {
+        "basis": "full published native endpoint limits; extra visible allowance; no caching; standard-tier price reservation",
+        "input_rate_per_token": "0.00000005",
+        "input_token_bound": 262144,
+        "output_rate_per_token": "0.0000002",
+        "output_token_bound": 240025
+      },
+      "reservation_rates_usd_per_million": [
+        0.05,
+        0.2
+      ],
+      "temperature": 0
+    },
+    "target_oss": {
+      "allowed_stages": [
+        "target_inference"
+      ],
+      "billed_output_token_bound": 122060,
+      "canonical_model": "openai/gpt-oss-20b",
+      "endpoint_tag": "deepinfra/bf16",
+      "expected_rates_usd_per_million": [
+        0.03,
+        0.14
+      ],
+      "max_tokens": 4096,
+      "maximum_call_nusd": 21020560,
+      "model": "openai/gpt-oss-20b",
+      "provider_name": "DeepInfra",
+      "quantization": "bf16",
+      "request_parameters": {
+        "provider": {
+          "allow_fallbacks": false,
+          "max_price": {
+            "completion": 0.14,
+            "prompt": 0.03,
+            "request": 0
+          },
+          "only": [
+            "deepinfra/bf16"
+          ],
+          "order": [
+            "deepinfra/bf16"
+          ],
+          "require_parameters": true
+        },
+        "stream": false
+      },
+      "reservation_proof": {
+        "basis": "full published native endpoint limits; extra visible allowance; no caching; standard-tier price reservation",
+        "input_rate_per_token": "0.00000003",
+        "input_token_bound": 131072,
+        "output_rate_per_token": "0.00000014",
+        "output_token_bound": 122060
+      },
+      "reservation_rates_usd_per_million": [
+        0.03,
+        0.14
+      ],
+      "temperature": 0
+    },
+    "target_qwen": {
+      "allowed_stages": [
+        "target_inference"
+      ],
+      "billed_output_token_bound": 36096,
+      "canonical_model": "qwen/qwen3-30b-a3b-instruct-2507",
+      "endpoint_tag": "streamlake",
+      "expected_rates_usd_per_million": [
+        0.04815,
+        0.19305
+      ],
+      "max_tokens": 4096,
+      "maximum_call_nusd": 13131533,
+      "model": "qwen/qwen3-30b-a3b-instruct-2507",
+      "provider_name": "StreamLake",
+      "quantization": "unknown",
+      "request_parameters": {
+        "provider": {
+          "allow_fallbacks": false,
+          "max_price": {
+            "completion": 0.19305,
+            "prompt": 0.04815,
+            "request": 0
+          },
+          "only": [
+            "streamlake"
+          ],
+          "order": [
+            "streamlake"
+          ],
+          "require_parameters": true
+        },
+        "stream": false
+      },
+      "reservation_proof": {
+        "basis": "full published native endpoint limits; extra visible allowance; no caching; standard-tier price reservation",
+        "input_rate_per_token": "0.00000004815",
+        "input_token_bound": 128000,
+        "output_rate_per_token": "0.00000019305",
+        "output_token_bound": 36096
+      },
+      "reservation_rates_usd_per_million": [
+        0.04815,
+        0.19305
+      ],
+      "temperature": 0
+    }
+  },
+  "sanity_all_certified": 12,
+  "sanity_first_attempt_floor": 9,
+  "single_cumulative_journal_required": true,
+  "stage_budgets_nusd": {
+    "judging": 1500000000,
+    "main_construction": 2600000000,
+    "sanity": 650000000,
+    "target_inference": 750000000
+  },
+  "target_and_judge_max_requests_per_job": 3,
+  "target_judge_controllers_available": false,
+  "target_outcomes_in_development": false,
+  "target_u_only_jobs": 288,
+  "timeout_seconds": 120,
+  "transport_retries": 0,
+  "version": "U-ARCH-v3-budget550-amendment-2"
+}
