@@ -2,6 +2,7 @@
 import copy
 import json
 import socket
+import subprocess
 
 import httpx
 import pytest
@@ -125,7 +126,7 @@ def test_failed_readiness_stays_failed_even_with_twelve_certified(tmp_path):
 
 
 def test_changed_or_uncommitted_preflight_cannot_load_credentials(monkeypatch):
-    monkeypatch.setattr(s,"git",lambda *args:b"not the committed preflight")
+    monkeypatch.setattr(s,"git",lambda *args,**kwargs:b"not the committed preflight")
     with pytest.raises(r.Stop,match="must match prospective"):
         s.verify_commit("0"*40,s.make_plan())
 
@@ -143,3 +144,115 @@ def test_no_hidden_model_or_endpoint_substitution(monkeypatch):
     monkeypatch.setattr(s,"read",changed)
     with pytest.raises(r.Stop,match="endpoint unavailable"):
         s.make_plan()
+
+
+# --- Stage 1 committed-artifact verifier: real Git repositories, real commits ---
+# Regression cover for the false failure in which a checkout that legitimately
+# re-encoded line endings was reported as a modified frozen artifact.
+
+
+def _git(root,*args,stdin=None):
+    return subprocess.run(["git",*args],cwd=root,capture_output=True,check=True,input=stdin).stdout
+
+
+@pytest.fixture
+def committed_repo(tmp_path,monkeypatch):
+    """A real repository whose checkout of a real commit carries CRLF endings."""
+    root=tmp_path/"repo"; out=root/"out"; out.mkdir(parents=True)
+    _git(tmp_path,"init","-q","-b","main","repo")
+    for key,value in (("user.email","t@example.invalid"),("user.name","test"),("core.autocrlf","true")):
+        _git(root,"config",key,value)
+    (root/".gitignore").write_bytes(b"bank.jsonl\n")
+    (root/".gitattributes").write_bytes(b"frozen.csv text eol=crlf\nout/*.json text eol=lf\ncode.py text eol=lf\n")
+    (root/"frozen.csv").write_bytes(b"pair_id,rank\r\na,1\r\nb,2\r\n")
+    (root/"code.py").write_bytes(b"VALUE = 1\n")
+    (root/"bank.jsonl").write_bytes(b'{"pair_id": "x"}\n')
+    plan={"authorized_stages":["sanity"],
+          "locks":{name:r.file_hash(root/name) for name in ("frozen.csv","code.py","bank.jsonl")}}
+    (out/"EXECUTION_PLAN.json").write_bytes((json.dumps(plan,indent=2,sort_keys=True)+"\n").encode())
+    (out/"PREFLIGHT.json").write_bytes(b'{"status": "PASS"}\n')
+    receipt={"status":"PASS","passed":165,"total":165,"failed":0,
+             "execution_plan_sha256":r.file_hash(out/"EXECUTION_PLAN.json")}
+    (out/"OFFLINE_VALIDATION.json").write_bytes((json.dumps(receipt,indent=2,sort_keys=True)+"\n").encode())
+    _git(root,"add","-A"); _git(root,"commit","-qm","prospective amendment")
+    monkeypatch.setattr(r,"ROOT",root); monkeypatch.setattr(s,"OUT",out); monkeypatch.setattr(s,"BANK",root/"bank.jsonl")
+    return root,out,_git(root,"rev-parse","HEAD").decode().strip(),plan
+
+
+def test_committed_checkout_line_ending_normalisation_is_not_a_mismatch(committed_repo):
+    root,_,commit,plan=committed_repo
+    raw=(root/"frozen.csv").read_bytes(); blob=_git(root,"show",commit+":frozen.csv")
+    assert b"\r\n" in raw and b"\r\n" not in blob and raw!=blob
+    assert not _git(root,"status","--porcelain").strip()
+    assert r.file_hash(root/"frozen.csv")==plan["locks"]["frozen.csv"]
+    s.verify_commit(commit,plan)
+
+
+def test_committed_content_modification_still_fails(committed_repo):
+    root,_,commit,plan=committed_repo
+    (root/"frozen.csv").write_bytes(b"pair_id,rank\r\na,1\r\nb,2\r\nc,3\r\n")
+    assert not s.committed_matches(commit,"frozen.csv",root/"frozen.csv")
+    with pytest.raises(r.Stop,match="prospective committed input/code hash mismatch"):
+        s.verify_commit(commit,plan)
+
+
+def test_committed_single_field_edit_still_fails(committed_repo):
+    root,_,commit,plan=committed_repo
+    (root/"code.py").write_bytes(b"VALUE = 2\n")
+    assert not s.committed_matches(commit,"code.py",root/"code.py")
+    with pytest.raises(r.Stop,match="prospective committed input/code hash mismatch"):
+        s.verify_commit(commit,plan)
+
+
+def test_frozen_hash_mismatch_still_fails(committed_repo):
+    root,_,commit,plan=committed_repo
+    corrupted=copy.deepcopy(plan); corrupted["locks"]["frozen.csv"]="0"*64
+    with pytest.raises(r.Stop,match="prospective committed input/code hash mismatch"):
+        s.verify_commit(commit,corrupted)
+
+
+def test_line_ending_only_rewrite_of_frozen_bytes_still_fails_the_raw_hash_gate(committed_repo):
+    """Normalisation tolerance never becomes byte-level tolerance for frozen data."""
+    root,_,commit,plan=committed_repo
+    path=root/"frozen.csv"; path.write_bytes(path.read_bytes().replace(b"\r\n",b"\n"))
+    assert s.committed_matches(commit,"frozen.csv",path)
+    assert r.file_hash(path)!=plan["locks"]["frozen.csv"]
+    with pytest.raises(r.Stop,match="prospective committed input/code hash mismatch"):
+        s.verify_commit(commit,plan)
+
+
+def test_untracked_bank_is_hash_checked_without_a_committed_blob(committed_repo):
+    root,_,commit,plan=committed_repo
+    assert not _git(root,"ls-files","bank.jsonl").strip()
+    (root/"bank.jsonl").write_bytes(b'{"pair_id": "tampered"}\n')
+    with pytest.raises(r.Stop,match="prospective committed input/code hash mismatch"):
+        s.verify_commit(commit,plan)
+
+
+def test_uncommitted_receipt_edit_still_fails(committed_repo):
+    root,out,commit,plan=committed_repo
+    (out/"PREFLIGHT.json").write_bytes(b'{"status": "PASS", "slipped_in": true}\n')
+    with pytest.raises(r.Stop,match="must match prospective"):
+        s.verify_commit(commit,plan)
+
+
+def test_project_repository_checkout_normalisation_is_not_a_mismatch():
+    """The exact files whose CRLF checkout produced the original Stage 1 failure."""
+    names=["analysis/phase_g/selection_n96.csv","configs/categories/gambling.yaml",
+           "configs/categories/intoxication.yaml","configs/categories/sexual_violence.yaml",
+           "configs/categories/violence.yaml"]
+    normalised=0
+    for name in names:
+        path=r.ROOT/name; raw=path.read_bytes(); blob=s.git("show",s.PARENT+":"+name)
+        assert raw.replace(b"\r\n",b"\n")==blob.replace(b"\r\n",b"\n")
+        assert s.committed_matches(s.PARENT,name,path)
+        normalised+=raw!=blob
+    assert normalised, "no checkout re-encoding present; regression would be vacuous"
+
+
+def test_project_repository_tampered_frozen_bytes_are_rejected(tmp_path):
+    name="configs/categories/violence.yaml"
+    original=(r.ROOT/name).read_bytes()
+    tampered=tmp_path/"violence.yaml"; tampered.write_bytes(original.replace(b"category",b"cathegory",1))
+    assert tampered.read_bytes()!=original
+    assert not s.committed_matches(s.PARENT,name,tampered)

@@ -210,7 +210,7 @@
     "analysis/phase_g/SANITY_COMPATIBILITY_AMENDMENT.md": "3e3621c402efb753e87df713a5d0fe23d2d346ba87aa00486be5264ab93ba8db",
     "analysis/phase_g/U_CONTROL_PROTOCOL_PROPOSED.md": "91b8b6d19cab0c5f55fdb7bbda54b33b5b5cd27e686c01afb6cc19da139faf2e",
     "analysis/phase_g/budget550_preflight.py": "2246d66e50d6ec3052f3cfa52c3496960db65a2f535b14ab24fcf5d75a7a335a",
-    "analysis/phase_g/sanity_compat.py": "c953849c6324511333e92d98542be2c0b587f153929c029f55e9e7ab4a303878",
+    "analysis/phase_g/sanity_compat.py": "61861fda78b20212f27011bb890da10caf63078fc6faea4eddebc6fa76741c95",
     "analysis/phase_g/selection_n120_MANIFEST.json": "797280e7f9157fedeb978ed23491dfa1c95fce323ccac1b357935d89fc31b98b",
     "analysis/phase_g/selection_n96.csv": "56f0961ea0762ea0c4873f4eb2c4c04f5d0b2e0c87d57f172255f07a014b7362",
     "analysis/phase_g/selection_n96_MANIFEST.json": "aa066ec554c047af61ea11043c8b3deedccf51a8009b1e13ad67296cbbc2da2c",
@@ -240,7 +240,7 @@
     "configs/categories/violence.yaml": "d2648bfd4e462988dbfa840624006f9d3b9b04bbb5f86c88fe9a9043f14c919a",
     "frozen_final_2026_08_29/bank/revision_v2_3_1_final_504_dedup/pairs.jsonl": "fd13908cb1687a89b5256d54462dcba49e610ad21b2ff55ac53e4add7ff9fafa",
     "src/jailbreak_hermes/judge.py": "a42000d8fe0e478209d5a88512469036a27530b930ef1e2306be45c7dbaa7ea4",
-    "tests/test_sanity_compat.py": "90eed89ae997dcb60ced15c5afc76e458d89aa8b21bee3cce9b09e413230664b",
+    "tests/test_sanity_compat.py": "bd2f9c3342c6b70b5d4ec320a1f1fcb0a197aed5a608f2c6d5d1b578faa6b65b",
     "tests/test_strong_archaic_preflight.py": "c24a1b61fcfb1f24af5b3496193745f1e3555d0daea432b4e2160eefd3f48ab0"
   },
   "mini_temperature_policy": "omitted; user-approved native sampling; pre-outcome",

@@ -37,8 +37,27 @@ def save_new(path, value):
         with path.open("xb") as f: f.write(blob)
 
 
-def git(*args):
-    return subprocess.run(["git",*args],cwd=r.ROOT,capture_output=True,check=True).stdout
+def git(*args,root=None,stdin=None):
+    return subprocess.run(["git",*args],cwd=root or r.ROOT,capture_output=True,check=True,input=stdin).stdout
+
+
+def committed_matches(commit,name,path,root=None):
+    """Would committing these working bytes reproduce the recorded blob exactly?
+
+    Raw bytes are compared first. A difference is accepted only when it is
+    confined to CRLF/LF line-ending representation AND Git's own clean filter
+    (core.autocrlf, .gitattributes text/eol) maps the working bytes onto exactly
+    the recorded blob object, which is what a legitimate checkout of that commit
+    produces. Any other difference fails both tests, so genuine modification of a
+    frozen artifact still fails verification. Byte-level authority over frozen
+    data stays with the unchanged raw sha256 locks and manifest hashes, which
+    reject even a line-ending-only rewrite of a frozen artifact.
+    """
+    raw=path.read_bytes(); blob=git("show",commit+":"+name,root=root)
+    if raw==blob: return True
+    if raw.replace(b"\r\n",b"\n")!=blob.replace(b"\r\n",b"\n"): return False
+    return (git("rev-parse",commit+":"+name,root=root).strip()
+            ==git("hash-object","--stdin","--path="+name,root=root,stdin=raw).strip())
 
 
 def frozen_check():
@@ -48,7 +67,7 @@ def frozen_check():
     if any(r.file_hash(BASE/n)!=h for n,h in old.items()): raise r.Stop("legacy Phase G hash mismatch")
     paths=[*r.SPECS.glob("strong_archaic_v3*"),*(BASE/"u_arch_v3_preflight").glob("*.json"),*OLD.rglob("*.json")]
     for path in paths:
-        if path.read_bytes()!=git("show",PARENT+":"+path.relative_to(r.ROOT).as_posix()):
+        if not committed_matches(PARENT,path.relative_to(r.ROOT).as_posix(),path):
             raise r.Stop("parent specification/preflight artifact changed")
     if git("diff",PARENT,"--name-only","--","paper","human_validation","analysis/phase_d",
            "analysis/phase_g/u_control_development","accounting"):
@@ -140,7 +159,7 @@ def verify_commit(commit,plan):
     if len(commit)!=40 or any(c not in "0123456789abcdef" for c in commit): raise r.Stop("full amendment commit hash required")
     git("merge-base","--is-ancestor",commit,"HEAD")
     for path in [OUT/"EXECUTION_PLAN.json",OUT/"PREFLIGHT.json",OUT/"OFFLINE_VALIDATION.json"]:
-        if path.read_bytes()!=git("show",commit+":"+path.relative_to(r.ROOT).as_posix()):
+        if not committed_matches(commit,path.relative_to(r.ROOT).as_posix(),path):
             raise r.Stop("preflight/test receipt must match prospective amendment commit")
     receipt=read(OUT/"OFFLINE_VALIDATION.json")
     if receipt["status"]!="PASS" or receipt["failed"]!=0 or receipt["passed"]!=receipt["total"]:
@@ -151,7 +170,7 @@ def verify_commit(commit,plan):
     if plan["authorized_stages"]!=["sanity"]: raise r.Stop("approval is sanity only")
     for name,sha in plan["locks"].items():
         path=r.ROOT/name
-        if r.file_hash(path)!=sha or (path!=BANK and git("show",commit+":"+name)!=path.read_bytes()):
+        if r.file_hash(path)!=sha or (path!=BANK and not committed_matches(commit,name,path)):
             raise r.Stop("prospective committed input/code hash mismatch")
 
 

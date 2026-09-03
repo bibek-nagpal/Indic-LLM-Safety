@@ -26,3 +26,4 @@ tests/test_strong_archaic_preflight.py text eol=lf
 tests/test_budget550_preflight.py text eol=lf
 tests/test_sanity_compat.py text eol=lf
 analysis/phase_g/u_arch_v3_sanity_compat/*.json text eol=lf
+analysis/phase_g/u_arch_v3_sanity_compat/**/*.json text eol=lf
