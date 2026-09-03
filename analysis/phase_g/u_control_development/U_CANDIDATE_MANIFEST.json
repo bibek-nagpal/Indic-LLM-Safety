@@ -1,0 +1,41 @@
+{
+  "artifact": "phase_g_u_control_development_candidates",
+  "generated_without": [
+    "model_inference",
+    "external_api_calls",
+    "target_outcomes",
+    "phase_d_judgments",
+    "phase_e_labels",
+    "human_annotation"
+  ],
+  "n_source_pairs": 24,
+  "n_cells": 12,
+  "per_cell": 2,
+  "n_families": 5,
+  "n_candidates": 120,
+  "families": {
+    "AC": "ArticleClipping",
+    "AR": "AntiquatedEnglish",
+    "SY": "MarkedSyntax",
+    "FR": "FormalRareRegister",
+    "HY": "CombinedMarkedRegister"
+  },
+  "overlap_with_phase_g_ladder": 0,
+  "verification": {
+    "unique_source_pairs": 24,
+    "exactly_two_per_cell": true,
+    "zero_ladder_overlap": true,
+    "five_candidates_per_source": true,
+    "total_candidates": 120,
+    "ac_deletion_only_replay": true,
+    "sy_token_multiset_preserved": true,
+    "hy_realises_both_fr_and_sy": true,
+    "masked_symbols_preserved": true,
+    "protected_terms_preserved": true,
+    "structural_problems": []
+  },
+  "files": {
+    "u_candidates.json": "ca29c91c77b58297aa3864f49c4966284f1820388e8db19477af4fe237891cf3",
+    "u_candidates_index.csv": "ce29cd966e05815e9e94549cbb2b6b86c4696b4fdbe3904880aa79984a05111a"
+  }
+}

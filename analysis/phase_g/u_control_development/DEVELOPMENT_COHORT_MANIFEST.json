@@ -1,0 +1,71 @@
+{
+  "cell_counts": {
+    "gambling::RolePrompting": 2,
+    "gambling::ScenarioNesting": 2,
+    "gambling::SymbolicMasking": 2,
+    "intoxication::RolePrompting": 2,
+    "intoxication::ScenarioNesting": 2,
+    "intoxication::SymbolicMasking": 2,
+    "sexual_violence::RolePrompting": 2,
+    "sexual_violence::ScenarioNesting": 2,
+    "sexual_violence::SymbolicMasking": 2,
+    "violence::RolePrompting": 2,
+    "violence::ScenarioNesting": 2,
+    "violence::SymbolicMasking": 2
+  },
+  "cohort": "u_control_development",
+  "cohort_index_sha256": "3dcf6da8ebe87bb7e290d16be9035a7cdc15f462278212723802d458e9afa3f3",
+  "development_pair_ids": [
+    "d9b82cad2b79b01cb8b2efd1",
+    "f8f4352e73a23baa57f472d8",
+    "f8d7c0ac7af66cd81d897779",
+    "bbaa2624537d5f7cafba7ba8",
+    "23936cf862bac7389931e449",
+    "99609f2097ee98168a5b61c6",
+    "7a34b220a1f9d704d251457f",
+    "86fdd22f20f17fab0d787298",
+    "246d6499d8ef09be8673b334",
+    "d3e11e96e81b5996e6e728d0",
+    "c7593d5f83533ee4c3488837",
+    "7635b3d9adcfdf1a08f2183a",
+    "01f57697b279fe67651e9508",
+    "35525a8cce17a901caa02ab4",
+    "818074a58df3296b708f1ffe",
+    "1a25f334b21723868f9aa1d4",
+    "613dbf3dcecb2ef68cbc5b3f",
+    "b13c3b8bd25c0461b18a90cd",
+    "6bbf2e312b8cd15e36b7bf5f",
+    "2040c451b6b23689f671385e",
+    "771f3d972e29df46af9bd2d8",
+    "d20dc6c097710686edb700b3",
+    "9aae429d762688d4550a08cf",
+    "650478d7d04536a0bac60845"
+  ],
+  "disjoint_from_n120_ladder": true,
+  "excluded_cohorts": [
+    "selection_n120_MANIFEST.json (complete Phase G ladder)"
+  ],
+  "frozen_bank_id": "revision_v2_3_1_final_504_dedup",
+  "frozen_bank_pairs_file_sha256": "fd13908cb1687a89b5256d54462dcba49e610ad21b2ff55ac53e4add7ff9fafa",
+  "frozen_bank_sha256": "35bfbc1d09e78b77c24d62bbf41783cc9b297dd25f1bba3fe6062d53dc2028ed",
+  "inputs_deliberately_not_read": [
+    "target scores",
+    "flips",
+    "response lengths",
+    "Phase D cross-judge scores",
+    "Phase E human labels"
+  ],
+  "inputs_read": [
+    "frozen bank pairs.jsonl",
+    "frozen bank manifest.json",
+    "selection_n120_MANIFEST.json (identifiers only)"
+  ],
+  "n_development_pairs": 24,
+  "per_cell": 2,
+  "phase": "G",
+  "purpose": "five-family U-control candidate generation (development only)",
+  "schema_version": 1,
+  "selection_is_outcome_independent": true,
+  "selection_rule": "ascending SHA-256 of seed+US+pair_id+US+category+US+strategy; lowest 2 ranks per category x strategy cell; pair_id lexical tiebreak",
+  "selection_seed": "phase-g-u-article-clip-pilot-v1|20260903"
+}
