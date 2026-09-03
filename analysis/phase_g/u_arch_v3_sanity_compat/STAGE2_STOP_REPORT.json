@@ -1,0 +1,100 @@
+{
+  "actual_reported_cost_usd": {
+    "deepseek": 0,
+    "gemini": 0,
+    "gpt5_mini": 0,
+    "total": 0
+  },
+  "amendment_commit": "ec85b2158cba54f06c71d8cd0be0457d7bdb7590",
+  "attempts_per_pair": {
+    "028b33c54fe2a9a423207913": 0,
+    "05e9fdc4d6e9697ef818eb5f": 0,
+    "125fe8f2132dbf88e220c8ca": 0,
+    "19d0cbd59e46905e205331ad": 0,
+    "3c8ce48946d2690a9293393f": 0,
+    "53cb51896966718c60d66a9f": 0,
+    "6789189b3397968de7e4e98d": 0,
+    "7e25142d6d16663af5a7bb71": 0,
+    "bd31709e53834851772496f5": 0,
+    "bd34d24fd59a03289aa74136": 0,
+    "ede0eba19a5425f6c7d3460e": 0,
+    "f9dde56fc38dc3fa528a4a54": 0
+  },
+  "blocked_before_any_credential_use": true,
+  "counts_are_not_observed_failure_rates": true,
+  "deepseek_rejections_by_axis": {},
+  "diagnosis_evidence": {
+    "all_raw_sha256_locks_match_working_files": true,
+    "clean_filtered_worktree_oid_equals_committed_blob_oid": true,
+    "frozen_artifact_actually_modified": false,
+    "git_diff_and_status_report_no_change": true,
+    "gitattributes_declares_eol": {
+      "analysis/phase_g/selection_n*.csv": "crlf",
+      "configs/categories/*.yaml": "lf"
+    },
+    "lf_normalised_contents_identical": true,
+    "pre_fix_module_reproduction": "loading the pre-fix verifier against a purpose-built real git repository reproduced the exact production message 'prospective committed input/code hash mismatch'; the fixed verifier passes the same repository and still stops on a genuine edit",
+    "raw_worktree_vs_blob_bytes_differ": [
+      "analysis/phase_g/selection_n96.csv",
+      "configs/categories/gambling.yaml",
+      "configs/categories/intoxication.yaml",
+      "configs/categories/sexual_violence.yaml",
+      "configs/categories/violence.yaml"
+    ]
+  },
+  "diagnosis_independently_verified_not_assumed": true,
+  "estimated_cost_from_executed_tokens_usd": 0,
+  "final_frozen_artifact_verification": {
+    "core_manifest_files": 82,
+    "legacy_g_locks": 10,
+    "parent_spec_and_preflight_files": 20,
+    "status": "PASS"
+  },
+  "first_attempt_dual_passes": 0,
+  "frozen_artifacts_before_execution": "PASS",
+  "frozen_artifacts_unchanged": true,
+  "frozen_protection_argument": "the raw sha256 locks remain the byte-level authority and run before the git comparison, so any byte change to a frozen artifact still fails, including a line-ending-only rewrite, which is asserted by a dedicated test.",
+  "frozen_protection_weakened": "NO",
+  "global_cap_unchanged": true,
+  "global_cap_usd": 5.5,
+  "gpt5_mini_rejections_by_axis": {},
+  "line_ending_diagnosis_confirmed": "YES",
+  "malformed_or_failed_inference_api_calls": 0,
+  "next_recommended_action": "Run 'python -m analysis.phase_g.sanity_compat execute --amendment-commit ec85b2158cba54f06c71d8cd0be0457d7bdb7590' from an environment with direct network access to openrouter.ai, which is the same repository state verified here. Nothing further is required offline: the committed-artifact gate, the offline suite and the frozen-artifact verification all pass against this commit.",
+  "offline_tests": {
+    "failed": 0,
+    "passed": 174,
+    "status": "PASS",
+    "total": 174
+  },
+  "original_verifier_failure_root_cause": "verify_commit and frozen_check compared raw working-tree bytes with git blob bytes. Five locked files are stored LF in the object database and legitimately carry CRLF in the Windows checkout, so byte equality failed although git diff and git status saw no difference, the clean-filtered working bytes hash to the recorded blob object, and all 36 raw sha256 locks matched the working files exactly.",
+  "outstanding_reservations_usd": 0,
+  "pairs_dual_certified": 0,
+  "private_journal_created": false,
+  "protocol_violations": [],
+  "public_unauthenticated_metadata_gets": 0,
+  "regression_tests": [
+    "test_committed_checkout_line_ending_normalisation_is_not_a_mismatch",
+    "test_committed_content_modification_still_fails",
+    "test_committed_single_field_edit_still_fails",
+    "test_frozen_hash_mismatch_still_fails",
+    "test_line_ending_only_rewrite_of_frozen_bytes_still_fails_the_raw_hash_gate",
+    "test_untracked_bank_is_hash_checked_without_a_committed_blob",
+    "test_uncommitted_receipt_edit_still_fails",
+    "test_project_repository_checkout_normalisation_is_not_a_mismatch",
+    "test_project_repository_tampered_frozen_bytes_are_rejected"
+  ],
+  "regression_tests_added": 9,
+  "regression_tests_use_real_commits": true,
+  "research_data_sent_externally": false,
+  "result_detail": "Every Stage 1 gate passes, but no paid call is dispatchable from this session: openrouter.ai is not reachable from either shell available here. The desktop shell has no DNS resolution for it and the cloud container's egress proxy answers 403 Forbidden. The frozen transport also sets trust_env=False by design, so it would not use an authenticated egress proxy even if one allowed the host. Execution was therefore not started, so that no dispatch could quarantine a journal row. This is an environment reachability blocker, not a scientific or protocol failure, and no conclusion about generation feasibility or auditor acceptance is available.",
+  "sanity_cap_respected": true,
+  "sanity_cap_usd": 0.65,
+  "sanity_executed": "NO",
+  "sanity_execution_preflight": "PASS",
+  "sanity_result": "INCOMPLETE DUE TO EXECUTION OR BUDGET FAILURE",
+  "total_deepseek_calls": 0,
+  "total_generator_calls": 0,
+  "total_gpt5_mini_calls": 0,
+  "verifier_fix": "added committed_matches(); a difference between the working file and the recorded blob is accepted only when it is confined to CRLF/LF AND git's own clean filter (core.autocrlf, .gitattributes text/eol) reproduces exactly the recorded blob object. Applied at the three comparison sites in verify_commit and frozen_check. The raw sha256 lock and manifest checks are unchanged and still evaluated first."
+}
