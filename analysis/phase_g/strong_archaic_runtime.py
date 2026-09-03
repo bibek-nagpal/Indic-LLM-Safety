@@ -23,6 +23,12 @@ ROOT = Path(__file__).resolve().parents[2]
 SPECS = ROOT / "analysis/phase_g/specs"
 ROLES = ("generation", "deepseek_audit", "mini_audit")
 MODELS = dict(zip(ROLES, ("google/gemini-2.5-flash", "deepseek/deepseek-v4-flash", "openai/gpt-5-mini")))
+# Approved completion budget per role, pinned exactly as the model identity is.
+# max_tokens caps reasoning PLUS visible tokens. GPT-5 Mini is a reasoning model:
+# it spent 2368 and 2752 reasoning tokens of a 4096 cap, leaving too little for the
+# 17-axis verdict, which costs ~1734 visible tokens for this payload. The auditor
+# instruction, schema, axes and sampling are unchanged; only the truncation is removed.
+MAX_TOKENS = dict(generation=4096, deepseek_audit=4096, mini_audit=8192)
 HARD_CEILING_NUSD = 5_500_000_000
 STAGES = ("sanity", "main_construction", "target_inference", "judging")
 SCHEMAS = json.loads((SPECS / "strong_archaic_v3_schemas.json").read_text(encoding="utf-8"))["$defs"]
@@ -244,8 +250,8 @@ class Journal:
         settings = self.config["roles"][role]
         sampling_ok = ("temperature" not in settings if role == "mini_audit"
                        else settings.get("temperature") == (0.4 if role == "generation" else 0))
-        if settings["model"] != MODELS[role] or settings["max_tokens"] != 4096 or not sampling_ok:
-            raise Stop("unapproved model or sampling settings")
+        if settings["model"] != MODELS[role] or settings["max_tokens"] != MAX_TOKENS[role] or not sampling_ok:
+            raise Stop("unapproved model, completion budget or sampling settings")
         request = dict(fixed_parameters(settings), messages=messages(role, payload))
         return self._dispatch_request(job, role, stage, request, transport)
 
@@ -403,6 +409,13 @@ def construction(journal, cohort, transport, stage="sanity", main_approval_refer
                         if result["billed_nusd"] == 0 and result.get("definitely_unbilled") is True:
                             continue
                         raise Stop("billed auditor infrastructure failure; saved and stop")
+                    if result.get("finish_reason") == "length":
+                        # Truncated at the completion cap: an identical repeat truncates
+                        # again. Never a scientific rejection and never an audit verdict.
+                        journal.event(identifier(item, role, "truncated", repair),
+                                      {"reason": "completion_limit_reached", "not_a_verdict": True,
+                                       "usage": result.get("usage")})
+                        raise Stop("auditor output truncated at the configured completion limit")
                     try:
                         if result["finish_reason"] != "stop": raise ValueError("audit incomplete")
                         audit = parse(result["content"], "audit", item)

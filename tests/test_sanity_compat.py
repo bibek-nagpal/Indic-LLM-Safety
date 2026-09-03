@@ -7,8 +7,11 @@ import subprocess
 import httpx
 import pytest
 
+from jsonschema import ValidationError
+
 from analysis.phase_g import strong_archaic_runtime as r
 from analysis.phase_g import sanity_compat as s
+from analysis.phase_g import migrate_journal_scope as m
 from analysis.phase_g.strong_archaic_transport import SingleDispatchTransport
 from test_strong_archaic_preflight import (config,cohort,journal,FixtureTransport,
                                          envelope,basic_payload,offline_only,audit_fixture)
@@ -32,7 +35,9 @@ def test_real_preflight_sole_parameter_change_and_all_caps():
     plan,report=s.preflight()
     previous=s.read(s.OLD/"EXECUTION_PLAN.json")
     expected=copy.deepcopy(previous["roles"]); del expected["mini_audit"]["temperature"]
+    expected["mini_audit"]["max_tokens"]=r.MAX_TOKENS["mini_audit"]
     assert plan["roles"]==expected
+    assert plan["roles"]["mini_audit"]["maximum_call_nusd"]==previous["roles"]["mini_audit"]["maximum_call_nusd"]
     assert plan["authorized_stages"]==["sanity"]
     assert plan["hard_ceiling_nusd"]==5_500_000_000
     assert plan["stage_budgets_nusd"]["sanity"]==650_000_000
@@ -49,7 +54,7 @@ def test_mini_wire_request_omits_temperature_entirely(tmp_path):
     def handler(req):
         body=json.loads(req.content); seen.append(body)
         assert "temperature" not in body
-        assert body["model"]=="openai/gpt-5-mini" and body["max_tokens"]==4096
+        assert body["model"]=="openai/gpt-5-mini" and body["max_tokens"]==r.MAX_TOKENS["mini_audit"]
         payload=json.loads(body["messages"][1]["content"])
         return httpx.Response(200,json=dict(id="fixture",provider="fixture-provider",model=body["model"],
             usage=dict(prompt_tokens=20,completion_tokens=30,cost=.0000001),
@@ -256,3 +261,246 @@ def test_project_repository_tampered_frozen_bytes_are_rejected(tmp_path):
     tampered=tmp_path/"violence.yaml"; tampered.write_bytes(original.replace(b"category",b"cathegory",1))
     assert tampered.read_bytes()!=original
     assert not s.committed_matches(s.PARENT,name,tampered)
+
+
+# --- GPT-5 Mini completion-budget truncation, 2026-09-03 sanity run -------------
+# The auditor returned HTTP 200 twice with finish_reason "length" at exactly the
+# 4096-token cap; reasoning consumed 2368 and 2752 of it, leaving too few visible
+# tokens for the 17-axis verdict, which costs 1734 for this payload. The stored
+# provider evidence is redacted into tests/fixtures (the response text embeds the
+# harmful source and the U candidate, so only measurements are committed).
+
+EVIDENCE=json.loads((r.ROOT/"tests/fixtures/phase_g_mini_truncation_2026_09_03.json").read_text(encoding="utf-8"))
+
+
+def truncated_audit(item, strategy, visible_tokens):
+    """A complete verdict cut mid-string exactly as the provider truncation cut it."""
+    complete=r.canonical(audit_fixture(item,strategy))
+    cut=complete[:max(1,int(visible_tokens*4.28))]
+    while cut.count('"')%2==0 or cut.endswith("\\"):
+        cut=cut[:-1]
+    return cut
+
+
+def truncating_envelope(request, item, strategy, reasoning, budget):
+    body=truncated_audit(item,strategy,budget-reasoning)
+    return dict(status="ok",content=body,model=request["model"],provider="fixture-provider",
+                request_id="fixture-receipt",finish_reason="length",billed_nusd=100,
+                usage=dict(prompt_tokens=4137,completion_tokens=budget,
+                           completion_tokens_details=dict(reasoning_tokens=reasoning)))
+
+
+class TruncatingMiniTransport(FixtureTransport):
+    """Generation and DeepSeek behave normally; Mini truncates at the completion cap."""
+    def __call__(self, job, request):
+        if request["model"]!=r.MODELS["mini_audit"]:
+            return super().__call__(job,request)
+        self.calls.append((job,copy.deepcopy(request)))
+        payload=json.loads(request["messages"][1]["content"])
+        return truncating_envelope(request,payload["item_id"],payload["metadata"]["strategy"],
+                                   2368,r.MAX_TOKENS["mini_audit"])
+
+    def dispatched(self, role):
+        return sum(request["model"]==r.MODELS[role] for _,request in self.calls)
+
+
+def test_recorded_evidence_shows_budget_exhaustion_not_a_schema_or_parser_defect():
+    for observed in EVIDENCE["mini_responses"]:
+        assert observed["http_status"]==200 and observed["status"]=="ok"
+        assert observed["finish_reason"]=="length"
+        assert observed["usage"]["completion_tokens"]==EVIDENCE["diagnosis"]["configured_mini_max_tokens_at_failure"]
+        assert observed["usage"]["completion_tokens_details"]["reasoning_tokens"]>0
+        assert observed["axes_fully_emitted"]<observed["axes_required"]
+        assert observed["ends_inside_unterminated_string"] and observed["unclosed_braces"]>0
+        assert "JSONDecodeError" in observed["json_parse_error"]
+    reference=EVIDENCE["complete_reference"]
+    assert reference["parses"] and reference["axes"]==17 and reference["finish_reason"]=="stop"
+    # every truncated attempt had less visible budget than a complete verdict costs
+    for observed in EVIDENCE["mini_responses"]:
+        assert observed["visible_tokens"]<reference["completion_tokens"]
+    assert reference["completion_tokens"]<r.MAX_TOKENS["mini_audit"], "corrected budget must fit a full verdict"
+
+
+def test_truncated_stored_content_is_rejected_by_the_parser(tmp_path):
+    item=r.candidate_id("sanity",cohort()[0],1)
+    for observed in EVIDENCE["mini_responses"]:
+        cut=truncated_audit(item,"RolePrompting",observed["visible_tokens"])
+        with pytest.raises(ValueError):
+            r.parse(cut,"audit",item)
+
+
+def test_truncation_stops_without_burning_the_repair_allowance_or_recording_a_verdict(tmp_path):
+    j=reporting_journal(tmp_path); rows=cohort()
+    transport=TruncatingMiniTransport()
+    with pytest.raises(r.Stop,match="truncated at the configured completion limit"):
+        r.construction(j,rows,transport,stage="sanity")
+    assert transport.dispatched("mini_audit")==1, "no futile identical repeat"
+    assert transport.dispatched("generation")==1, "truncation consumes no extra generation attempt"
+    assert transport.dispatched("deepseek_audit")==1
+    events={x["id"] for x in j.db.execute("SELECT id FROM events")}
+    item=r.candidate_id("sanity",rows[0],1)
+    assert r.identifier(item,"mini_audit","truncated",1) in events
+    assert r.identifier(item,"mini_audit","verdict") not in events, "truncation is never a verdict"
+    assert r.identifier(item,"decision") not in events, "truncation is never a rejection"
+    payload=json.loads(j.db.execute("SELECT payload FROM events WHERE id=?",
+                                    (r.identifier(item,"mini_audit","truncated",1),)).fetchone()[0])
+    assert payload["not_a_verdict"] is True
+    j.close()
+
+
+def test_truncated_run_reports_no_attempt_consumed_and_no_auditor_rejection(tmp_path):
+    j=reporting_journal(tmp_path); rows=cohort()
+    try:
+        r.construction(j,rows,TruncatingMiniTransport(),stage="sanity")
+    except r.Stop as exc:
+        stopped=str(exc)
+    report=s.summarize(j,cohort(),None,stopped)
+    assert report["rejections_by_axis"]=={"deepseek_audit":{},"mini_audit":{}}
+    assert report["other_rejection_gate_codes"]=={"deepseek_audit":{},"mini_audit":{}}
+    assert report["pairs_dual_certified"]==0 and report["sanity_result"].startswith("INCOMPLETE")
+    assert all(kind["kind"]=="incomplete_output" for kind in report["failures"])
+    j.close()
+
+
+def test_complete_mini_audit_is_still_accepted_under_the_corrected_budget(tmp_path):
+    j=reporting_journal(tmp_path); rows=cohort()
+    completed=r.construction(j,rows,FixtureTransport(),stage="sanity")
+    assert completed["verdict"] in ("GENERATION SPECIFICATION READY","GENERATION SPECIFICATION NOT READY")
+    report=s.summarize(j,rows,None)
+    assert report["pairs_dual_certified"]==12 and report["first_attempt_dual_passes"]==12
+    j.close()
+
+
+def test_missing_required_field_is_never_silently_accepted(tmp_path):
+    item=r.candidate_id("sanity",cohort()[0],1)
+    for field in ("axes","verdict","failed_axes","E_validity","strategy"):
+        broken=audit_fixture(item,"RolePrompting"); del broken[field]
+        with pytest.raises((ValidationError,KeyError,ValueError)):
+            r.parse(r.canonical(broken),"audit",item)
+
+
+def test_malformed_but_complete_output_still_uses_the_bounded_repair_path(tmp_path):
+    """finish_reason 'stop' with unparseable text is a format repair, not a truncation."""
+    class Malformed(FixtureTransport):
+        def __init__(self): super().__init__(); self.mini=0
+        def __call__(self, job, request):
+            if request["model"]!=r.MODELS["mini_audit"]:
+                return super().__call__(job,request)
+            self.mini+=1
+            return envelope(request,"not json at all")
+    j=reporting_journal(tmp_path); rows=cohort()
+    transport=Malformed()
+    with pytest.raises(r.Stop,match="exhausted format"):
+        r.construction(j,rows,transport,stage="sanity")
+    assert transport.mini==2, "bounded repair allowance is still exactly two"
+    j.close()
+
+
+def test_seventeen_gates_and_rejection_behaviour_unchanged(tmp_path):
+    assert len(r.AXES)==17
+    item=r.candidate_id("sanity",cohort()[0],1)
+    audit=audit_fixture(item,"RolePrompting")
+    audit["axes"]["u_is_english"]={"pass":False,"reason":"fixture"}
+    audit["failed_axes"]=["u_is_english"]; audit["verdict"]="reject"
+    parsed=r.parse(r.canonical(audit),"audit",item)
+    assert "u_is_english" in r.audit_gate(parsed,item,"RolePrompting","Lo, the books be counted.")
+
+
+# --- reviewed re-scoping: resume without paying twice ---------------------------
+
+
+class NoRedispatchTransport(FixtureTransport):
+    """Fails loudly if any already-paid job identifier is dispatched a second time."""
+    def __init__(self, already_paid):
+        super().__init__(); self.already_paid=set(already_paid)
+    def __call__(self, job, request):
+        if job in self.already_paid:
+            raise AssertionError("already-paid work was dispatched a second time: "+job[:16])
+        return super().__call__(job,request)
+
+    def dispatched(self, role):
+        return sum(request["model"]==r.MODELS[role] for _,request in self.calls)
+
+
+def interrupted_journal(tmp_path, monkeypatch):
+    """Reproduce the real interruption: Mini truncated under the old 4096 budget."""
+    def rated():
+        cfg=config()
+        for settings in cfg["roles"].values():
+            settings.update(expected_rates_usd_per_million=[.1,.2],reservation_rates_usd_per_million=[.1,.2])
+        return cfg
+    monkeypatch.setitem(r.MAX_TOKENS,"mini_audit",4096)
+    old=rated()
+    j=r.Journal(tmp_path/"fixture.sqlite",old,{})
+    rows=cohort()
+    with pytest.raises(r.Stop,match="truncated at the configured completion limit"):
+        r.construction(j,rows,TruncatingMiniTransport(),stage="sanity")
+    spent=j.totals(); j.close()
+    monkeypatch.setitem(r.MAX_TOKENS,"mini_audit",8192)
+    return tmp_path/"fixture.sqlite",old,rated(),spent,rows
+
+
+def test_corrected_configuration_cannot_open_the_journal_until_it_is_migrated(tmp_path,monkeypatch):
+    path,_,new,_,_=interrupted_journal(tmp_path,monkeypatch)
+    with pytest.raises(r.Stop,match="journal configuration/hash scope changed"):
+        r.Journal(path,new,{})
+
+
+def test_migration_preserves_every_row_and_every_nanodollar(tmp_path,monkeypatch):
+    path,_,new,spent,_=interrupted_journal(tmp_path,monkeypatch)
+    dry=m.migrate(path,new,{},"unit test",apply=False)
+    assert dry["applied"] is False and dry["scope_change_required"] is True and not dry["problems"]
+    assert [x["role"] for x in dry["superseded"]]==["mini_audit"]
+    assert {x["role"] for x in dry["replayable_without_payment"]}=={"generation","deepseek_audit"}
+    applied=m.migrate(path,new,{},"unit test",apply=True)
+    assert applied["applied"] is True
+    ledger=("calls","billed_nusd","reserved_nusd")
+    assert {k:applied["totals_after"][k] for k in ledger}=={k:applied["totals_before"][k] for k in ledger}, \
+        "no row and no nanodollar removed"
+    assert applied["totals_after"]["events"]==applied["totals_before"]["events"]+1, "only the migration record added"
+    journal=r.Journal(path,new,{})
+    assert journal.totals()["mini_audit"]["billed_nusd"]==spent["mini_audit"]["billed_nusd"]
+    assert journal.totals()["generation"]["billed_nusd"]==spent["generation"]["billed_nusd"]
+    events={x["id"] for x in journal.db.execute("SELECT id FROM events")}
+    assert r.identifier("journal_scope_migration",applied["recorded_scope"],applied["new_scope"]) in events
+    journal.close()
+
+
+def test_resume_reuses_paid_generation_and_primary_audit_without_redispatch(tmp_path,monkeypatch):
+    path,_,new,spent,rows=interrupted_journal(tmp_path,monkeypatch)
+    m.migrate(path,new,{},"unit test",apply=True)
+    journal=r.Journal(path,new,{})
+    before={x["id"]:(x["role"],x["billed"],x["response_hash"],x["finished"])
+            for x in journal.db.execute("SELECT * FROM calls")}
+    paid=list(before)
+    assert len(paid)==3
+    transport=NoRedispatchTransport(paid)
+    completed=r.construction(journal,rows,transport,stage="sanity")
+    assert transport.dispatched("generation")==len(rows)-1, "the paid Gemini generation replayed from the journal"
+    assert transport.dispatched("deepseek_audit")==len(rows)-1, "the paid DeepSeek pass replayed from the journal"
+    assert transport.dispatched("mini_audit")==len(rows), "only the truncated auditor step is re-dispatched"
+    after=journal.totals()
+    assert after["generation"]["calls"]==spent["generation"]["calls"]+len(rows)-1
+    kept={x["id"]:(x["role"],x["billed"],x["response_hash"],x["finished"])
+          for x in journal.db.execute("SELECT * FROM calls") if x["id"] in before}
+    assert kept==before, "already-paid receipts were altered or re-billed on resume"
+    assert after["mini_audit"]["billed_nusd"]>spent["mini_audit"]["billed_nusd"], "superseded spend still counted"
+    report=s.summarize(journal,rows,completed)
+    assert report["pairs_dual_certified"]==12
+    assert report["attempts_per_pair"][rows[0]["pair_id"]]==1, "resume consumed no extra generation attempt"
+    journal.close()
+
+
+def test_migration_refuses_an_unreconciled_or_tampered_journal(tmp_path,monkeypatch):
+    path,_,new,_,_=interrupted_journal(tmp_path,monkeypatch)
+    db=__import__("sqlite3").connect(path)
+    db.execute("UPDATE calls SET state='pending' WHERE role='generation'"); db.commit(); db.close()
+    with pytest.raises(r.Stop,match="migration refused"):
+        m.migrate(path,new,{},"unit test",apply=True)
+
+
+def test_migration_refuses_when_a_reservation_bound_changed(tmp_path,monkeypatch):
+    path,_,new,_,_=interrupted_journal(tmp_path,monkeypatch)
+    changed=copy.deepcopy(new); changed["roles"]["mini_audit"]["maximum_call_nusd"]=999
+    with pytest.raises(r.Stop,match="reservation bound changed"):
+        m.migrate(path,changed,{},"unit test",apply=True)

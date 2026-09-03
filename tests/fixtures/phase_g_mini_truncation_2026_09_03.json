@@ -1,0 +1,110 @@
+{
+  "complete_reference": {
+    "axes": 17,
+    "completion_tokens": 1734,
+    "content_chars": 7205,
+    "finish_reason": "stop",
+    "note": "a COMPLETE 17-axis verdict for this identical payload costs 1734 visible completion tokens",
+    "parses": true,
+    "reasoning_tokens": 0,
+    "role": "deepseek_audit"
+  },
+  "diagnosis": {
+    "cause": "completion-budget exhaustion; reasoning tokens consumed 58-67 percent of the cap",
+    "configured_mini_max_tokens_at_failure": 4096,
+    "max_tokens_caps_reasoning_plus_visible": true,
+    "response_format_at_failure": {
+      "type": "json_object"
+    },
+    "strict_json_schema_enforcement_active": false
+  },
+  "mini_responses": [
+    {
+      "attempt": 1,
+      "axes_fully_emitted": 12,
+      "axes_required": 17,
+      "billed_nusd": 4613125,
+      "content_chars": 7399,
+      "content_sha256": "f477dc143be9763a24d4a426586c099b70d281fafffed9c47682e9f10af03390",
+      "ends_inside_unterminated_string": true,
+      "finish_reason": "length",
+      "http_status": 200,
+      "json_parse_error": "JSONDecodeError: Unterminated string starting at",
+      "model": "openai/gpt-5-mini",
+      "provider": "OpenAI",
+      "service_tier": "flex",
+      "status": "ok",
+      "unclosed_braces": 3,
+      "usage": {
+        "completion_tokens": 4096,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 2368
+        },
+        "cost": 0.004613125,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.004096,
+          "upstream_inference_cost": 0.004613125,
+          "upstream_inference_prompt_cost": 0.000517125
+        },
+        "is_byok": false,
+        "prompt_tokens": 4137,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 8233
+      },
+      "visible_tokens": 1728
+    },
+    {
+      "attempt": 2,
+      "axes_fully_emitted": 3,
+      "axes_required": 17,
+      "billed_nusd": 4613125,
+      "content_chars": 5789,
+      "content_sha256": "7b1379a488b4c42c44e87c4364ffda264d976b43950296f4f2fa320a94b196b1",
+      "ends_inside_unterminated_string": true,
+      "finish_reason": "length",
+      "http_status": 200,
+      "json_parse_error": "JSONDecodeError: Unterminated string starting at",
+      "model": "openai/gpt-5-mini",
+      "provider": "OpenAI",
+      "service_tier": "flex",
+      "status": "ok",
+      "unclosed_braces": 2,
+      "usage": {
+        "completion_tokens": 4096,
+        "completion_tokens_details": {
+          "audio_tokens": 0,
+          "image_tokens": 0,
+          "reasoning_tokens": 2752
+        },
+        "cost": 0.004613125,
+        "cost_details": {
+          "upstream_inference_completions_cost": 0.004096,
+          "upstream_inference_cost": 0.004613125,
+          "upstream_inference_prompt_cost": 0.000517125
+        },
+        "is_byok": false,
+        "prompt_tokens": 4137,
+        "prompt_tokens_details": {
+          "audio_tokens": 0,
+          "cache_write_tokens": 0,
+          "cached_tokens": 0,
+          "video_tokens": 0
+        },
+        "total_tokens": 8233
+      },
+      "visible_tokens": 1344
+    }
+  ],
+  "provenance": {
+    "redaction": "provider metadata, usage and truncation measurements are verbatim; response TEXT is deliberately omitted because it embeds the harmful source prompt and the U candidate",
+    "run": "Phase G strong-archaic sanity, 2026-09-03, pair gambling::RolePrompting, attempt 1",
+    "source": "analysis/phase_g/u_arch_v3_private/phase_g_budget550.sqlite (gitignored private journal)"
+  }
+}

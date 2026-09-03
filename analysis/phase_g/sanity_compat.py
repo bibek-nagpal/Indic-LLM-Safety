@@ -99,10 +99,14 @@ def make_plan():
     original=read(OLD/"EXECUTION_PLAN.json")
     plan=copy.deepcopy(original)
     del plan["roles"]["mini_audit"]["temperature"]
+    plan["roles"]["mini_audit"]["max_tokens"]=r.MAX_TOKENS["mini_audit"]
     plan.update(version="U-ARCH-v3-mini-temperature-amendment-3",parent_commit=PARENT,
         live_enabled=True,current_paid_authorization_usd=.65,authorized_stages=["sanity"],
         approval_reference="User attachment db6a852a-8e98-4bc9-adf9-80b583febfd8: conditional N12 sanity only",
-        inference_blockers=[],mini_temperature_policy="omitted; user-approved native sampling; pre-outcome")
+        inference_blockers=[],mini_temperature_policy="omitted; user-approved native sampling; pre-outcome",
+        mini_output_budget_policy="completion cap raised to 8192 so reasoning plus the 17-axis verdict fit; "
+                                  "auditor instruction, schema, axes, gates and sampling unchanged; "
+                                  "frozen per-call reservation unchanged and still a sound upper bound")
     metadata=read(OUT/"PROVIDER_METADATA.json")
     assert metadata["method"]=="GET" and not metadata["research_data_sent"] and not metadata["authentication"]
     for role in r.ROLES:
@@ -121,7 +125,7 @@ def make_plan():
             if Decimal(q["pricing"][key])*1_000_000!=Decimal(str(rate)):
                 raise r.Stop("pinned endpoint quote changed; no price substitution")
         proof=s["reservation_proof"]
-        if q["context_length"]>proof["input_token_bound"] or q["max_completion_tokens"]+s["max_tokens"]>proof["output_token_bound"]:
+        if q["context_length"]>proof["input_token_bound"] or max(q["max_completion_tokens"],s["max_tokens"])>proof["output_token_bound"]:
             raise r.Stop("published native limits exceed frozen reservation")
         plan["compatibility"][role].update(missing_requested_parameters=[],supported_parameters=q["supported_parameters"],
             sampling_and_reasoning_request="Mini temperature omitted by approval; all other request settings unchanged" if role=="mini_audit" else "unchanged")
@@ -141,7 +145,10 @@ def preflight():
     assert plan["cohort_payload_hashes"]["sanity"]==r.identifier(sanity)==original["cohort_payload_hashes"]["sanity"]
     assert manifest==read(BASE/"u_arch_v3_preflight/SANITY_COHORT_MANIFEST.json")
     expected=copy.deepcopy(original["roles"]); del expected["mini_audit"]["temperature"]
+    expected["mini_audit"]["max_tokens"]=r.MAX_TOKENS["mini_audit"]
     assert plan["roles"]==expected
+    assert plan["roles"]["mini_audit"]["maximum_call_nusd"]==original["roles"]["mini_audit"]["maximum_call_nusd"]
+    assert plan["roles"]["mini_audit"]["reservation_proof"]==original["roles"]["mini_audit"]["reservation_proof"]
     assert plan["stage_budgets_nusd"]==original["stage_budgets_nusd"] and plan["stage_budgets_nusd"]["sanity"]==650_000_000
     assert plan["hard_ceiling_nusd"]==5_500_000_000
     assert plan["generation_attempts_per_pair"]==4 and plan["sanity_first_attempt_floor"]==9 and plan["sanity_all_certified"]==12

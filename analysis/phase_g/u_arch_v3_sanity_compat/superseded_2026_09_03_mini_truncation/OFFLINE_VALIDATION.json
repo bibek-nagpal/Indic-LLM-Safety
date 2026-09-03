@@ -1,0 +1,60 @@
+{
+  "status": "PASS",
+  "passed": 174,
+  "total": 174,
+  "failed": 0,
+  "elapsed_seconds": 132.4,
+  "command": "python -B -m analysis.phase_g.run_offline_tests (Python 3.10.12, pytest 9.1.1, jsonschema 4.26.0)",
+  "execution_plan_sha256": "936e30da9fb1823f7fdb314c7e703ba16558651e394fef65b63e4224ba3e294c",
+  "preflight_sha256": "7b50c98903efded0f522adb4d1ff2bacf1edef0928018779db178f2e23f3184f",
+  "parent_commit": "604c8c386d81fd89c497c46505a6db60a7c787ff",
+  "external_network_blocked_for_tests": true,
+  "paid_calls_before_amendment_commit": 0,
+  "sanity_outcomes_observed_before_amendment_commit": 0,
+  "requirements": {
+    "mini_temperature_omitted_not_null": "PASS",
+    "other_model_and_request_parameters_identical": "PASS",
+    "cohort_exactly_twelve_one_per_cell": "PASS",
+    "cohort_disjoint_from_120_ladder_and_24_development": "PASS",
+    "sequential_deepseek_then_mini_only_on_primary_pass": "PASS",
+    "accepted_items_require_both_independent_all_gate_passes": "PASS",
+    "four_generation_limit_and_first_valid_stop": "PASS",
+    "ids_logging_resume_accounting_and_bounded_failures": "PASS",
+    "sanity_cap_usd_0_65": "PASS",
+    "global_cap_usd_5_50": "PASS",
+    "frozen_artifacts_byte_identical": "PASS",
+    "stage1_committed_artifact_gate": "PASS"
+  },
+  "core_manifest_files_verified": 82,
+  "legacy_phase_g_locks_verified": 10,
+  "parent_spec_and_preflight_files_verified": 20,
+  "git_diff_check": "PASS",
+  "sanity_only_authority_guard": "PASS",
+  "uncommitted_or_changed_preflight_blocks_execution": "PASS",
+  "metadata_recheck": "three public unauthenticated GETs; same endpoints, parameters, precision and prices; no inference",
+  "stage1_commit_verifier_correction": {
+    "supersedes": "u_arch_v3_sanity_compat/superseded_2026_09_03_verifier_bug/",
+    "superseded_receipt_sha256": "5141af03175e4d8163c853fe5a5f5cb9260bd85a5459d6495c1293634b6eeccb",
+    "defect": "verify_commit/frozen_check compared raw working-tree bytes with git blob bytes, so a checkout that legitimately re-encoded line endings was reported as a modified frozen artifact",
+    "correction": "committed_matches() accepts a difference only when it is confined to CRLF/LF AND Git's own clean filter reproduces the recorded blob object; the raw sha256 lock and manifest checks are unchanged and still evaluated first",
+    "frozen_protection_weakened": false,
+    "plan_fields_changed_versus_superseded": [
+      "locks/analysis/phase_g/sanity_compat.py",
+      "locks/tests/test_sanity_compat.py"
+    ],
+    "scientific_fields_changed": [],
+    "regression_tests_added": 9,
+    "new_tests": [
+      "test_committed_checkout_line_ending_normalisation_is_not_a_mismatch",
+      "test_committed_content_modification_still_fails",
+      "test_committed_single_field_edit_still_fails",
+      "test_frozen_hash_mismatch_still_fails",
+      "test_line_ending_only_rewrite_of_frozen_bytes_still_fails_the_raw_hash_gate",
+      "test_untracked_bank_is_hash_checked_without_a_committed_blob",
+      "test_uncommitted_receipt_edit_still_fails",
+      "test_project_repository_checkout_normalisation_is_not_a_mismatch",
+      "test_project_repository_tampered_frozen_bytes_are_rejected"
+    ],
+    "regressions_use_real_git_repositories_and_real_commits": true
+  }
+}

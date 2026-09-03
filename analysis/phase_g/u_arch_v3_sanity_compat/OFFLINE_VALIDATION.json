@@ -1,12 +1,12 @@
 {
   "status": "PASS",
-  "passed": 174,
-  "total": 174,
+  "passed": 187,
+  "total": 187,
   "failed": 0,
-  "elapsed_seconds": 132.4,
-  "command": "python -B -m analysis.phase_g.run_offline_tests (Python 3.10.12, pytest 9.1.1, jsonschema 4.26.0)",
-  "execution_plan_sha256": "936e30da9fb1823f7fdb314c7e703ba16558651e394fef65b63e4224ba3e294c",
-  "preflight_sha256": "7b50c98903efded0f522adb4d1ff2bacf1edef0928018779db178f2e23f3184f",
+  "elapsed_seconds": 280.0,
+  "command": "python -B /tmp/offline_chunk.py <file> per test module (same socket guard as analysis.phase_g.run_offline_tests; split only because this shell caps a single command at 180 s)",
+  "execution_plan_sha256": "bd3ab9e2a3d0f7b288844522cd573d53019af1114d13e9692e99e47cc4c95095",
+  "preflight_sha256": "97953eeb1ffcc35cc9e0497570c1c30f91565e9c53b3825f30f8fd438dfd0b99",
   "parent_commit": "604c8c386d81fd89c497c46505a6db60a7c787ff",
   "external_network_blocked_for_tests": true,
   "paid_calls_before_amendment_commit": 0,
@@ -23,7 +23,11 @@
     "sanity_cap_usd_0_65": "PASS",
     "global_cap_usd_5_50": "PASS",
     "frozen_artifacts_byte_identical": "PASS",
-    "stage1_committed_artifact_gate": "PASS"
+    "stage1_committed_artifact_gate": "PASS",
+    "mini_completion_budget_fits_full_verdict": "PASS",
+    "truncation_is_never_a_verdict_or_rejection": "PASS",
+    "resume_reuses_paid_work_without_rebilling": "PASS",
+    "journal_migration_preserves_every_nanodollar": "PASS"
   },
   "core_manifest_files_verified": 82,
   "legacy_phase_g_locks_verified": 10,
@@ -56,5 +60,53 @@
       "test_project_repository_tampered_frozen_bytes_are_rejected"
     ],
     "regressions_use_real_git_repositories_and_real_commits": true
+  },
+  "per_module": {
+    "test_offline": 12,
+    "test_phase_c": 3,
+    "test_phase_d_analysis": 7,
+    "test_phase_d_budget_design": 4,
+    "test_phase_g": 14,
+    "test_revision_v2": 16,
+    "test_cross_judge_batch": 7,
+    "test_cross_judge_runner": 2,
+    "test_cross_judge_standard_budget": 12,
+    "test_v3_offline": 2,
+    "test_budget550_preflight": 28,
+    "test_strong_archaic_preflight": 45,
+    "test_sanity_compat": 35
+  },
+  "stage2_mini_completion_budget_correction": {
+    "supersedes": "u_arch_v3_sanity_compat/superseded_2026_09_03_mini_truncation/",
+    "defect": "GPT-5 Mini returned HTTP 200 twice with finish_reason 'length' at exactly the 4096-token completion cap; reasoning consumed 2368 and 2752 of it, leaving 1728 and 1344 visible tokens for a 17-axis verdict that costs 1734 visible tokens for this payload, so the JSON was cut mid-string and could not parse",
+    "classification": "completion-budget exhaustion",
+    "schema_or_parser_bug": false,
+    "api_or_model_limitation": false,
+    "scientific_protocol_change": false,
+    "correction": [
+      "mini_audit max_tokens 4096 -> 8192 (reasoning plus verdict now fit)",
+      "per-role approved completion budget replaces a single hard-coded 4096 guard",
+      "a finish_reason 'length' truncation stops with its own diagnostic and a not_a_verdict event instead of consuming a format-repair slot on a futile identical repeat",
+      "reviewed journal re-scoping so already-paid work is replayed, never re-billed"
+    ],
+    "unchanged": [
+      "gpt-5-mini model",
+      "deepseek model",
+      "gemini generator",
+      "17 certification axes",
+      "hard acceptance gates",
+      "strong-archaic construct",
+      "semantic and strategy requirements",
+      "N=12 cohort",
+      "readiness criterion",
+      "four generation attempts",
+      "sequential DeepSeek then Mini auditing",
+      "mini temperature omission",
+      "mini per-call reservation 364192000 nusd and its reservation proof",
+      "0.65 sanity cap",
+      "5.50 global cap"
+    ],
+    "regression_tests_added": 13,
+    "evidence_fixture": "tests/fixtures/phase_g_mini_truncation_2026_09_03.json (redacted: measurements only)"
   }
 }

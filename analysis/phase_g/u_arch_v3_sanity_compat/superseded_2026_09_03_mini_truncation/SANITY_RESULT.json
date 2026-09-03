@@ -1,0 +1,153 @@
+{
+  "accepted": {},
+  "amendment_commit": "b51195ea5e93860e650438ec29ac51da5ea1439c",
+  "attempts_per_pair": {
+    "028b33c54fe2a9a423207913": 0,
+    "05e9fdc4d6e9697ef818eb5f": 0,
+    "125fe8f2132dbf88e220c8ca": 0,
+    "19d0cbd59e46905e205331ad": 0,
+    "3c8ce48946d2690a9293393f": 0,
+    "53cb51896966718c60d66a9f": 0,
+    "6789189b3397968de7e4e98d": 1,
+    "7e25142d6d16663af5a7bb71": 0,
+    "bd31709e53834851772496f5": 0,
+    "bd34d24fd59a03289aa74136": 0,
+    "ede0eba19a5425f6c7d3460e": 0,
+    "f9dde56fc38dc3fa528a4a54": 0
+  },
+  "cell_key_by_pair": {
+    "028b33c54fe2a9a423207913": "gambling::ScenarioNesting",
+    "05e9fdc4d6e9697ef818eb5f": "sexual_violence::RolePrompting",
+    "125fe8f2132dbf88e220c8ca": "intoxication::RolePrompting",
+    "19d0cbd59e46905e205331ad": "violence::ScenarioNesting",
+    "3c8ce48946d2690a9293393f": "intoxication::SymbolicMasking",
+    "53cb51896966718c60d66a9f": "intoxication::ScenarioNesting",
+    "6789189b3397968de7e4e98d": "gambling::RolePrompting",
+    "7e25142d6d16663af5a7bb71": "sexual_violence::SymbolicMasking",
+    "bd31709e53834851772496f5": "violence::RolePrompting",
+    "bd34d24fd59a03289aa74136": "gambling::SymbolicMasking",
+    "ede0eba19a5425f6c7d3460e": "violence::SymbolicMasking",
+    "f9dde56fc38dc3fa528a4a54": "sexual_violence::ScenarioNesting"
+  },
+  "failures": [
+    {
+      "http_status": 200,
+      "job_id": "194756c50498f4a8a937b38ca0e117de53c42e174f3247786fa3dee2f415abb1",
+      "kind": "incomplete_output",
+      "reported_cost_usd": 0.004613125,
+      "role": "mini_audit"
+    },
+    {
+      "http_status": 200,
+      "job_id": "4de42ce35c0ddabf75552c02876800c3f7e93a7c5c558a5fe9a310c47b9cc137",
+      "kind": "incomplete_output",
+      "reported_cost_usd": 0.004613125,
+      "role": "mini_audit"
+    }
+  ],
+  "final_frozen_verification": {
+    "core_manifest_files": 82,
+    "legacy_g_locks": 10,
+    "parent_spec_and_preflight_files": 20,
+    "status": "PASS"
+  },
+  "first_attempt_dual_passes": 0,
+  "first_attempt_pass_rate": 0.0,
+  "global_cap_unchanged": true,
+  "later_stage_calls": 0,
+  "other_rejection_gate_codes": {
+    "deepseek_audit": {},
+    "mini_audit": {}
+  },
+  "outstanding_reservations_usd": 0.0,
+  "pairs_dual_certified": 0,
+  "private_journal_sha256": "ee92d19f3fa8f0de5964390e12fe72265dd0c212ff256a39c24fad78f86ddc1b",
+  "protocol_violations": [],
+  "provenance_complete": true,
+  "readiness_verdict": "GENERATION SPECIFICATION NOT READY",
+  "rejections_by_axis": {
+    "deepseek_audit": {},
+    "mini_audit": {}
+  },
+  "reported_cost_precision": "integer nanodollars, each provider receipt rounded UP; never count unused reservations as spending",
+  "role_accounting": {
+    "deepseek_audit": {
+      "billed_nusd": 705600,
+      "calls": 1,
+      "estimated_cost_from_tokens_usd": 0.0007056,
+      "reported_cost_usd": 0.0007056,
+      "reserved_nusd": 0,
+      "unknown_billing_calls": 0
+    },
+    "generation": {
+      "billed_nusd": 462750,
+      "calls": 1,
+      "estimated_cost_from_tokens_usd": 0.00046275,
+      "reported_cost_usd": 0.00046275,
+      "reserved_nusd": 0,
+      "unknown_billing_calls": 0
+    },
+    "mini_audit": {
+      "billed_nusd": 9226250,
+      "calls": 2,
+      "estimated_cost_from_tokens_usd": 0.00922625,
+      "reported_cost_usd": 0.00922625,
+      "reserved_nusd": 0,
+      "unknown_billing_calls": 0
+    }
+  },
+  "sanity_cap_respected": true,
+  "sanity_executed": true,
+  "sanity_result": "INCOMPLETE DUE TO EXECUTION OR BUDGET FAILURE",
+  "scope_hash": "58379832f941baf7ce13bf9c285a540ffbd3d4bd5264bff1ea487f1e0db7fb5d",
+  "stop_reason": "auditor exhausted format/known-unbilled repair allowance",
+  "total_reported_cost_usd": 0.0103946,
+  "trace_index": [
+    {
+      "job_id": "182dc833cc1d2bfa579d0d4b9a24fbf6be57dd3363d3d0e9f70bd506e91e5d79",
+      "provider_request_id": "gen-1788453689-hesvcmFEdw7NQy2VDDu2",
+      "reported_nusd": 462750,
+      "request_sha256": "0351db1079e6ea869ec5e8e44d886c70b99475f154c9f2346d88709ac285cacf",
+      "reserved_nusd": 488650300,
+      "response_sha256": "304ab4f42cf96fbd8a2d2d1ec50a91135fb17d3b41a68082d35aa50bd06319bc",
+      "role": "generation",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "1786656c33bea0c7a99c49a9fabf8c6f3d6d320e99fbdd1a60129b2958844721",
+      "provider_request_id": "gen-1788453691-Gm9sRmuRYkLyA7zxvR5z",
+      "reported_nusd": 705600,
+      "request_sha256": "3fd9518f9c3085a3e0e6bf77c982062142f0693b635641df56fc82833ad8862e",
+      "reserved_nusd": 106905600,
+      "response_sha256": "0ee536862e92c75bbc13dff90934d2add56d7707cb833fd4031a527f8a4edbca",
+      "role": "deepseek_audit",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "194756c50498f4a8a937b38ca0e117de53c42e174f3247786fa3dee2f415abb1",
+      "provider_request_id": "gen-1788453732-z3kJmB79ZDi0nfvzsj1B",
+      "reported_nusd": 4613125,
+      "request_sha256": "1b369bc6c2bcabf4b05d3acc866745939ae0c4a15211a467ebdfdc0e47562bcc",
+      "reserved_nusd": 364192000,
+      "response_sha256": "9fd3fe539fb532b23ec8f6ce4d68c7dfa2331a30ed4a62f3a67572bab84c1532",
+      "role": "mini_audit",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "4de42ce35c0ddabf75552c02876800c3f7e93a7c5c558a5fe9a310c47b9cc137",
+      "provider_request_id": "gen-1788454004-D1Ip9XdWGs4JAjxNMH9h",
+      "reported_nusd": 4613125,
+      "request_sha256": "1b369bc6c2bcabf4b05d3acc866745939ae0c4a15211a467ebdfdc0e47562bcc",
+      "reserved_nusd": 364192000,
+      "response_sha256": "95a2532ef7392b01ad39460fbf50aec8ba80d370e09eaeb08e0165b80d0cae55",
+      "role": "mini_audit",
+      "stage": "sanity",
+      "state": "received"
+    }
+  ],
+  "unknown_billing_calls": 0,
+  "unresolved_pairs": 12
+}

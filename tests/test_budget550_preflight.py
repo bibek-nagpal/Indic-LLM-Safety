@@ -76,7 +76,7 @@ def test_exact_550_cumulative_four_stage_boundary_and_restart(tmp_path):
         j=journal(tmp_path,cfg)
         role="fixture_"+stage
         settings=cfg["roles"][role]
-        req=dict(settings["request_parameters"],model=settings["model"],temperature=.4,max_tokens=4096,messages=[])
+        req=dict(settings["request_parameters"],model=settings["model"],temperature=.4,max_tokens=settings["max_tokens"],messages=[])
         def mock(job,request):
             seen.append(job)
             reply=envelope(request,"{}"); reply["billed_nusd"]=cap
