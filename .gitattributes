@@ -5,3 +5,19 @@
 # Phase G selection hashes are byte-level: retain their frozen serialization.
 analysis/phase_g/selection_n*_MANIFEST.json text eol=lf
 analysis/phase_g/selection_n*.csv text eol=crlf
+
+# U-ARCH-v3 preflight hashes the actual UTF-8 bytes. Prevent core.autocrlf from
+# changing these inputs on a fresh Windows checkout; no artifact bytes change.
+analysis/phase_g/specs/strong_archaic_v3_* text eol=lf
+analysis/phase_g/*.py text eol=lf
+analysis/phase_g/*.md text eol=lf
+analysis/phase_g/*.json text eol=lf
+analysis/phase_g/u_arch_v3_preflight/*.json text eol=lf
+analysis/phase_g/config/phase_g.yaml text eol=lf
+analysis/phase_g/u_control_development/* text eol=lf
+analysis/phase_g/u_control_development/development_cohort_index.csv text eol=crlf
+analysis/phase_g/u_control_development/u_candidates_index.csv text eol=lf
+accounting/api_calls_*.jsonl text eol=crlf
+configs/categories/*.yaml text eol=lf
+src/jailbreak_hermes/judge.py text eol=lf
+tests/test_strong_archaic_preflight.py text eol=lf

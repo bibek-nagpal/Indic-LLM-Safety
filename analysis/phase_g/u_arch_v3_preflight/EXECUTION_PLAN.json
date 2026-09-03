@@ -1,0 +1,108 @@
+{
+  "auditor_attempts_per_candidate": 2,
+  "auditor_policy": "both independently for every mechanically valid new candidate",
+  "cohort_payload_hashes": {
+    "main_construction": "15602f4dbaac35b36c33ea19d3d98b5eb0808a4df354fb8a9ca7616272549a1c",
+    "sanity": "2b7075fe588e3a414c765aa4d918eede580419442a85391383188a26a8fc7e2c"
+  },
+  "current_paid_authorization_usd": 0,
+  "generation_attempts_per_pair": 4,
+  "hard_ceiling_nusd": 10000000000,
+  "hidden_transport_retries": 0,
+  "judge_plan": {
+    "attempts_per_job": 3,
+    "controller_available": false,
+    "cross_judge": false,
+    "language": "en",
+    "max_tokens": 2048,
+    "model": "google/gemini-2.5-flash",
+    "n_u_only_jobs": 288,
+    "retry_valid_score": false,
+    "rubric_builder_file_sha256": "a42000d8fe0e478209d5a88512469036a27530b930ef1e2306be45c7dbaa7ea4",
+    "temperature": 0
+  },
+  "live_enabled": false,
+  "locks": {
+    "analysis/phase_g/U_CONTROL_PROTOCOL_PROPOSED.md": "3c6402a1ee613d6fb7d70a4cc1c5ccf2a52a9b95a851a109d7dfe06c7a832967",
+    "analysis/phase_g/config/phase_g.yaml": "f3eed6dccd623fa027d9afa4ceb4d3ce9319297b70e9700f78b77bbcdbf1e03f",
+    "analysis/phase_g/selection_n120_MANIFEST.json": "797280e7f9157fedeb978ed23491dfa1c95fce323ccac1b357935d89fc31b98b",
+    "analysis/phase_g/selection_n96.csv": "56f0961ea0762ea0c4873f4eb2c4c04f5d0b2e0c87d57f172255f07a014b7362",
+    "analysis/phase_g/selection_n96_MANIFEST.json": "aa066ec554c047af61ea11043c8b3deedccf51a8009b1e13ad67296cbbc2da2c",
+    "analysis/phase_g/specs/strong_archaic_v3_audit.txt": "511c046c75fa9eec7dcdc85bda5b5a39c974f7ad7850031c9d07f2665fa55c0e",
+    "analysis/phase_g/specs/strong_archaic_v3_generation.txt": "a97d80f934552eed8363a236399c1865140fc46602fab7c8ba23e8aee4c9d186",
+    "analysis/phase_g/specs/strong_archaic_v3_schemas.json": "2077b7866ff4d362adfe451ca53fb2b687175dab45cea0a4644e0b805d1bfd13",
+    "analysis/phase_g/strong_archaic_preflight.py": "da19392910c609dda00ac62030372a9cfe2567a513eca33bfb57378bf510616b",
+    "analysis/phase_g/strong_archaic_runtime.py": "7029f7dc5acd9e568d0b63184ea1b86d13e2f23920986525835de588ea2b2421",
+    "analysis/phase_g/strong_archaic_transport.py": "afcc60f02f44cde162b63004b6a92f5e6931ac2d2dc83e0bad0922b19a689664",
+    "analysis/phase_g/u_control_development/DEVELOPMENT_COHORT_MANIFEST.json": "bb0e9d8c0f958ea7d0c3fd99c2fbb14570d35a362c4e0aed7830bc1799e1712e",
+    "configs/categories/gambling.yaml": "75d39bf204a13a76d59afd6ea5f134e0837f467dc12f8eefebf542371403f233",
+    "configs/categories/intoxication.yaml": "d531d003d7bda9adb007410d978bd568f7e3496b55005ddac5452b17e7168e99",
+    "configs/categories/sexual_violence.yaml": "6db8b80504d611e2006e09b3c63e6b24a69f7848fa76b477cc2af14d933f8c70",
+    "configs/categories/violence.yaml": "d2648bfd4e462988dbfa840624006f9d3b9b04bbb5f86c88fe9a9043f14c919a",
+    "frozen_final_2026_08_29/bank/revision_v2_3_1_final_504_dedup/pairs.jsonl": "fd13908cb1687a89b5256d54462dcba49e610ad21b2ff55ac53e4add7ff9fafa",
+    "src/jailbreak_hermes/judge.py": "a42000d8fe0e478209d5a88512469036a27530b930ef1e2306be45c7dbaa7ea4"
+  },
+  "native_schema_mode": "system schema plus strict local parsing; native structured mode not enabled",
+  "provider_route": "UNVERIFIED; no live dispatch permitted",
+  "reasoning_configuration": "UNVERIFIED compatibility and billable cap semantics; do not silently drop temperature",
+  "request_timeout_seconds": 120,
+  "roles": {
+    "deepseek_audit": {
+      "max_tokens": 4096,
+      "maximum_call_nusd": null,
+      "model": "deepseek/deepseek-v4-flash",
+      "request_parameters": {
+        "provider": {
+          "allow_fallbacks": false,
+          "require_parameters": true
+        },
+        "stream": false
+      },
+      "temperature": 0
+    },
+    "generation": {
+      "max_tokens": 4096,
+      "maximum_call_nusd": null,
+      "model": "google/gemini-2.5-flash",
+      "request_parameters": {
+        "provider": {
+          "allow_fallbacks": false,
+          "require_parameters": true
+        },
+        "stream": false
+      },
+      "temperature": 0.4
+    },
+    "mini_audit": {
+      "max_tokens": 4096,
+      "maximum_call_nusd": null,
+      "model": "openai/gpt-5-mini",
+      "request_parameters": {
+        "provider": {
+          "allow_fallbacks": false,
+          "require_parameters": true
+        },
+        "stream": false
+      },
+      "temperature": 0
+    }
+  },
+  "sanity_all_certified": 12,
+  "sanity_first_attempt_floor": 9,
+  "stream": false,
+  "target_plan": {
+    "attempts_per_job": 3,
+    "controller_available": false,
+    "empty_system_prompt": true,
+    "max_tokens": 4096,
+    "models": [
+      "qwen/qwen3-30b-a3b-instruct-2507",
+      "openai/gpt-oss-20b",
+      "nvidia/nemotron-3-nano-30b-a3b"
+    ],
+    "n_u_only_jobs": 288,
+    "retry_valid_response": false,
+    "temperature": 0
+  },
+  "version": "U-ARCH-v3-sanity-amendment-1"
+}

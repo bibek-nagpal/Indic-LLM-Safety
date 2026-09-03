@@ -1,0 +1,46 @@
+{
+  "amendment_pre_outcome": true,
+  "api_calls": 0,
+  "blockers": [
+    "Single-dispatch construction adapter is tested offline only; live provider compatibility is unverified. Legacy runner remains disabled/unsafe.",
+    "Current provider route/prices, model availability, temperature support and reasoning/output-cap semantics require external verification, forbidden in this task.",
+    "Verified per-call token/price upper bounds are missing; maximum_call_nusd is null and dispatch fails closed.",
+    "Full high-cost completion exceeds $10; the existing ceiling stops work before exhaustion, not guarantees completion.",
+    "Main preregistration/SAP still reference obsolete U design: prospectively reconcile before targets; not changed in this narrow amendment.",
+    "No API approval: sanity NOT RUN. Main construction and targets require their later separate approvals."
+  ],
+  "cost_totals": {
+    "full": {
+      "expected": 2.3245627635,
+      "high": 33.6501362016
+    },
+    "judging": {
+      "expected": 0.7249275,
+      "high": 8.884252799999999
+    },
+    "main": {
+      "expected": 1.25334366,
+      "high": 22.038528
+    },
+    "sanity": {
+      "expected": 0.15879384000000002,
+      "high": 1.2044911200000001
+    },
+    "targets": {
+      "expected": 0.18749776350000003,
+      "high": 1.5228642816
+    }
+  },
+  "current_paid_authorization_usd": 0,
+  "external_calls": 0,
+  "frozen_files_checked": 82,
+  "frozen_mismatches": [],
+  "hard_budget_ceiling_usd": 10,
+  "live_preflight": "FAIL",
+  "no_target_inference": true,
+  "no_u_generated": true,
+  "runtime_scope": "construction controller plus single-dispatch HTTP adapter, offline-tested only; no target/judge execution controller",
+  "sanity_cohort_valid": true,
+  "sanity_rule_updated": true,
+  "schemas_valid": true
+}

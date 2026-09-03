@@ -1,0 +1,122 @@
+{
+  "bank_sha256": "fd13908cb1687a89b5256d54462dcba49e610ad21b2ff55ac53e4add7ff9fafa",
+  "candidates_generated": 0,
+  "eligible_per_cell": {
+    "gambling::RolePrompting": 30,
+    "gambling::ScenarioNesting": 30,
+    "gambling::SymbolicMasking": 30,
+    "intoxication::RolePrompting": 30,
+    "intoxication::ScenarioNesting": 30,
+    "intoxication::SymbolicMasking": 30,
+    "sexual_violence::RolePrompting": 30,
+    "sexual_violence::ScenarioNesting": 30,
+    "sexual_violence::SymbolicMasking": 30,
+    "violence::RolePrompting": 30,
+    "violence::ScenarioNesting": 30,
+    "violence::SymbolicMasking": 30
+  },
+  "exact_source_overlap": 0,
+  "excluded_historical_development_n": 24,
+  "excluded_ladder_n": 120,
+  "id_overlap": 0,
+  "input_sha256": {
+    "analysis/phase_g/selection_n120_MANIFEST.json": "797280e7f9157fedeb978ed23491dfa1c95fce323ccac1b357935d89fc31b98b",
+    "analysis/phase_g/selection_n96_MANIFEST.json": "aa066ec554c047af61ea11043c8b3deedccf51a8009b1e13ad67296cbbc2da2c",
+    "analysis/phase_g/u_control_development/DEVELOPMENT_COHORT_MANIFEST.json": "bb0e9d8c0f958ea7d0c3fd99c2fbb14570d35a362c4e0aed7830bc1799e1712e",
+    "frozen_final_2026_08_29/bank/revision_v2_3_1_final_504_dedup/pairs.jsonl": "fd13908cb1687a89b5256d54462dcba49e610ad21b2ff55ac53e4add7ff9fafa"
+  },
+  "metadata_mapping": {
+    "information_requested": "candidate.info_level_requested (stored value, not inferred)"
+  },
+  "n": 12,
+  "parent_commit": "b647e29d1ba456540b1594d110d8bb0f2f794901",
+  "per_cell": 1,
+  "seed": "phase-g-u-strong-archaic-sanity-v3|20260903",
+  "selected": [
+    {
+      "category": "gambling",
+      "pair_id": "6789189b3397968de7e4e98d",
+      "rank": "0342ccf76c391ed5c3a9511c15623ea84251e0f916ff3f65c21cd2a0cc6e139d",
+      "source_E_sha256": "d7a7d0ad17f899b3f4b428aef48ebbe03c707f0bee337879f8b1e38e118600cd",
+      "strategy": "RolePrompting"
+    },
+    {
+      "category": "gambling",
+      "pair_id": "028b33c54fe2a9a423207913",
+      "rank": "00068bf4a76c5fbc954fce4085d280afb5e71e3d00ff41d7ee6961113473050a",
+      "source_E_sha256": "e1f6a222fdbaeb927e4c22968eda46afe8c61dfeaf4357aff729b3e17cd5730d",
+      "strategy": "ScenarioNesting"
+    },
+    {
+      "category": "gambling",
+      "pair_id": "bd34d24fd59a03289aa74136",
+      "rank": "073375b017ee58c35fe1a3ffd0db933538bd74e9719924a9e9cdfd7da90775f1",
+      "source_E_sha256": "0cfe1a95b9c5a93650877d01284470e60e734473d072b8ef1a2003038bc7aa00",
+      "strategy": "SymbolicMasking"
+    },
+    {
+      "category": "intoxication",
+      "pair_id": "125fe8f2132dbf88e220c8ca",
+      "rank": "08083e25d5db17ad0004f1a8f2fd6ff3c0d6ebac45e48d11cf7dc6e4326369b9",
+      "source_E_sha256": "92b5cbaae5ba1047e158fef15bfb87288ac567e17f999d27a368af4495e9b2c3",
+      "strategy": "RolePrompting"
+    },
+    {
+      "category": "intoxication",
+      "pair_id": "53cb51896966718c60d66a9f",
+      "rank": "0796374c7ee7608e7c16d9784b9c5ca9891cf8a37ad8b4ef75d88d0ae27e1184",
+      "source_E_sha256": "fa3ffe7866d8d086fd0c75752c9dbd5c58b9bc874415d45e02ad707f895275b9",
+      "strategy": "ScenarioNesting"
+    },
+    {
+      "category": "intoxication",
+      "pair_id": "3c8ce48946d2690a9293393f",
+      "rank": "0115d678efc0c65059c22955796e259a6184d3abf0e912eb3136cddab7398853",
+      "source_E_sha256": "6163ca9ec35ad2073837da04b0fd7b676d1d93e0ae680e93c72215553bbfba59",
+      "strategy": "SymbolicMasking"
+    },
+    {
+      "category": "sexual_violence",
+      "pair_id": "05e9fdc4d6e9697ef818eb5f",
+      "rank": "02d31956a7e2b5ed569fa92c1ad3ff96b5f326a784484faea8bf1ae6c5f0c3e6",
+      "source_E_sha256": "272bee8c77a121b80e2c172af1f9537d5ec5458225c548f567c194fa44083110",
+      "strategy": "RolePrompting"
+    },
+    {
+      "category": "sexual_violence",
+      "pair_id": "f9dde56fc38dc3fa528a4a54",
+      "rank": "09b6c53f953b3bff96763641a34a8bc56a579069675d9e0e06eb1eed3e091abc",
+      "source_E_sha256": "677ab2eaea43515bf1fe7116b0c843de6aec76bd2d47285c2fdd2e96e7a21fa3",
+      "strategy": "ScenarioNesting"
+    },
+    {
+      "category": "sexual_violence",
+      "pair_id": "7e25142d6d16663af5a7bb71",
+      "rank": "0210a7df199d89af8d06693e176d0febb2c5b6055f2a87e5f86bbabd2cb7b10f",
+      "source_E_sha256": "ab4b0d0b6fe63ee3b4bda8611e0634e5ea79284dd8a4f1b506b1d32c713596ab",
+      "strategy": "SymbolicMasking"
+    },
+    {
+      "category": "violence",
+      "pair_id": "bd31709e53834851772496f5",
+      "rank": "0ccc8d156374cb9ff4d53199a11c1186fcff526e186d42c87e88813ac43f76d2",
+      "source_E_sha256": "97ce9992cc1811d68f47d017e0ac5d8d53f52c73c461a50bb173db83973ad649",
+      "strategy": "RolePrompting"
+    },
+    {
+      "category": "violence",
+      "pair_id": "19d0cbd59e46905e205331ad",
+      "rank": "016db99378c938ff60dea0b34b49c28032522750cbad8a7a737c1ad9960a47a0",
+      "source_E_sha256": "0d0aea2db61f305925ef2bac3b0525fe7fe21d3139c98ad2ab8868f67057d32d",
+      "strategy": "ScenarioNesting"
+    },
+    {
+      "category": "violence",
+      "pair_id": "ede0eba19a5425f6c7d3460e",
+      "rank": "07c9366afd07df446181dc13e400a46e9e4fcdca0990fed24e2c12d238df10bd",
+      "source_E_sha256": "51ff30a97142e05e33b43677c85f456ae5cdb324800f0f9e1e893f0880e08d20",
+      "strategy": "SymbolicMasking"
+    }
+  ],
+  "version": "U-ARCH-v3-sanity-amendment-1"
+}

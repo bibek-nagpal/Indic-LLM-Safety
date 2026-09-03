@@ -6,6 +6,12 @@ DESIGN COMPLETE; NO EXECUTION AUTHORIZATION.**
 Starting checkpoint: `dc010da`.
 Companion: [design review](U_CONTROL_DESIGN_REVIEW.md).
 
+**Pre-outcome amendment 1 (2026-09-03), parent `b647e29`:** only the sanity
+retry/readiness rule and its execution preflight are amended. The accepted
+construct and all three instruction/schema files remain byte-identical. The old
+first-attempt-only rule is preserved at `b647e29`. See
+[amendment and preflight record](STRONG_ARCHAIC_PREFLIGHT_AMENDMENT.md).
+
 ## 1. Authoritative specification files and scope
 
 Use these files verbatim, without old RH guidance or five-family inventories:
@@ -20,8 +26,9 @@ audit. Schema validity is necessary but does not mean scientific acceptance.
 Do not require a deterministic edit ledger, token multiset preservation,
 closed substitutions, unchanged word order or a tokenizer increase.
 
-No paid action is approved by this specification. No changes to the existing
-Phase G preregistration, SAP, runner or target experiment occur in this task.
+No paid action is approved by this specification. The existing Phase G
+preregistration, SAP and target experiment are unchanged. A separate construction
+controller and offline tests are prepared; the legacy runner is not live-ready.
 
 ## 2. Preserved experimental identity
 
@@ -48,7 +55,8 @@ The five-family development scripts and seven artifacts at `dc010da` are
 superseded history, not reused or rewritten. Resolve their old section references
 against that commit. Future new outputs must go to a separate versioned directory,
 such as `analysis/phase_g/u_arch_v3_sanity/`, never `u_control_development/`.
-No new output directory or bank is created by this design task.
+The amendment freezes an identifier/source-hash sanity manifest in
+`u_arch_v3_preflight/`; no U bank or live run is created.
 
 ## 3. Fixed roles and call parameters
 
@@ -58,8 +66,12 @@ No new output directory or bank is created by this design task.
 | Primary auditor | `deepseek/deepseek-v4-flash` | 0 | 4096 |
 | Secondary auditor | `openai/gpt-5-mini` | 0 | 4096 |
 
-Use one fresh conversation per request. The secondary is dispatched only after
-a complete primary pass and receives no primary report. No alternate model,
+Use one fresh conversation per request. **Both auditors run for every new,
+mechanically valid candidate**, even if the first rejects it, and receive
+identical inputs without each other's reports. This supersedes the earlier
+primary-pass-only cascade to implement the user's amended call policy. Critical
+integrity, baseline-E, budget or infrastructure stops still halt dispatch.
+No alternate model,
 fallback certifier, larger output cap, unrecorded repair model or implicit
 best-of sampling is permitted.
 
@@ -205,12 +217,14 @@ E through regenerated candidates just to obtain agreement.
 
 Both complete passes are required. Generator self-description cannot certify
 its candidate. No averaged score, majority vote, third-vote repair or
-researcher override. The cascade does not support unconditional auditor kappa
-and does not establish statistically independent audit errors.
+researcher override. Collecting both reports permits descriptive agreement on
+the candidate stream, but adaptive attempts are not independent observations;
+no statistically independent audit errors or unconditional population kappa
+is established.
 
 ## 6. Fresh 12-source sanity check
 
-### Fixed sample rule — no selection performed now
+### Fixed sample rule — selected offline in amendment 1
 
 From the frozen 504 bank, exclude:
 
@@ -237,20 +251,27 @@ hash manifest before generation. Shared synthetic scaffolds may remain.
 
 For each selected source:
 
-1. Generate exactly one first-attempt U with the fixed system/payload.
-2. Apply mechanical guards and the primary audit.
-3. If primary passes, apply the independent secondary.
+1. Generate a first-attempt U with the fixed system/payload.
+2. Apply mechanical guards and both independent auditors on every new valid
+   candidate, using the unchanged 17-axis rubric.
+3. Accept only a dual pass on every hard gate, then stop that pair. Otherwise
+   apply the same bounded policy as main construction: at most four total
+   generation requests per pair, including failures. A valid rejection requires
+   a genuinely new candidate; never repoll it for another vote.
 4. Save every raw output, gate result, brief reason, hash, model/provider setting,
    timestamp, token usage and cost.
 
-No semantic/style regeneration, manual rewrite, alternate instruction, other
-family, extra sample or human annotation. Process all feasible planned slots
+No manual rewrite, alternate instruction, other family, extra sample, human
+annotation or target-outcome feedback. Process all feasible planned slots
 to understand failures, unless infrastructure, budget, baseline-E disagreement
 or integrity requires an earlier halt.
 
-**GENERATION SPECIFICATION READY** only if all 12 first-attempt candidates pass
-both auditors on every gate, all 12 cells are present and all provenance/cost/
-hash records are complete with no unresolved item.
+**GENERATION SPECIFICATION READY** iff all 12/12 pairs obtain a dual-certified U
+within at most four generation attempts each, **at least 9/12 pass on their
+first generation attempt**, all 12 cells are present, provenance/cost/hash
+records are complete, and there are no unresolved failures or protocol violations.
+The 9/12 floor is a prospective operational feasibility screen, not an estimate
+or confidence guarantee about a population first-pass rate.
 
 Otherwise **GENERATION SPECIFICATION NOT READY**. Report whether this reflects
 quality failures or an incomplete/technical run, with actual denominators.
@@ -258,16 +279,22 @@ Do not enlarge to 24, replace failed items or run another pilot automatically.
 This is a development feasibility decision, not a powered experiment, a formal
 population validation or a guarantee that 96 main prompts will all certify.
 
-Normal all-pass count: 12 generator +24 auditor requests =36. With the
-audit-format repair cap below the sanity stage has at most 12 generator and
-48 auditor requests =60; failed first-generation requests are not reissued
-under this version. A call-count ceiling is not a monetary quote.
+Report first-attempt passes /12, attempts for every item, each auditor's rejection
+axes, accepted/unfilled counts, unresolved items, and total generation/DeepSeek/
+GPT-5 Mini requests and billed/reserved cost separately. Technical interruptions
+are NOT READY/incomplete, not a new pilot or a replacement cohort.
 
-## 7. Main retry and failure policy
+All-first-pass count: 12 generator +24 auditor requests =36. Absolute bounded
+sanity maximum: 48 generator +96 DeepSeek +96 Mini =240 requests. A sanity run
+that is READY can have at most 21 generation requests (9 first +3 fourth) and
+84 auditor requests including format repairs =105. The all-48 path fails the
+first-attempt floor and cannot proceed to main. Call ceilings are not price quotes.
+
+## 7. Shared sanity/main retry and failure policy
 
 After a reviewed sanity pass and **separate approval** for main construction:
 
-- four total generation requests per original main pair, including initial,
+- four total generation requests per original pair (sanity or main), including initial,
   malformed, blocked and failed requests: at most three regenerations;
 - first complete dual-certified candidate wins;
 - a genuine U validity/style reject can trigger the next full rewrite from E,
@@ -280,20 +307,26 @@ After a reviewed sanity pass and **separate approval** for main construction:
 At most two requests per auditor per candidate. A second is allowed only for
 malformed/incomplete output or definitely unbilled infrastructure failure,
 with the identical content contract and no disclosure of desired verdict.
+Billed auditor API errors are saved and stop for review; only explicitly proven
+unbilled infrastructure failures qualify for the second request. All malformed
+billable replies consume both their attempt slot and their actual cost.
 A valid reject is never rerun for another vote. An unresolved second report
 pauses the stage, not a new candidate chosen to hide the infrastructure failure.
 
-Persist attempts before dispatch; preserve all billable failures. Exact duplicate
-U for a source reuses saved verdicts; the generation request still consumes its
+Persist attempts before dispatch; preserve all billable failures. Exact or
+whitespace-only duplicate U for a source reuses saved verdicts; the generation request still consumes its
 allowance. Never regenerate accepted U or repeat an already completed call.
 Ambiguous completion/delivery/billing requires reconciliation, not automatic retry.
 Ordinary parser repair may reparse saved raw outputs; it cannot change the
 scientific predicates or the underlying text.
 
-Qualitative strong-style failure is now a hard eligibility failure and may
-receive bounded feedback in **main** construction. This intentionally replaces
+Qualitative strong-style failure is a hard eligibility failure and may
+receive bounded feedback in **sanity and main** construction. This intentionally replaces
 the old family-selection procedure; it does not authorize metric optimization
-or whole-cohort strengthening after acceptance. Sanity remains first-attempt only.
+or whole-cohort strengthening after acceptance. Feedback reasons are truncated
+to at most 400 Unicode characters per report for bounded logging/input cost;
+at most six prior auditor reports exist before the fourth generation. Failed
+axis codes remain intact. This does not change candidate acceptance or the rubric.
 
 ## 8. Minimal diagnostics and complete-bank gate
 
@@ -337,7 +370,7 @@ Before sanity payment:
 
 After sanity:
 
-- freeze all 12 first-attempt candidates and failures, audit reports, readiness
+- freeze every attempted candidate and failure (including all first attempts), audit reports, readiness
   verdict, cheap diagnostics and actual cost;
 - any revision after failure is a new approved protocol version, with the old
   failure retained and a new disjoint sanity set.
@@ -352,7 +385,8 @@ Before targets:
 - full 96-U Gate A/B pass; frozen bank/run manifest with pair/source/U/spec/code
   hashes, all attempts and provider provenance, exact target/judge settings;
 - the existing scientific preregistration/SAP must first be amended prospectively
-  and the known runner faults repaired/tested. Neither is done here.
+  and a fully verified live target/judge adapter must be available. The old
+  preregistration/SAP are not amended in this narrow preflight task.
 
 All future Phase G API costs, including sanity, main construction, retries and
 later authorized U targets/judging, remain within the existing conditional
@@ -393,6 +427,6 @@ Sanity result: NOT RUN.
 Ready for live sanity execution now: NO — approval and verified safe execution/
 cost preflight are still required.**
 
-No generation, sanity selection, API call or target inference is performed
-in this design-only task. Stop after committing the revised proposals and
-three explicit specification files.
+The sanity sources are now selected and hash-locked offline. No sanity execution,
+U generation, API call or target inference is performed. Stop after the offline
+amendment, tests and preflight checkpoint, before any paid call.

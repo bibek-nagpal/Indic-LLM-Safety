@@ -6,6 +6,11 @@ Starting checkpoint: `dc010da`. This revision implements the user's final
 construction decision in the proposal documents only. It does not amend the
 main preregistration, SAP, runner, frozen selection or E/R experiment.
 
+Pre-outcome amendment 1 from `b647e29` changes only the sanity retry/readiness
+rule and prepares offline execution safeguards. See
+[amendment record](STRONG_ARCHAIC_PREFLIGHT_AMENDMENT.md). The strong-archaic
+construct, generator, auditor rubric and schemas are unchanged.
+
 ## 1. Final U definition
 
 U is **strongly archaized/literary English**: unmistakably English, substantially
@@ -117,7 +122,8 @@ Use the existing two auditor roles, independently:
 
 Both use temperature 0 and 4096 maximum output tokens. The secondary sees the
 same E/U and contract, never the generator's reasoning or the primary report.
-The cascade calls the secondary only after a complete primary pass. Both must
+Under amendment 1 both auditors assess every mechanically valid new candidate,
+including candidates the first auditor rejects. Neither sees the other's report. Both must
 accept; there is no majority vote, scalar threshold or adjudication-to-pass.
 
 The exact rubric is
@@ -158,18 +164,19 @@ Use **12 fresh source prompts, one per category×strategy cell**, outside both:
 
 The second exclusion is an inexpensive protection against reusing the examples
 that motivated the redesign; it is not a new formal held-out efficacy study.
-The protocol gives an exact identity-hash selection rule. No selection or
-generation is performed in this design task.
+The protocol gives an exact identity-hash selection rule. Amendment 1 applies
+that rule offline and freezes the 12 source IDs/hashes; no U is generated.
 
-For each source, make **one** full archaic rewrite using the frozen instruction,
-then apply the same mechanical checks and independent dual certification
-intended for main U. No semantic/style regeneration in the sanity check.
-Normally this is 12 generator +12 primary +12 secondary calls =36 calls if all
-candidates reach both auditors. No target inference or response judging.
+For each source, allow **at most four total generation attempts**, applying the
+same mechanical checks and independent dual certification as main U after each
+new valid candidate. Stop at the first dual-certified U. A valid reject cannot
+be repolled; any retry requires a genuinely new candidate. All-first-pass is
+36 calls; the absolute bounded failure path is 240 calls including auditor
+format repairs. No target inference or response judging.
 
-**Pass:** all 12 first-attempt candidates have complete provenance and pass
-both auditors on every gate, including strong sustained archaization and
-recoverability; all 12 cells are represented; no unresolved item or hash error.
+**Pass:** all 12 certify within four generation attempts each, **at least 9/12
+certify on the first attempt**, complete provenance, and no unresolved failures
+or protocol violations. Every hard gate remains mandatory for each acceptance.
 
 Then report **GENERATION SPECIFICATION READY**.
 Otherwise report **GENERATION SPECIFICATION NOT READY**, distinguishing quality
@@ -178,8 +185,10 @@ a quality success or a substantive failure-rate estimate.
 
 This is a simple feasibility screen, not a powered validation experiment,
 an estimate of human comprehension, or assurance that 96/96 will certify.
-Twelve out of twelve is a conservative operational pass rule, not pseudo-precise
-evidence of a population acceptance rate. No automatic expansion to 24,
+The 9/12 first-attempt floor plus 12/12 bounded completion is an operational
+readiness rule, not population acceptance-rate inference. Report first-pass
+rate, attempts/item, rejection axes and all generation/auditing calls separately.
+No automatic expansion to 24,
 revised prompt, new sample, alternative model or hidden second pilot follows
 a failure. Report the reasons and stop for review.
 
@@ -270,12 +279,14 @@ The exact instructions, schemas, sample rule, pass criterion and bounded
 failure policy are specified. The three specification files are the only new
 files required to make the revised design explicit.
 
-No sanity check, source selection, new U generation, API call, human annotation,
-target inference, paid judge experiment or stochastic published analysis was
-run. Historical development files, frozen E/R, main preregistration, SAP,
-runner, configuration and manuscript remain unchanged.
+The amended sanity source selection and synthetic execution tests are offline.
+No sanity check, new U generation, API call, human annotation, target inference,
+paid judge experiment or stochastic published analysis was run. Historical
+development files, frozen E/R, main preregistration, SAP, legacy runner/configuration
+and manuscript remain unchanged. A separate preparatory controller is added.
 
 **Design ready for review: YES. Live sanity-check execution ready: NO.**
 Separate API approval, current-price/input-budget checks and a safe, offline-tested
-execution adapter are still required. The documented Phase G runner faults
-remain; this proposal does not repair or certify that runner.
+execution adapter are still required. The legacy runner is not certified;
+the amendment records exactly which new offline safeguards pass and which
+live checks remain blocked.

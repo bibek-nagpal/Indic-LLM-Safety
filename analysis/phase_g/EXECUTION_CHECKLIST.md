@@ -1,5 +1,11 @@
 # Phase G execution checklist
 
+> HISTORICAL CHECKLIST — superseded for U construction. Do not execute its old
+> register allocation, primary-pass cascade or metric-driven regeneration steps.
+> Current strong-archaic sanity rule and offline/live readiness distinction:
+> [2026-09-03 amendment](STRONG_ARCHAIC_PREFLIGHT_AMENDMENT.md).
+> The legacy runner remains disabled; this file does not authorize payment.
+
 Nothing here may be started without explicit written authorization. The runner
 refuses to make a paid call unless both `--execute-paid-calls` and
 `--paid-approval-confirmed` are present.

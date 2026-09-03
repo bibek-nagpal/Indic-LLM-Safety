@@ -1,0 +1,76 @@
+{
+  "parent_commit": "b647e29d1ba456540b1594d110d8bb0f2f794901",
+  "date": "2026-09-03",
+  "actual_external_calls": 0,
+  "actual_paid_calls": 0,
+  "actual_u_generated": 0,
+  "actual_sanity_run": false,
+  "tests": {
+    "command": ".analysis-venv/Scripts/python.exe -B -m analysis.phase_g.run_offline_tests",
+    "passed": 124,
+    "new_tests": 45,
+    "failed": 0,
+    "external_network_blocked": true,
+    "followup_input_cost_tests_passed": 2
+  },
+  "frozen_manifests": [
+    {
+      "manifest": "frozen_final_2026_08_29/FREEZE_MANIFEST.json",
+      "checked": 14,
+      "mismatches": []
+    },
+    {
+      "manifest": "analysis/results/ANALYSIS_MANIFEST.json",
+      "checked": 26,
+      "mismatches": []
+    },
+    {
+      "manifest": "analysis/phase_c_results/PHASE_C_MANIFEST.json",
+      "checked": 10,
+      "mismatches": []
+    },
+    {
+      "manifest": "analysis/phase_d_run_archive/RUN_ARCHIVE_MANIFEST.json",
+      "checked": 9,
+      "mismatches": []
+    },
+    {
+      "manifest": "analysis/phase_d_results/PHASE_D_MANIFEST.json",
+      "checked": 15,
+      "mismatches": []
+    },
+    {
+      "manifest": "analysis/sensitivity_results/SENSITIVITY_MANIFEST.json",
+      "checked": 8,
+      "mismatches": []
+    }
+  ],
+  "legacy_G_byte_locks_verified": {
+    "PREREGISTRATION.md": "dd754d4b89404e32c00e564041ba97e227b997d88af51a7b4732b7421ae2918d",
+    "STATISTICAL_ANALYSIS_PLAN.md": "3edf8b1750db4375c8a643c8806b70a8936c6891fefc183dca370e54b8f05937",
+    "config/phase_g.yaml": "f3eed6dccd623fa027d9afa4ceb4d3ce9319297b70e9700f78b77bbcdbf1e03f",
+    "cost_model.json": "ddb7897e988236435fc71a459b1e96d71835b83a3c8f25b2dad06225fd6e196d",
+    "cost_model.py": "e204e92851513f574813315d15a8650cb1c89b5109a34b1462e5f8347ad06a5e",
+    "design_power.json": "0f77cb276482b889f19ad2e55b2e8e8ce16184f38c8d1d9cc8e2a1f88307e1f6",
+    "design_power.py": "d325450e9ab5d0d0ac55916bf99cb013d357cd54a16ad068a6672579027f12dc",
+    "runner.py": "c467a07026dc12068a4ec7722ac194201c641f0ea902345a4b46b7b44276e96e",
+    "selection_n96.csv": "56f0961ea0762ea0c4873f4eb2c4c04f5d0b2e0c87d57f172255f07a014b7362",
+    "selection_n96_MANIFEST.json": "aa066ec554c047af61ea11043c8b3deedccf51a8009b1e13ad67296cbbc2da2c"
+  },
+  "historical_Git_canonical_unchanged": 9,
+  "specs_byte_identical_to_parent": {
+    "analysis/phase_g/specs/strong_archaic_v3_audit.txt": "511c046c75fa9eec7dcdc85bda5b5a39c974f7ad7850031c9d07f2665fa55c0e",
+    "analysis/phase_g/specs/strong_archaic_v3_generation.txt": "a97d80f934552eed8363a236399c1865140fc46602fab7c8ba23e8aee4c9d186",
+    "analysis/phase_g/specs/strong_archaic_v3_schemas.json": "2077b7866ff4d362adfe451ca53fb2b687175dab45cea0a4644e0b805d1bfd13"
+  },
+  "generated_reports_byte_reproduced": {
+    "SANITY_COHORT_MANIFEST.json": "3bca87426d10f3d4946d05711ed56608932eca5ccf551b1be776cb382bd8338c",
+    "EXECUTION_PLAN.json": "e71efcbdc2f47979065d4a9ba8679aac046b228f5d82880c93450a3a156c878a",
+    "COST_PREFLIGHT.json": "a9f2bd2f790c68c981fc943537a305dc8de79e31ec94a2f1d3371a09c6dd01d7",
+    "PREFLIGHT.json": "b2f96a8477d803cd89f60b8292f9fa917ccee5a99bafba38825cbed9c06014f4"
+  },
+  "runner_resumability": "PASS offline construction controller and HTTP mocks; legacy runner not certified",
+  "cost_accounting": "PASS offline persisted ledger and arithmetic; live per-call bounds unverified",
+  "live_preflight": "FAIL",
+  "historical_csv_notice": "Unchanged pre-existing CRLF/LF mismatch in u_candidates_index.csv; see amendment record"
+}

@@ -93,3 +93,6 @@ human_validation/node_modules
 # Never commit this tree. Specific small artifacts may be copied out
 # deliberately after review.
 historical_v1_evidence/
+
+# Future strong-archaic construction journals contain private source/U/audit text.
+analysis/phase_g/u_arch_v3_private/

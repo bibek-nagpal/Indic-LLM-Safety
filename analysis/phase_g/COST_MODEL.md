@@ -1,5 +1,10 @@
 # Phase G cost model
 
+> HISTORICAL MODEL — not a current U-ARCH-v3 cost estimate. The old $1.82 forecast
+> does not price the present messages or retry bounds. Use
+> [the strong-archaic preflight](STRONG_ARCHAIC_PREFLIGHT_AMENDMENT.md) and its
+> machine-readable cost breakdown. No spending is authorized by either file.
+
 All generation, certification and judging unit costs are **measured** from this
 repository's own billing ledgers. Target unit prices are the only list-price
 inputs, because the V2 target sweep's per-call usage was never persisted.
