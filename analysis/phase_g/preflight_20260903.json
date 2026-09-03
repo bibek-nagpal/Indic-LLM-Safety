@@ -1,0 +1,155 @@
+{
+  "api_calls": 0,
+  "api_cost_usd": 0,
+  "audit_kind": "offline_preflight_not_experimental_outcomes",
+  "audited_scientific_input_hashes": {
+    "PREREGISTRATION.md": "dd754d4b89404e32c00e564041ba97e227b997d88af51a7b4732b7421ae2918d",
+    "STATISTICAL_ANALYSIS_PLAN.md": "3edf8b1750db4375c8a643c8806b70a8936c6891fefc183dca370e54b8f05937",
+    "config/phase_g.yaml": "f3eed6dccd623fa027d9afa4ceb4d3ce9319297b70e9700f78b77bbcdbf1e03f",
+    "cost_model.json": "ddb7897e988236435fc71a459b1e96d71835b83a3c8f25b2dad06225fd6e196d",
+    "cost_model.py": "e204e92851513f574813315d15a8650cb1c89b5109a34b1462e5f8347ad06a5e",
+    "design_power.json": "0f77cb276482b889f19ad2e55b2e8e8ce16184f38c8d1d9cc8e2a1f88307e1f6",
+    "design_power.py": "d325450e9ab5d0d0ac55916bf99cb013d357cd54a16ad068a6672579027f12dc",
+    "runner.py": "c467a07026dc12068a4ec7722ac194201c641f0ea902345a4b46b7b44276e96e",
+    "selection_n96.csv": "56f0961ea0762ea0c4873f4eb2c4c04f5d0b2e0c87d57f172255f07a014b7362",
+    "selection_n96_MANIFEST.json": "aa066ec554c047af61ea11043c8b3deedccf51a8009b1e13ad67296cbbc2da2c"
+  },
+  "cost_funnel_internal_consistency": {
+    "expected_certifications_in_211_2_attempts_if_independent": 76.032,
+    "expected_filled_of_96_if_independent": 79.89387264000001,
+    "generation_calls_expected_scenario": 211.2,
+    "pass_probability_per_attempt_if_independent": 0.36,
+    "per_pair_success_with_four_attempts_if_independent": 0.83222784,
+    "preregistered_n": 96,
+    "probability_all_96_filled_if_independent": 2.204220457389359e-08,
+    "scenario_only_not_a_yield_prediction": true
+  },
+  "execution_status": "Not started; provider refusal guard deliberately preserved.",
+  "head_at_audit": "5904ca735792e51327e57acfad21515bd92be3ee",
+  "interpretation_counterexamples": [
+    {
+      "ci": [
+        -0.1,
+        0.75
+      ],
+      "matching_rows": []
+    },
+    {
+      "ci": [
+        0.25,
+        1.1
+      ],
+      "matching_rows": []
+    },
+    {
+      "ci": [
+        0,
+        0.5
+      ],
+      "matching_rows": []
+    },
+    {
+      "ci": [
+        0.5,
+        1
+      ],
+      "matching_rows": []
+    }
+  ],
+  "manifests": [
+    {
+      "checked": 14,
+      "manifest": "frozen_final_2026_08_29/FREEZE_MANIFEST.json",
+      "mismatches": []
+    },
+    {
+      "checked": 26,
+      "manifest": "analysis/results/ANALYSIS_MANIFEST.json",
+      "mismatches": []
+    },
+    {
+      "checked": 10,
+      "manifest": "analysis/phase_c_results/PHASE_C_MANIFEST.json",
+      "mismatches": []
+    },
+    {
+      "checked": 9,
+      "manifest": "analysis/phase_d_run_archive/RUN_ARCHIVE_MANIFEST.json",
+      "mismatches": []
+    },
+    {
+      "checked": 15,
+      "manifest": "analysis/phase_d_results/PHASE_D_MANIFEST.json",
+      "mismatches": []
+    },
+    {
+      "checked": 8,
+      "manifest": "analysis/sensitivity_results/SENSITIVITY_MANIFEST.json",
+      "mismatches": []
+    }
+  ],
+  "reuse_mapping": {
+    "existing_non_assistance_counts_per_96": {
+      "nvidia/nemotron-3-nano-30b-a3b": {
+        "en": 68,
+        "rh": 69
+      },
+      "openai/gpt-oss-20b": {
+        "en": 80,
+        "rh": 77
+      },
+      "qwen/qwen3-30b-a3b-instruct-2507": {
+        "en": 62,
+        "rh": 24
+      }
+    },
+    "judge_and_cap_match_frozen": true,
+    "keys_unique_and_complete": true,
+    "model_ids_match_frozen": true,
+    "selected_response_score_keys": 576,
+    "selection_uses_this_join": false,
+    "target_settings_match_frozen": true
+  },
+  "scientific_decisions_required": [
+    "Operationalize and freeze the manipulation gate and bounded strengthening procedure, including its interaction with the four-attempt cap.",
+    "Complete the interpretation table and ratio-denominator policy before outcomes; do not select a rule from observed results."
+  ],
+  "selection": {
+    "checks": {
+      "12_cells_eight_each": true,
+      "bank_hash_matches": true,
+      "csv_reproduced_byte_identically": true,
+      "manifest_fields_match": true,
+      "manifest_reproduced_byte_identically": true,
+      "n96_unique": true,
+      "rank_allocation_balanced": true,
+      "selected_ids_match": true
+    },
+    "sub_register_assignment_status": "rederived from rule, not persisted by prepared runner"
+  },
+  "synthetic_runner_faults": {
+    "billed_failure": {
+      "in_memory_spent": 0.30000000000000004,
+      "persisted_spent": 0.1
+    },
+    "crash_after_remote_completion": {
+      "completed_jobs": 1,
+      "pending_marker_before_restart": false,
+      "remote_completions": 2
+    },
+    "restart_spend": {
+      "ceiling": 1,
+      "persisted_total": 1.2
+    },
+    "retry_restart": {
+      "attempts": 6,
+      "ceiling": 3
+    },
+    "under_reservation": {
+      "already_billed": 0.2,
+      "ceiling": 0.1,
+      "successes_persisted": 0
+    }
+  },
+  "verdict": "FAIL_EXECUTION_PREFLIGHT"
+}

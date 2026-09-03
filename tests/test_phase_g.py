@@ -186,6 +186,19 @@ def test_selection_never_reads_outcome_fields():
         assert forbidden not in source, f"selection must not reference {forbidden}"
 
 
+def test_selection_reproduces_frozen_bytes_without_overwriting_them(tmp_path, monkeypatch):
+    select = _load("phase_g_selection_reproduction", "analysis/phase_g/select_base_pairs.py")
+    if not select.BANK.exists():
+        pytest.skip("byte reproduction requires the gated frozen bank")
+    monkeypatch.setattr(select, "ROOT", tmp_path)
+    monkeypatch.setattr(select, "OUT", tmp_path)
+    monkeypatch.setattr(sys, "argv", ["select_base_pairs.py", "--n", "96"])
+    assert select.main() == 0
+    for suffix in (".csv", "_MANIFEST.json"):
+        filename = f"selection_n96{suffix}"
+        assert (tmp_path / filename).read_bytes() == (ROOT / "analysis/phase_g" / filename).read_bytes()
+
+
 # ---------------------------------------------------------------- guard rails
 
 def test_runner_refuses_to_execute_without_both_approval_flags():

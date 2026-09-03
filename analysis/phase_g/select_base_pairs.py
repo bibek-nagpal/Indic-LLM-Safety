@@ -118,7 +118,8 @@ def main() -> int:
         "selected_pair_ids": [r["pair_id"] for r in selected],
     }
     json_path = OUT / f"{prefix}_MANIFEST.json"
-    json_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    json_path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n",
+                         encoding="utf-8", newline="\n")
     print(json.dumps({
         "n": args.n, "per_cell": per_cell,
         "selection_csv": str(csv_path.relative_to(ROOT)),

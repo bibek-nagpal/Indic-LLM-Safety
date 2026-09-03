@@ -1,3 +1,7 @@
 *.pdf binary
 *.png binary
 *.xlsx binary
+
+# Phase G selection hashes are byte-level: retain their frozen serialization.
+analysis/phase_g/selection_n*_MANIFEST.json text eol=lf
+analysis/phase_g/selection_n*.csv text eol=crlf

@@ -22,6 +22,11 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src/jailbreak_hermes"]
 
+[tool.pytest.ini_options]
+# Historical checkouts and temporary fixtures are evidence, not the active suite.
+testpaths = ["tests"]
+pythonpath = ["src"]
+
 [dependency-groups]
 dev = [
     "pytest>=9.0.3",
