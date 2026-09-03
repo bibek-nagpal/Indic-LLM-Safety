@@ -16,6 +16,11 @@ auditing after primary rejection and imposes a cumulative $5.50 ceiling with
 protected stage budgets. See [current budget/preflight](BUDGET550_AMENDMENT.md).
 No construct, model identity, acceptance gate or sanity readiness rule changes.
 
+Current amendment 3, parent `604c8c3`, prospectively omits Mini's unsupported
+temperature field with explicit user approval. All scientific predicates remain
+unchanged; only the N12 sanity run is conditionally authorized after committed
+passing preflight. See [compatibility record](SANITY_COMPATIBILITY_AMENDMENT.md).
+
 ## 1. Final U definition
 
 U is **strongly archaized/literary English**: unmistakably English, substantially
@@ -125,7 +130,8 @@ Use the existing two auditor roles, independently:
 - `deepseek/deepseek-v4-flash`;
 - `openai/gpt-5-mini`.
 
-Both use temperature 0 and 4096 maximum output tokens. The secondary sees the
+DeepSeek uses temperature 0; Mini omits temperature under compatibility amendment
+3. Both retain 4096 maximum output tokens. The secondary sees the
 same E/U and contract, never the generator's reasoning or the primary report.
 Under current amendment 2 DeepSeek assesses each mechanically valid new candidate;
 Mini assesses only primary passes. Neither sees the other's report. Both must
@@ -292,8 +298,8 @@ development files, frozen E/R, main preregistration, SAP, legacy runner/configur
 and manuscript remain unchanged. A separate preparatory controller is added.
 
 **Design ready for review: YES. Live sanity-check execution ready: NO.**
-Separate API approval and the approval-required Mini temperature compatibility
-correction remain necessary; public prices/routes and offline budgets are now
-checked in amendment 2. The legacy runner is not certified;
+Amendment 3 authorizes the compatibility correction and conditional N12 sanity
+execution only after its passing preflight is committed. Public prices/routes
+and budgets were checked in amendment 2 and are rechecked for sanity. The legacy runner is not certified;
 the amendment records exactly which new offline safeguards pass and which
 live checks remain blocked.

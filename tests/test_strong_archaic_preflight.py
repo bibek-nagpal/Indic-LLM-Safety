@@ -37,13 +37,15 @@ def cohort():
 
 def config(rows=None, ceiling=1_000_000_000):
     rows = rows or cohort()
-    return dict(hard_ceiling_nusd=ceiling,cohort_payload_hashes={"sanity":r.identifier(rows),"main_construction":r.identifier(rows)},
+    result = dict(hard_ceiling_nusd=ceiling,cohort_payload_hashes={"sanity":r.identifier(rows),"main_construction":r.identifier(rows)},
                 stage_budgets_nusd=dict(sanity=ceiling,main_construction=0,target_inference=0,judging=0),
                 roles={role:dict(model=model,temperature=.4 if role=="generation" else 0,max_tokens=4096,
                                  allowed_stages=["sanity","main_construction"],
                                  maximum_call_nusd=1000,request_parameters={"stream":False,
                                      "provider":{"order":["fixture-provider"],"only":["fixture-provider"],"allow_fallbacks":False,"require_parameters":True}})
                        for role,model in r.MODELS.items()})
+    del result["roles"]["mini_audit"]["temperature"]
+    return result
 
 
 def audit_fixture(item, strategy):

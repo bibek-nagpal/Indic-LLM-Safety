@@ -1,0 +1,27 @@
+{
+  "all_other_role_settings_identical": true,
+  "exact_source_overlap": 0,
+  "excluded_ladder_n": 120,
+  "excluded_olddev_n": 24,
+  "first_attempt_floor": 9,
+  "frozen_artifacts": {
+    "core_manifest_files": 82,
+    "legacy_g_locks": 10,
+    "parent_spec_and_preflight_files": 20,
+    "status": "PASS"
+  },
+  "generation_attempt_limit": 4,
+  "global_cap_usd": 5.5,
+  "hard_sanity_cap_usd": 0.65,
+  "id_overlap": 0,
+  "inference_calls_before_amendment": 0,
+  "one_per_cell": true,
+  "parent_commit": "604c8c386d81fd89c497c46505a6db60a7c787ff",
+  "pre_outcome": true,
+  "sanity_n": 12,
+  "scope_hash": "ae46c01afd540b1a5b147090a47fbd554255207d9c36bdb172511fc6b3fe9ca3",
+  "sequential_dual_certification_unchanged": true,
+  "stage_2_requires_committed_passing_test_receipt": true,
+  "status": "PASS",
+  "temperature_omitted_only_for_mini": true
+}

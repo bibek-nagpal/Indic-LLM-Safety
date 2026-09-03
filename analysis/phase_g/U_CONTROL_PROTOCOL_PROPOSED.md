@@ -17,6 +17,12 @@ a $5.50 cumulative ceiling supersede amendment 1's call graph/$10 budget only.
 The construct, 17 gates, N12 rule and four-generation limit remain unchanged.
 See [current budget/preflight](BUDGET550_AMENDMENT.md). No inference is approved.
 
+**Current amendment 3, parent `604c8c3`:** user-approved API compatibility only:
+omit Mini's unsupported temperature field and use native sampling. All other
+parameters, model identities, gates, N12 cohort and readiness rule are unchanged.
+The N12 sanity run alone is conditionally authorized after passing Stage 1 and
+committing it. See [compatibility/execution record](SANITY_COMPATIBILITY_AMENDMENT.md).
+
 ## 1. Authoritative specification files and scope
 
 Use these files verbatim, without old RH guidance or five-family inventories:
@@ -69,7 +75,7 @@ The amendment freezes an identifier/source-hash sanity manifest in
 |---|---|---:|---:|
 | Generator | `google/gemini-2.5-flash` | 0.4 | 4096 |
 | Primary auditor | `deepseek/deepseek-v4-flash` | 0 | 4096 |
-| Secondary auditor | `openai/gpt-5-mini` | 0 | 4096 |
+| Secondary auditor | `openai/gpt-5-mini` | omitted; native sampling | 4096 |
 
 Use one fresh conversation per request. **DeepSeek runs first; GPT-5 Mini runs
 only if DeepSeek passes every gate.** Both must pass for acceptance and receive
@@ -81,9 +87,10 @@ No alternate model,
 fallback certifier, larger output cap, unrecorded repair model or implicit
 best-of sampling is permitted.
 
-Live metadata now establishes that Mini does not support the pinned temperature
-parameter. The table preserves the unamended setting; dispatch is BLOCKED pending
-approval to omit it and use native sampling. No automatic parameter dropping.
+Live metadata establishes that Mini does not support temperature. Amendment 3
+records the user's explicit approval to omit that field before any U outcomes.
+No null, replacement value, lower reasoning effort or alternate model is used.
+Conditional authority covers only the N12 sanity run under the $0.65 stage cap.
 
 This reuses established roles without asserting the generator's adequacy in
 advance. The sanity check tests whether it can meet the strong-rewrite contract.

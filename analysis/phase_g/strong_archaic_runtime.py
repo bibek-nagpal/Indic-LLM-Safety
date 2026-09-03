@@ -1,7 +1,7 @@
 """Offline-testable U-ARCH-v3 construction controller. NO network adapter or CLI.
 
-Only a supplied synthetic transport is used in repository tests. Live integration
-is deliberately unavailable pending price/routing verification and approval.
+Only a supplied synthetic transport is used in repository tests. The separate
+sanity-only entry point requires committed passing preflight and explicit approval.
 No target, response-judge, credential or historical-outcome module is imported.
 SQLite FULL transactions persist reservations before invoking the transport.
 Ambiguous delivery stops globally: exactly-once remote delivery cannot be proved.
@@ -64,6 +64,14 @@ def messages(role, payload):
     system = (SPECS / filename).read_text(encoding="utf-8").replace("\r\n", "\n").rstrip("\n")
     system += "\n\nOUTPUT_SCHEMA\n" + canonical(SCHEMAS[kind])
     return [{"role": "system", "content": system}, {"role": "user", "content": canonical(payload)}]
+
+
+def fixed_parameters(settings):
+    """Omit absent parameters, rather than sending null or an unsupported value."""
+    request = dict(settings["request_parameters"], model=settings["model"], max_tokens=settings["max_tokens"])
+    if "temperature" in settings:
+        request["temperature"] = settings["temperature"]
+    return request
 
 
 def parse(content, kind, item_id):
@@ -234,11 +242,11 @@ class Journal:
         if stage not in ("sanity", "main_construction"):
             raise Stop("construction call cannot spend another stage's funds")
         settings = self.config["roles"][role]
-        if settings["model"] != MODELS[role] or settings["max_tokens"] != 4096 or settings["temperature"] != (0.4 if role == "generation" else 0):
+        sampling_ok = ("temperature" not in settings if role == "mini_audit"
+                       else settings.get("temperature") == (0.4 if role == "generation" else 0))
+        if settings["model"] != MODELS[role] or settings["max_tokens"] != 4096 or not sampling_ok:
             raise Stop("unapproved model or sampling settings")
-        request = dict(settings["request_parameters"], model=settings["model"],
-                       temperature=settings["temperature"], max_tokens=settings["max_tokens"],
-                       messages=messages(role, payload))
+        request = dict(fixed_parameters(settings), messages=messages(role, payload))
         return self._dispatch_request(job, role, stage, request, transport)
 
     def _dispatch_request(self, job, role, stage, request, transport):
@@ -252,13 +260,14 @@ class Journal:
             raise Stop("live preflight blockers unresolved; no dispatch permitted")
         if self.config.get("live_enabled") is False:
             raise Stop("execution plan is offline-only; paid approval/promotion required")
+        if "authorized_stages" in self.config and stage not in self.config["authorized_stages"]:
+            raise Stop("stage not authorized by the recorded approval")
         if role not in self.config["roles"] or stage not in STAGES:
             raise Stop("unplanned role or stage")
         settings = self.config["roles"][role]
         if stage not in settings["allowed_stages"]:
             raise Stop("role/stage mismatch")
-        fixed = dict(settings["request_parameters"], model=settings["model"],
-                     temperature=settings["temperature"], max_tokens=settings["max_tokens"])
+        fixed = fixed_parameters(settings)
         if set(request) != set(fixed) | {"messages"} or any(request[k] != v for k,v in fixed.items()):
             raise Stop("request differs from frozen model/parameter/price configuration")
         body = canonical(request)
