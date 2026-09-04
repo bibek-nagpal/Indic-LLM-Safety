@@ -2,7 +2,8 @@
 
 Every headline number in the compiled PDF, checked against
 `analysis/headline_verification.json` and `analysis/human_a_results.json`,
-which are themselves recomputed from the frozen artifacts.
+Point estimates are checked against frozen artifacts; confidence intervals are reused
+from validated Phase B and the unchanged Human A result JSON, never redrawn.
 
 | check | string required in PDF | status | detail |
 |---|---|---|---|
@@ -18,6 +19,8 @@ which are themselves recomputed from the frozen artifacts.
 | Qwen critical flips 85 | `85 of 504` | PASS | source=True pdf=True |
 | Qwen critical pct 16.9 | `16.9` | PASS | source=True pdf=True |
 | GPT-OSS gap +4.6 | `4.6` | PASS | source=True pdf=True |
+| GPT-OSS validated CI | `[1.4, 7.7]` | PASS | source=True pdf=True |
+| Nemotron validated CI | `[-6.5, 2.8]` | PASS | source=True pdf=True |
 | Nemotron gap -1.8 | `1.8` | PASS | source=True pdf=True |
 | Nemotron fwd 65 rev 70 | `(65 forward, 70 reverse)` | PASS | source=True pdf=True |
 | human exact 74.7 | `74.7` | PASS | source=True pdf=True |
@@ -27,6 +30,8 @@ which are themselves recomputed from the frozen artifacts.
 | human CI [69.4, 79.9] | `[69.4, 79.9]` | PASS | source=True pdf=True |
 | human higher 58 lower 14 | `on 58 items and lower on 14` | PASS | source=True pdf=True |
 | human n 285 | `285` | PASS | source=True pdf=True |
+| human GPT5 exact rounding | `79.6%` | PASS | source=True pdf=True |
+| human GPT5 QWK rounding | `0.885` | PASS | source=True pdf=True |
 | items returned 287 | `287` | PASS | source=True pdf=True |
 | unscored 73 of 360 | `73 of 360` | PASS | source=True pdf=True |
 | binary agreement 88.8 | `88.8` | PASS | source=True pdf=True |
@@ -41,10 +46,10 @@ Searched for: `1,512 unique`, `1512 unique prompt pairs`, `Logical Appeal`, `two
 
 ## Required-disclaimer sweep
 
-Searched for: `single annotator`, `make no inter-annotator`, `not completed`, `Annotator B returned a workbook containing no scores`, `reflectively optimized`, `cascade`, `the same model`, `no direct-request and no benign condition`
+Searched for: `single annotator`, `make no inter-annotator`, `not completed`, `No usable Annotator B labels`, `retained the seed instruction unchanged`, `cascade`, `the same model`, `language was not blinded`, `both inputs use Latin script`, `completion-conditional`, `SequenceMatcher`, `Cross-bank consolidation removed exact matches only`, `no direct-request and no benign condition`, `not covariate adjustment`
 
 **Result:** all present
 
 ## Verdict
 
-**PASS** — 26/26 checks pass.
+**PASS** — 30/30 checks pass.

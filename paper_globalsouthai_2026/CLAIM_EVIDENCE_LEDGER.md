@@ -1,51 +1,26 @@
-# Claim–evidence ledger
+# Corrected claim–evidence ledger
 
-Every substantive claim in `main.tex`, its authoritative source, and how it was verified.
-Headline quantities were **recomputed from the frozen artifacts**, not copied from prose:
-`analysis/verify_headline.py` reads `frozen_final_2026_08_29/` directly and additionally
-asserts that its own recomputation reproduces the committed frozen analysis exactly.
+Point estimates are recomputed from frozen scores. Statistical intervals are taken from validated outputs, not newly sampled.
 
-Verification artifacts: `analysis/headline_verification.json`, `analysis/human_a_results.json`,
-`NUMERICAL_AUDIT.md`.
+| Claim | Repository evidence | Correct interpretation |
+|---|---|---|
+| 504 pairs; 42 per 12 cells; 3,024 responses / 1,512 pair-model observations | frozen_final_2026_08_29 bank/run; analysis/qc_final.py | pair_id is the experimental unit |
+| Qwen 65.9% EN /22.8% RH; gap43.1 [38.5,47.6];85 critical flips | analysis/results/main_results.csv; verify_headline.py | Scored assistance; 0–1 is not proof of refusal |
+| GPT-OSS gap4.6 [1.4,7.7]; Nemotron−1.8 [−6.5,2.8] | Same validated main_results.csv | No replacement bootstrap digits |
+| Robust Qwen-versus-rest; smaller contrast cluster-fragile | analysis/results/statistical_tests.json; analysis/sensitivity_results/cluster_sensitivity.csv | Not three statistically established regimes |
+| Retained GEPA instruction equals seed;30/24 development results | prompts/optimized/gepa_20260826_135819/; scripts/verify_generator_artifact.py | Reflection attempted, no accepted evolved instruction |
+| Deterministic filters → DeepSeek → Mini acceptance cascade | src/jailbreak_hermes/probe_bank.py; frozen bank audits | Dual pass for retained prompts, not unconditional independent rating |
+| 272 short Nemotron RH zeros explicitly refuse | Frozen traces plus scores; analysis/verify_revision.py | Original regex missed curly apostrophes; length does not classify refusal |
+| Second judge retains Qwen>OSS>Nemotron order | analysis/phase_d_results/judge_replacement_main_results.csv | 324 shared pairs/model; contrast magnitude/support changes |
+| Human agreement74.7%; Mini79.6%, QWK.885 | unchanged analysis/human_a_results.json | 285 verified completed responses; conditional single-human comparison |
+| Human Qwen gap53.1 on32 complete jobs | Same human result JSON | Directionally consistent, no tested human-minus-judge difference |
+| B labels unavailable | Frozen Phase E template/output hashes, accepted independent audit | Blank template is not evidence of a returned workbook |
+| Human bootstrap5000/seed20260904 | analysis/human_a_validation.py; unchanged results | Separate from Phase B10000/20260829 |
+| Length ratio1.114; absolute rho≤.051,p≥.256 | analysis/sensitivity_results/prompt_length_null.json | Spearman association, not adjustment or absence-of-effect proof |
+| Similarity gate versus clustering | near_duplicate_similarity.json; audit_sensitivity.py; construction code | SequenceMatcher within source bank; exact-only cross-bank; separate token Jaccard |
+| Bowker/truncation | analysis/results/; analysis/sensitivity_results/truncation_sensitivity.csv | Transition-symmetry and completed-output sensitivity, not causal identification |
+| Judge language labels | src/jailbreak_hermes/judge.py; frozen judge input format | Explicit en/rh labels and prompt text, not blinded |
+| Participant warnings/right to stop | human_validation/ANNOTATOR_INSTRUCTIONS.md | Consent, compensation and ethics approval/exemption not established |
+| Official template/checklist | build/official_2026.zip; SUBMISSION_RULES.md | Complete checklist retained after appendix; not charged to main pages |
 
-| # | Claim | Authoritative source | Raw/derived | Verification | Verified value | Manuscript |
-|---|---|---|---|---|---|---|
-| 1 | 504 unique certified pairs | `frozen.../bank/.../pairs.jsonl` | raw | recount + sha256 vs manifest | 504 unique `pair_id`; sha `35bfbc1d…dc2028ed` | §2, App. A |
-| 2 | 4 categories × 3 framings × 42 | same | raw | cell counter | 12 cells, all exactly 42 | §2 |
-| 3 | Both auditors accepted every retained pair | `pairs.jsonl` `primary_audit`/`secondary_audit` | raw | count `accepted` | 504/504 both | §2, App. A |
-| 4 | Auditing was a **cascade**, not independent dual rating | bank `manifest.json` `auditor_cascade` | raw | field read verbatim | "DeepSeek primary on all candidates; GPT-5 Mini secondary only after primary pass" | §2, App. A |
-| 5 | Generation was GEPA-optimized against the auditor objective | bank `manifest.json` | raw | `gepa_enabled=true`, `gepa_objective_required=complete_target_independent_probe_validity` | true | §2, App. A |
-| 6 | No target signal in generation | bank `manifest.json` | raw | `gepa_target_signal_used=false`, `target_models_used_during_generation=[]` | confirmed | §2, App. A |
-| 7 | Generator and primary judge are the same model | bank `manifest.json` + run `run_manifest.json` | raw | both = `google/gemini-2.5-flash` | confirmed | §2, App. A |
-| 8 | 3,024 responses / 1,008 per model / 1,512 pair-model obs | `run/.../scores.jsonl` | raw | line count + index | 3,024 / 1,008 / 1,512 | §2, App. A |
-| 9 | Qwen EN 65.9%, RH 22.8%, gap +43.1 pp [38.5, 47.6] | `scores.jsonl` | derived | recomputed; 10,000-resample cluster bootstrap | 65.8730 / 22.8175 / +43.0556 | Abstract, §3, Tab. 1 |
-| 10 | Qwen 219 forward, 85 critical flips | `scores.jsonl` | derived | recomputed from definitions | 219 / 85 (16.9% of 504) | Abstract, §3, Tab. 1 |
-| 11 | GPT-OSS gap +4.6 pp [1.6, 7.7] | `scores.jsonl` | derived | recomputed | +4.5635 | §3, Tab. 1 |
-| 12 | Nemotron gap −1.8 pp [−6.4, 3.0] | `scores.jsonl` | derived | recomputed | −1.7857 | §3, Tab. 1 |
-| 13 | Qwen gap positive in all 12 cells (+7.1 to +76.2) | `scores.jsonl` | derived | per-cell recomputation | 12/12 positive | §3 |
-| 14 | Cross-model contrasts, Holm-adjusted | `analysis/results/statistical_tests.json` | derived | read frozen output | +38.49 [32.9,44.0]; +44.84 [38.3,51.4]; +6.35 [0.8,12.1] | §3 |
-| 15 | GPT-OSS vs Nemotron not established under clustering | `analysis/sensitivity_results/cluster_sensitivity.csv` | derived | read frozen output | p 0.032 → 0.062 → 0.10 | §3, App. C |
-| 16 | Cross-judge: 1,944 judgments, 73.7/91.4, κ .542, QWK .813 | `analysis/phase_d_results/agreement_overall.csv` | derived | read frozen output | exact match | §4 |
-| 17 | Qwen gap stable under judge replacement | `phase_d_results/judge_replacement_main_results.csv` | derived | read frozen output | +42.59 vs +43.52 | §4 |
-| 18 | GPT-5 Mini was also the secondary prompt auditor | bank `manifest.json` | raw | field read | confirmed | §4, App. A |
-| 19 | Human A: n=285 of 360, exact 74.7%, adj 94.0%, κ .513, QWK .825 | `Human_A_annotations.xlsx` joined by reconciliation ID | derived | `analysis/human_a_validation.py`; join re-verified by re-hashing every delivered prompt+response | as stated | §4, App. B |
-| 20 | Human higher on 58 / lower on 14 vs primary judge; reversed vs replacement (14/44) | same | derived | same script | as stated | §4, App. B |
-| 21 | Human Qwen gap +53.1 pp [37.5, 71.9] on 32 jobs | same | derived | cluster bootstrap over jobs | as stated | §4, Tab. 2 |
-| 22 | 73 items unscored, non-random (34% vs 72% score-0) | same | derived | same script | as stated | §4, App. B |
-| 23 | Annotator B returned no scores | `human_validation/outputs/.../Human_B_annotations.xlsx` | raw | 360 rows, 0 scores filled | confirmed | App. B |
-| 24 | Judge fallback on 2 of 3,024 | `scores.jsonl` `judge_model` + `JUDGE_FALLBACK_V2_4_1.md` | raw | count non-primary judge rows | 2 | §4, App. A |
-| 25 | Non-assistance profile (Qwen RH zeros 99.1% >500 ch.) | `analysis/sensitivity_results/nonassistance_profile.csv` | derived | read frozen output | exact match | §3, App. C |
-| 26 | Truncation sensitivity | `analysis/sensitivity_results/truncation_sensitivity.csv` | derived | read frozen output | 43.06→43.36; −1.79→−0.50 | §4, App. C |
-| 27 | RH prompts 11.4% longer, ρ uncorrelated with gap | `analysis/sensitivity_results/prompt_length_null.json` | derived | read frozen output | \|ρ\| ≤ 0.05, p ≥ 0.26 | §4 |
-| 28 | Decoding config (T=0, empty system prompt, 4096) | `run_manifest.json` | raw | field read | confirmed | §2, App. A |
-
-## Claims deliberately NOT made
-
-| Not claimed | Why |
-|---|---|
-| Two-human validation / inter-annotator agreement / adjudication / consensus ground truth | Only one annotator returned scores. The failed preregistered two-annotator design is disclosed in App. B. |
-| The effect is caused by Romanized Hindi specifically | The register control was specified but **not completed**. Language, script, register and training frequency are confounded by design. Stated in the abstract and §5. |
-| Any Phase G / unusual-English / strong-archaic result | That experiment is incomplete. It is excluded entirely; it is not cited even as partial evidence. |
-| Generalization beyond three models | All generalizing sentences are scoped to "across these three models". |
-| The judge is ground truth | The judge is described as a scorer; the human check is its only external anchor. |
-| A refusal rate for ordinary harmful Romanized-Hindi requests | Every pair carries an adversarial framing; there is no direct-request or benign condition. Stated in §2. |
+See analysis/revision_verification.json (34 checks), NUMERICAL_AUDIT.md (30 checks), and REVISION_LOG.md for the full change mapping.

@@ -1,15 +1,23 @@
 #!/usr/bin/env python3
 """Check every headline number that appears in the compiled PDF against verified sources."""
-import json, re, subprocess, sys
+import json, re, subprocess, sys, shutil
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 PAPER = HERE.parent
 head = json.loads((HERE / "headline_verification.json").read_text(encoding="utf-8"))
 human = json.loads((HERE / "human_a_results.json").read_text(encoding="utf-8"))
-text = subprocess.run(["pdftotext", str(PAPER / "main.pdf"), "-"],
+pdf = PAPER / "main.pdf"
+if shutil.which("pdftotext"):
+    command = ["pdftotext", str(pdf), "-"]
+elif sys.platform == "win32":
+    command = ["wsl", "-d", "Ubuntu", "--exec", "pdftotext", "/mnt/" + pdf.drive[0].lower() + pdf.as_posix()[2:], "-"]
+else:
+    raise SystemExit("Install poppler-utils: pdftotext is required for the PDF text audit.")
+text = subprocess.run(command,
                       capture_output=True, text=True, check=True).stdout
 flat = " ".join(text.split())
+flat = flat.replace("\u2212", "-")
 
 q = head["per_model"]["qwen/qwen3-30b-a3b-instruct-2507"]
 g = head["per_model"]["openai/gpt-oss-20b"]
@@ -30,6 +38,8 @@ CHECKS = [
     ("Qwen critical flips 85", "85 of 504", q["critical_forward"] == 85),
     ("Qwen critical pct 16.9", "16.9", round(100 * q["critical_forward"] / 504, 1) == 16.9),
     ("GPT-OSS gap +4.6", "4.6", round(g["gap_pp"], 1) == 4.6),
+    ("GPT-OSS validated CI", "[1.4, 7.7]", [round(x, 1) for x in g["gap_ci_pp"]] == [1.4, 7.7]),
+    ("Nemotron validated CI", "[-6.5, 2.8]", [round(x, 1) for x in n["gap_ci_pp"]] == [-6.5, 2.8]),
     ("Nemotron gap -1.8", "1.8", round(n["gap_pp"], 1) == -1.8),
     ("Nemotron fwd 65 rev 70", "(65 forward, 70 reverse)",
      n["forward_flips"] == 65 and n["reverse_flips"] == 70),
@@ -42,6 +52,8 @@ CHECKS = [
     ("human higher 58 lower 14", "on 58 items and lower on 14",
      hg["human_higher"] == 58 and hg["other_higher"] == 14),
     ("human n 285", "285", hg["n"] == 285),
+    ("human GPT5 exact rounding", "79.6%", round(100 * human["agreement"]["human_vs_gpt5mini"]["exact"], 1) == 79.6),
+    ("human GPT5 QWK rounding", "0.885", round(human["agreement"]["human_vs_gpt5mini"]["kappa_quadratic"], 3) == 0.885),
     ("items returned 287", "287", human["completion"]["items_scored_including_unverifiable_stimuli"] == 287),
     ("unscored 73 of 360", "73 of 360", human["completion"]["items_unscored"] == 73),
     ("binary agreement 88.8", "88.8",
@@ -61,9 +73,7 @@ for name, needle, source_ok in CHECKS:
 
 # stale-number sweep: values from the older V1 experiment must not appear
 # Phrases that would indicate a claim the evidence does not support.
-# Phrases that would indicate a claim the evidence does not support. "two annotators" and
-# "adjudication" are NOT listed: the paper now discloses that a two-annotator design was
-# preregistered and that annotator B returned nothing, which is a required disclosure.
+# The sweep is a regression guard, not a substitute for semantic/visual review.
 STALE = ["1,512 unique", "1512 unique prompt pairs", "Logical Appeal", "two human annotators",
          "inter-annotator agreement", "human consensus", "ground truth", "Phase G", "archaic"]
 NEGATORS = ("no ", "not ", "never", "without", "makes no", "make no", "single annotator")
@@ -90,15 +100,27 @@ def affirmative_hits(phrases):
 stale_hits = affirmative_hits(STALE)
 # Required disclaimers that MUST be present.
 REQUIRED = ["single annotator", "make no inter-annotator", "not completed",
-            "Annotator B returned a workbook containing no scores",
-            "reflectively optimized", "cascade", "the same model",
+            "No usable Annotator B labels", "retained the seed instruction unchanged",
+            "cascade", "the same model", "language was not blinded",
+            "both inputs use Latin script", "completion-conditional", "SequenceMatcher",
+            "Cross-bank consolidation removed exact matches only", "not a covariate",
             "no direct-request and no benign condition"]
+# Exact wording for the covariate disclaimer is checked separately.
+REQUIRED.remove("not a covariate")
+REQUIRED.append("not covariate adjustment")
 missing_required = [s for s in REQUIRED if s.lower() not in flat.lower()]
+FORBIDDEN = ["reflectively optimized", "cannot manufacture", "cannot produce a between-model",
+             "more consistent with degenerate", "also reverses under judge", "ordering is not",
+             "across script", "English refusal or near-refusal", "not missing at random",
+             "hundreds of millions", "high-refusal", "occupy three different regimes",
+             "79.7%", "0.886"]
+stale_hits += [s for s in FORBIDDEN if s.lower() in flat.lower()]
 
 out = ["# Numerical consistency audit", "",
        "Every headline number in the compiled PDF, checked against",
        "`analysis/headline_verification.json` and `analysis/human_a_results.json`,",
-       "which are themselves recomputed from the frozen artifacts.", "",
+       "Point estimates are checked against frozen artifacts; confidence intervals are reused",
+       "from validated Phase B and the unchanged Human A result JSON, never redrawn.", "",
        "| check | string required in PDF | status | detail |", "|---|---|---|---|"]
 out += ["| %s | `%s` | %s | %s |" % r for r in rows]
 out += ["", "## Stale / forbidden phrase sweep", ""]

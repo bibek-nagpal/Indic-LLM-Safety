@@ -1,66 +1,40 @@
-# GlobalSouthAI @ NeurIPS 2026 — authoritative submission rules
+# GlobalSouthAI 2026: verified rules for the corrected candidate
 
-Retrieved 2026-09-04 by independent web verification. Every rule below carries its source.
-**Do not rely on this file alone for the OpenReview form fields** — see OPEN ITEMS.
+Source status: workshop/OpenReview facts below were established during the accepted independent audit on 2026-09-04. No OpenReview API was queried during this correction pass. The public official template archive was downloaded again on 2026-09-04; no research data were uploaded.
 
-## Venue identity
+## Venue and submission
 
-| Item | Answer | Source |
-|---|---|---|
-| Name | GlobalSouthAI @ NeurIPS 2026 — "Rethinking AI for and from the Global South" | https://sites.google.com/view/globalsouthai-neurips26/home |
-| Status | Branded on its own site as a **NeurIPS 2026 Affinity Event**; OpenReview venue id is `NeurIPS.cc/2026/Workshop/GlobalSouthAI` | site home; OpenReview |
-| Archival | **Non-archival** | .../faq |
-| Location / date | Sydney, Australia and Paris, France; December 2026 | site home |
+- [Workshop submission instructions](https://sites.google.com/view/globalsouthai-neurips26/submission)
+- [Workshop FAQ](https://sites.google.com/view/globalsouthai-neurips26/faq)
+- [Dates](https://sites.google.com/view/globalsouthai-neurips26/dates)
+- [Submission venue](https://openreview.net/group?id=NeurIPS.cc/2026/Workshop/GlobalSouthAI)
 
-## Hard submission rules
+The site brands the venue a NeurIPS 2026 Affinity Event; OpenReview uses the Workshop namespace. Do not represent this as acceptance or archival publication.
+The short-paper option allows at most 4 main pages, excluding references and appendices. Double-blind review; PDF submission. Non-archival status does not override another venue's concurrent-submission rules.
 
-| Rule | Answer | Source |
-|---|---|---|
-| **Deadline** | **5 September 2026, AoE** | https://sites.google.com/view/globalsouthai-neurips26/dates |
-| Notification | 20 September 2026 (AoE) | .../dates |
-| Formats | One unified track; either a 1-page abstract **or** a short paper of **up to 4 pages** | .../faq, .../submission |
-| **Page limit** | **4 pages of main content, excluding references and appendices** | .../faq ("up to 4 pages, excluding references and appendices") |
-| Template | **NeurIPS 2026 official template** (`neurips_2026.sty`, dated 2026-01-29) | site home → https://media.neurips.cc/Conferences/NeurIPS2026/Formatting_Instructions_For_NeurIPS_2026.zip |
-| Anonymity | **Double-blind; anonymize submissions** | .../submission |
-| File format | PDF, via OpenReview | .../submission |
-| Submission URL | https://openreview.net/group?id=NeurIPS.cc%2F2026%2FWorkshop%2FGlobalSouthAI | site home |
-| Dual submission | Permitted (non-archival), subject to the other venue's policy | .../faq |
-| Presentation | All accepted → poster; selected → contributed talk; subset → 3-minute thesis | .../awards |
+## Checklist and formatting — conservative resolution
 
-## Style-file option
+The linked [official 2026 template archive](https://media.neurips.cc/Conferences/NeurIPS2026/Formatting_Instructions_For_NeurIPS_2026.zip) says not to remove the checklist. It explicitly places the checklist after references and optional supplement and excludes it from the content-page limit. No workshop waiver was verified.
 
-`neurips_2026.sty` declares `dblblindworkshop` (double-blind workshop review) alongside
-`main`, `preprint`, `final`, `sglblindworkshop` and others. The workshop states a
-double-blind policy but does **not** name the option. We use
-`\usepackage[dblblindworkshop]{neurips_2026}`, which produces the anonymous author block and
-submission line numbers. This is a reasoned inference, not a quoted rule.
+The official checklist says to remove its introductory instruction block but **keep subsection headings, questions/answers and guidelines**. Accordingly, this candidate includes all 16 questions, justified answers and unchanged guidelines after Appendix C. This produces seven checklist pages without consuming main-paper pages.
 
-## DISCREPANCIES (flagged, not silently resolved)
+Template archive SHA-256: `82473931e3ef710fcd3f4a8cd4119b9de32e56825f90f9e5a6d55f2d01b817d9`.
+Official style file raw SHA-256: `c3fc2894e83d2517ca18b66741d6c595986d97957dc08ec08bb2125a7ec4555a`.
+The committed style matches the official file after newline normalization. No margin or font changes.
+Use `dblblindworkshop` and `\\workshoptitle{GlobalSouthAI}`. In submission mode the unmodified template uses its standard anonymous submission footer; do not enable final merely to change that notice.
 
-1. **Affinity Event vs Workshop.** The workshop's own site says "Affinity Event"; the
-   OpenReview namespace says `Workshop`; it does not appear in the official list of NeurIPS
-   2026 workshops. **Safest interpretation:** follow the workshop site (most authoritative
-   about itself). No effect on manuscript preparation, but do not describe the paper as
-   appearing at an "official NeurIPS 2026 workshop".
-2. **Deadline timezone.** Workshop site: "September 5, 2026 (AoE)" = 6 Sept 11:59 UTC.
-   A third-party aggregator (aiworkshoptracker.com) normalizes this to 5 Sept 11:59 UTC.
-   **Safest interpretation:** treat **5 September 2026, 11:59 UTC** as the operative
-   deadline. Submitting early costs nothing; being wrong costs the submission.
+## Deadline and form facts recorded by the accepted audit
 
-## OPEN ITEMS — could not be verified, require human action
+- Site deadline: September 5, 2026 AoE, conventionally September 6 11:59 UTC.
+- Recorded OpenReview due time: September 6 11:58 UTC / 17:28 IST, one minute earlier.
+- Do not use the later server expiry as an extension. Submit early and check the live form before submitting.
+- Title maximum 250 characters; abstract maximum 5,000; keywords and author profiles required; optional TL;DR maximum 250.
+- PDF maximum 50 MB; no separate supplement field was found. Include permitted appendices/checklist in the same PDF.
+- Recorded form includes CC BY 4.0 and submission/publication consent declarations; authors must review and accept these personally.
+- Prior GlobalSouthAI/GlobalSouthML activity and conditional reviewer nomination require author-specific answers.
 
-| Item | Status |
-|---|---|
-| OpenReview form fields (abstract length cap, TL;DR, keywords, subject area) | **NOT VERIFIED.** OpenReview is JS-rendered and its API is blocked from this environment. **You must open the submission form and check.** |
-| Ethics / responsible-research statement required? | **NOT STATED** anywhere on the workshop site. |
-| AI/LLM-use disclosure required? | **NOT STATED** at workshop level. NeurIPS main-track policy asks that agent/LLM use be described in the experimental setup if it is an important or non-standard component; our Method already names every model used, which satisfies that standard if applied. |
-| NeurIPS paper checklist required? | **NOT MENTIONED** by the workshop. `checklist.tex` ships in the template but the workshop never requires it. Given a 4-page limit it is almost certainly not expected. |
-| Separate supplementary upload permitted / size limits | **NOT STATED.** Appendices are described only as excluded from the page count, implying same-PDF. We put the appendix in the same PDF. |
-| Camera-ready deadline; attendance/registration requirement | **NOT STATED.** |
+## Current file
 
-## Compliance of this submission
-
-- 4 pages of main content; references begin on page 5; appendix follows. **Compliant.**
-- `neurips_2026.sty` with `dblblindworkshop`; anonymous author block; line numbers present.
-- Appendix in the same PDF; no separate supplement.
-- No acknowledgments section (correct for anonymous submission per the template).
+Main 1–4; references 5–6; appendix 6–9; checklist 10–16. Total 16 pages; comfortably below the recorded file-size limit.
+No rule establishing an eight-page total cap was verified.
+The completed checklist documents unavailable participant, licensing and artifact-access information; inclusion alone does not certify research-ethics compliance.

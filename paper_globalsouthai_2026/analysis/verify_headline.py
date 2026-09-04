@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Independent recomputation of every headline quantity from frozen artifacts.
 
-Reads only the frozen snapshot; writes machine-readable results for the paper.
+Recomputes point estimates only; reuses validated Phase B confidence intervals.
+Reads only source artifacts; writes machine-readable results for the workshop.
 No network, no API calls, no mutation of any frozen artifact.
 """
 from __future__ import annotations
@@ -40,18 +41,6 @@ def as_obj(value):
                       .replace("False", "false").replace("None", "null"))
 
 
-def boot_ci(values, stat, resamples=10000, seed=20260829):
-    import numpy as np
-    rng = np.random.default_rng(seed)
-    keys = list(values)
-    draws = []
-    for _ in range(resamples):
-        idx = rng.integers(0, len(keys), len(keys))
-        draws.append(stat([values[keys[i]] for i in idx]))
-    lo, hi = np.percentile(draws, [2.5, 97.5])
-    return float(lo), float(hi)
-
-
 def main():
     report = {"inputs": {}, "bank": {}, "scores": {}, "per_model": {}, "checks": []}
 
@@ -77,7 +66,7 @@ def main():
     sec = sum(bool(as_obj(p["secondary_audit"]).get("accepted")) for p in pairs)
     report["bank"]["primary_accepted"] = prim
     report["bank"]["secondary_accepted"] = sec
-    check("every retained pair passed BOTH independent auditors",
+    check("every retained pair passed BOTH auditors in the conjunctive cascade",
           prim == sec == len(pairs), "primary=%d secondary=%d" % (prim, sec))
 
     cells = Counter((c["category"], c["strategy"]) for c in cand.values())
@@ -119,6 +108,11 @@ def main():
     check("exactly the three preregistered target models",
           sorted({m for m, _ in table}) == sorted(MODELS), "")
 
+    committed_path = ROOT / "analysis/results/main_results.csv"
+    committed = {r["model"]: r for r in
+                 csv.DictReader(open(committed_path, encoding="utf-8"))}
+    report["inputs"]["validated_phase_b_results_sha256"] = sha(committed_path)
+    report["interval_provenance"] = "Validated Phase B percentile intervals, reused without stochastic regeneration"
     for model in MODELS:
         obs = {pid: v for (m, pid), v in table.items() if m == model}
         n = len(obs)
@@ -128,10 +122,10 @@ def main():
         rev = sum(v["rh"] == 0 and v["en"] >= 2 for v in obs.values())
         crit = sum(v["en"] <= 1 and v["rh"] == 3 for v in obs.values())
         critrev = sum(v["rh"] <= 1 and v["en"] == 3 for v in obs.values())
-        gap_lo, gap_hi = boot_ci(obs, lambda s: 100.0 * (sum(x["en"] == 0 for x in s)
-                                                         - sum(x["rh"] == 0 for x in s)) / len(s))
-        en_lo, en_hi = boot_ci(obs, lambda s: 100.0 * sum(x["en"] == 0 for x in s) / len(s))
-        rh_lo, rh_hi = boot_ci(obs, lambda s: 100.0 * sum(x["rh"] == 0 for x in s) / len(s))
+        c = committed[model]
+        gap_lo, gap_hi = float(c["refusal_gap_ci_low_pp"]), float(c["refusal_gap_ci_high_pp"])
+        en_lo, en_hi = 100 * float(c["en_refusal_ci_low"]), 100 * float(c["en_refusal_ci_high"])
+        rh_lo, rh_hi = 100 * float(c["rh_refusal_ci_low"]), 100 * float(c["rh_refusal_ci_high"])
         report["per_model"][model] = {
             "display": DISPLAY[model], "n_pairs": n,
             "en_nonassistance_count": en0, "en_nonassistance_pct": 100.0 * en0 / n,
@@ -145,8 +139,6 @@ def main():
             "critical_reverse": critrev, "critical_reverse_pct": 100.0 * critrev / n,
         }
 
-    committed = {r["model"]: r for r in
-                 csv.DictReader(open(ROOT / "analysis/results/main_results.csv", encoding="utf-8"))}
     diffs = []
     for model in MODELS:
         c, mine = committed[model], report["per_model"][model]

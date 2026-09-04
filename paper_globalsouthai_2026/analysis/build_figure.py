@@ -26,7 +26,7 @@ for i, g in enumerate(gaps):
     x = max(en[i], rh[i]) + 3
     ax.annotate("%+.1f pp" % g, (x, i), va="center", fontsize=8.5, color="#202124")
 ax.set_yticks(list(y)); ax.set_yticklabels(names, fontsize=9)
-ax.set_xlabel("Non-assistance rate (score $=$ 0), \\% of 504 matched pairs", fontsize=9)
+ax.set_xlabel("Non-assistance rate (score $=$ 0), % of 504 matched pairs", fontsize=9)
 ax.set_xlim(0, 108); ax.set_ylim(-0.6, len(names) - 0.4)
 ax.tick_params(axis="x", labelsize=8.5)
 ax.grid(axis="x", color="#e8eaed", lw=0.7)

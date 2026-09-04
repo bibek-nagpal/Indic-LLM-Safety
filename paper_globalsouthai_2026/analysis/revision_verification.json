@@ -1,0 +1,235 @@
+{
+  "baseline": "8eca4be99f7d1af62a48980690069c3bcb3bd1c0",
+  "status": "PASS",
+  "frozen_entries": 82,
+  "pdf_sha256": "faa7f6f9231ce89a91e73ad18c875d4c5e334c6ac7c261922d0136f99172cf73",
+  "pdf_pages": 16,
+  "references_begin_page": 5,
+  "checks": [
+    {
+      "name": "frozen_final_2026_08_29/FREEZE_MANIFEST.json",
+      "pass": true,
+      "detail": {
+        "entries": 14,
+        "mismatches": []
+      }
+    },
+    {
+      "name": "analysis/results/ANALYSIS_MANIFEST.json",
+      "pass": true,
+      "detail": {
+        "entries": 26,
+        "mismatches": []
+      }
+    },
+    {
+      "name": "analysis/phase_c_results/PHASE_C_MANIFEST.json",
+      "pass": true,
+      "detail": {
+        "entries": 10,
+        "mismatches": []
+      }
+    },
+    {
+      "name": "analysis/phase_d_run_archive/RUN_ARCHIVE_MANIFEST.json",
+      "pass": true,
+      "detail": {
+        "entries": 9,
+        "mismatches": []
+      }
+    },
+    {
+      "name": "analysis/phase_d_results/PHASE_D_MANIFEST.json",
+      "pass": true,
+      "detail": {
+        "entries": 15,
+        "mismatches": []
+      }
+    },
+    {
+      "name": "analysis/sensitivity_results/SENSITIVITY_MANIFEST.json",
+      "pass": true,
+      "detail": {
+        "entries": 8,
+        "mismatches": []
+      }
+    },
+    {
+      "name": "82 frozen manifest entries",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Human A workbook unchanged",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Human analysis including bootstrap digits unchanged",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "qwen/qwen3-30b-a3b-instruct-2507 CI provenance",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "openai/gpt-oss-20b CI provenance",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "nvidia/nemotron-3-nano-30b-a3b CI provenance",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Point-estimate recomputation",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Explicit short refusal ('nvidia/nemotron-3-nano-30b-a3b', 'rh')",
+      "pass": true,
+      "detail": {
+        "count": 272
+      }
+    },
+    {
+      "name": "Explicit short refusal ('nvidia/nemotron-3-nano-30b-a3b', 'en')",
+      "pass": true,
+      "detail": {
+        "count": 208
+      }
+    },
+    {
+      "name": "Explicit short refusal ('openai/gpt-oss-20b', 'en')",
+      "pass": true,
+      "detail": {
+        "count": 412
+      }
+    },
+    {
+      "name": "Explicit short refusal ('openai/gpt-oss-20b', 'rh')",
+      "pass": true,
+      "detail": {
+        "count": 367
+      }
+    },
+    {
+      "name": "Cross-judge ordering: Gemini-primary pipeline",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Cross-judge ordering: GPT-5 Mini",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "All cited keys defined once",
+      "pass": true,
+      "detail": {
+        "cited": 18
+      }
+    },
+    {
+      "name": "All bibliography entries cited",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Verified bibliography author repairs",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Official anonymous workshop option and title",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "No layout overrides",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Official style restored (newline-normalized)",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "16 answered checklist items, no TODO",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Official checklist questions and guidelines retained",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Main paper at most four pages",
+      "pass": true,
+      "detail": {
+        "references_begin_page": 5,
+        "total_pages": 16
+      }
+    },
+    {
+      "name": "US Letter pages",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "PDF checklist included",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "PDF author metadata anonymous",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "No identifying local paths in PDF",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Figure percent escape repaired",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Tracked changes restricted to workshop",
+      "pass": true,
+      "detail": [
+        "paper_globalsouthai_2026/CITATION_AUDIT.md",
+        "paper_globalsouthai_2026/CLAIM_EVIDENCE_LEDGER.md",
+        "paper_globalsouthai_2026/FINAL_SUBMISSION_CHECKLIST.md",
+        "paper_globalsouthai_2026/FINAL_SUBMISSION_README.md",
+        "paper_globalsouthai_2026/NUMERICAL_AUDIT.md",
+        "paper_globalsouthai_2026/REVIEWER_RISK_AUDIT.md",
+        "paper_globalsouthai_2026/REVISION_LOG.md",
+        "paper_globalsouthai_2026/SUBMISSION_RULES.md",
+        "paper_globalsouthai_2026/analysis/build_figure.py",
+        "paper_globalsouthai_2026/analysis/build_submission.py",
+        "paper_globalsouthai_2026/analysis/headline_verification.json",
+        "paper_globalsouthai_2026/analysis/numerical_audit.py",
+        "paper_globalsouthai_2026/analysis/revision_verification.json",
+        "paper_globalsouthai_2026/analysis/verify_headline.py",
+        "paper_globalsouthai_2026/analysis/verify_revision.py",
+        "paper_globalsouthai_2026/audits/reviewer_risk_audit.md",
+        "paper_globalsouthai_2026/checklist.tex",
+        "paper_globalsouthai_2026/figures/gap_by_model.pdf",
+        "paper_globalsouthai_2026/main.pdf",
+        "paper_globalsouthai_2026/main.tex",
+        "paper_globalsouthai_2026/neurips_2026.sty",
+        "paper_globalsouthai_2026/references.bib",
+        "paper_globalsouthai_2026/tables/main_results.tex"
+      ]
+    }
+  ]
+}
