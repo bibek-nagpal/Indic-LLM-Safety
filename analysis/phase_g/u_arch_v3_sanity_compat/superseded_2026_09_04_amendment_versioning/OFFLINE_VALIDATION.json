@@ -1,12 +1,12 @@
 {
   "status": "PASS",
-  "passed": 194,
-  "total": 194,
+  "passed": 187,
+  "total": 187,
   "failed": 0,
-  "elapsed_seconds": 148.0,
+  "elapsed_seconds": 280.0,
   "command": "python -B /tmp/offline_chunk.py <file> per test module (same socket guard as analysis.phase_g.run_offline_tests; split only because this shell caps a single command at 180 s)",
-  "execution_plan_sha256": "92df197b1aad48cb4993bb6d8abf13ce9f02c7fac240e2273c85846f0b8046d5",
-  "preflight_sha256": "6b940a1675c4214b6411083076ddc53817c4cbd5d91c05a2aea28b0bd4cad17b",
+  "execution_plan_sha256": "bd3ab9e2a3d0f7b288844522cd573d53019af1114d13e9692e99e47cc4c95095",
+  "preflight_sha256": "97953eeb1ffcc35cc9e0497570c1c30f91565e9c53b3825f30f8fd438dfd0b99",
   "parent_commit": "604c8c386d81fd89c497c46505a6db60a7c787ff",
   "external_network_blocked_for_tests": true,
   "paid_calls_before_amendment_commit": 0,
@@ -27,11 +27,7 @@
     "mini_completion_budget_fits_full_verdict": "PASS",
     "truncation_is_never_a_verdict_or_rejection": "PASS",
     "resume_reuses_paid_work_without_rebilling": "PASS",
-    "journal_migration_preserves_every_nanodollar": "PASS",
-    "prospective_amendment_versioned_per_scope": "PASS",
-    "original_amendment_record_preserved": "PASS",
-    "resumed_amendment_state_idempotent": "PASS",
-    "inconsistent_decision_still_stops": "PASS"
+    "journal_migration_preserves_every_nanodollar": "PASS"
   },
   "core_manifest_files_verified": 82,
   "legacy_phase_g_locks_verified": 10,
@@ -78,7 +74,7 @@
     "test_v3_offline": 2,
     "test_budget550_preflight": 28,
     "test_strong_archaic_preflight": 45,
-    "test_sanity_compat": 42
+    "test_sanity_compat": 35
   },
   "stage2_mini_completion_budget_correction": {
     "supersedes": "u_arch_v3_sanity_compat/superseded_2026_09_03_mini_truncation/",
@@ -112,36 +108,5 @@
     ],
     "regression_tests_added": 13,
     "evidence_fixture": "tests/fixtures/phase_g_mini_truncation_2026_09_03.json (redacted: measurements only)"
-  },
-  "stage2_prospective_amendment_versioning": {
-    "supersedes": "u_arch_v3_sanity_compat/superseded_2026_09_04_amendment_versioning/",
-    "defect": "the prospective amendment record used the single fixed event key 'prospective_amendment_commit'. After the reviewed migration re-scoped the journal for the Mini completion-budget correction, the resumed runner wrote a legitimately different payload (new amendment commit and new plan hash) under that same key, so the immutable-decision guard fired: Stop('decision changed on replay')",
-    "classification": "journal migration/versioning bug in the runner's decision key",
-    "real_prospective_decision_conflict": false,
-    "correction": [
-      "the prospective amendment record is now keyed by the approved configuration scope, r.identifier('prospective_amendment_commit', journal.scope), so each reviewed configuration gets its own immutable record and the original is never rewritten",
-      "the payload carries scope and supersedes_scope, recovered deterministically from the recorded migration, so history reads original -> correction -> new configuration",
-      "a reviewed migration no longer renames a row that an earlier migration already retired"
-    ],
-    "replay_safeguard_weakened": false,
-    "safeguard_argument": "within one configuration scope the key is fixed, so any changed commit or plan hash still raises decision changed on replay; only a reviewed migration, which is itself recorded as an immutable event, introduces a new key",
-    "regression_tests_added": 7,
-    "unchanged": [
-      "gpt-5-mini model",
-      "deepseek model",
-      "gemini generator",
-      "17 certification axes",
-      "hard acceptance gates",
-      "strong-archaic construct",
-      "semantic and strategy requirements",
-      "N=12 cohort",
-      "readiness criterion",
-      "four generation attempts",
-      "sequential DeepSeek then Mini auditing",
-      "mini temperature omission",
-      "mini max_tokens 8192 and its unchanged reservation",
-      "0.65 sanity cap",
-      "5.50 global cap"
-    ]
   }
 }

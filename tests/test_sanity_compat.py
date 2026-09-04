@@ -2,7 +2,9 @@
 import copy
 import json
 import socket
+import pathlib
 import subprocess
+import types
 
 import httpx
 import pytest
@@ -432,6 +434,7 @@ def interrupted_journal(tmp_path, monkeypatch):
     monkeypatch.setitem(r.MAX_TOKENS,"mini_audit",4096)
     old=rated()
     j=r.Journal(tmp_path/"fixture.sqlite",old,{})
+    s.record_prospective_amendment(j,"a"*40,"plan-sha-A")
     rows=cohort()
     with pytest.raises(r.Stop,match="truncated at the configured completion limit"):
         r.construction(j,rows,TruncatingMiniTransport(),stage="sanity")
@@ -504,3 +507,105 @@ def test_migration_refuses_when_a_reservation_bound_changed(tmp_path,monkeypatch
     changed=copy.deepcopy(new); changed["roles"]["mini_audit"]["maximum_call_nusd"]=999
     with pytest.raises(r.Stop,match="reservation bound changed"):
         m.migrate(path,changed,{},"unit test",apply=True)
+
+
+# --- prospective amendment across a reviewed engineering correction ------------
+# Reproduces the reported stop: the amendment record used a single fixed key, so a
+# superseding correction collided with the original decision instead of versioning.
+
+
+def test_fixed_key_amendment_record_reproduces_the_reported_replay_stop(tmp_path,monkeypatch):
+    path,_,new,_,_=interrupted_journal(tmp_path,monkeypatch)
+    m.migrate(path,new,{},"unit test",apply=True)
+    journal=r.Journal(path,new,{})
+    journal.event("prospective_amendment_commit",{"commit":"a"*40,"plan_sha256":"plan-sha-A"})
+    with pytest.raises(r.Stop,match="decision changed on replay"):
+        journal.event("prospective_amendment_commit",{"commit":"b"*40,"plan_sha256":"plan-sha-B"})
+    journal.close()
+
+
+def test_reviewed_correction_versions_the_amendment_and_preserves_the_original(tmp_path,monkeypatch):
+    path,old,new,spent,_=interrupted_journal(tmp_path,monkeypatch)
+    original_scope=r.identifier(old,{})
+    original_key=r.identifier("prospective_amendment_commit",original_scope)
+    applied=m.migrate(path,new,{},"Mini completion-budget engineering correction",apply=True)
+    journal=r.Journal(path,new,{})
+    s.record_prospective_amendment(journal,"b"*40,"plan-sha-B")
+    corrected_key=r.identifier("prospective_amendment_commit",journal.scope)
+    events={x["id"]:json.loads(x["payload"]) for x in journal.db.execute("SELECT id,payload FROM events")}
+    assert original_key in events, "the original prospective record is still present"
+    assert events[original_key]["commit"]=="a"*40 and events[original_key]["plan_sha256"]=="plan-sha-A", \
+        "the original prospective record was not rewritten"
+    assert corrected_key in events and corrected_key!=original_key
+    assert events[corrected_key]["commit"]=="b"*40
+    assert events[corrected_key]["supersedes_scope"]==original_scope, "history links correction to its predecessor"
+    migration=r.identifier("journal_scope_migration",applied["recorded_scope"],applied["new_scope"])
+    assert migration in events and events[migration]["reason"]=="Mini completion-budget engineering correction"
+    assert events[migration]["rows_removed"]==0 and events[migration]["nanodollars_removed"]==0
+    assert journal.totals()["generation"]["billed_nusd"]==spent["generation"]["billed_nusd"]
+    journal.close()
+
+
+def test_resumed_amendment_state_is_idempotent_across_restarts(tmp_path,monkeypatch):
+    path,_,new,_,_=interrupted_journal(tmp_path,monkeypatch)
+    m.migrate(path,new,{},"unit test",apply=True)
+    for _ in range(3):
+        journal=r.Journal(path,new,{})
+        s.record_prospective_amendment(journal,"b"*40,"plan-sha-B")
+        count=journal.db.execute("SELECT COUNT(*) FROM events").fetchone()[0]
+        journal.close()
+    journal=r.Journal(path,new,{})
+    assert journal.db.execute("SELECT COUNT(*) FROM events").fetchone()[0]==count, "restarts add nothing"
+    journal.close()
+
+
+@pytest.mark.parametrize("commit,plan_sha",[("c"*40,"plan-sha-B"),("b"*40,"plan-sha-OTHER")])
+def test_inconsistent_decision_within_one_configuration_still_stops(tmp_path,monkeypatch,commit,plan_sha):
+    path,_,new,_,_=interrupted_journal(tmp_path,monkeypatch)
+    m.migrate(path,new,{},"unit test",apply=True)
+    journal=r.Journal(path,new,{})
+    s.record_prospective_amendment(journal,"b"*40,"plan-sha-B")
+    with pytest.raises(r.Stop,match="decision changed on replay"):
+        s.record_prospective_amendment(journal,commit,plan_sha)
+    journal.close()
+
+
+def test_a_second_reviewed_migration_never_renames_a_retired_row_again(tmp_path,monkeypatch):
+    path,_,new,_,_=interrupted_journal(tmp_path,monkeypatch)
+    first=m.migrate(path,new,{},"first correction",apply=True)
+    retired=[x["superseded_id"] for x in first["superseded"]]
+    assert retired, "the truncated auditor call was retired by the first migration"
+    later=copy.deepcopy(new); later["timeout_seconds"]=later.get("timeout_seconds",120)+1
+    second=m.migrate(path,later,{},"second correction",apply=True)
+    assert second["superseded"]==[], "an already retired row is never renamed twice"
+    assert {x["id"] for x in second["already_superseded"]}==set(retired)
+    ledger=("calls","billed_nusd","reserved_nusd")
+    assert {k:second["totals_after"][k] for k in ledger}=={k:second["totals_before"][k] for k in ledger}
+    journal=r.Journal(path,later,{})
+    assert {x["id"] for x in journal.db.execute("SELECT id FROM calls")} >= set(retired)
+    journal.close()
+
+
+def test_real_migrated_journal_shows_the_expected_supersession_chain():
+    """Against a copy of the operator's own migrated journal when it is present."""
+    live=r.ROOT/"analysis/phase_g/u_arch_v3_private/phase_g_budget550.sqlite"
+    if not live.exists():
+        pytest.skip("private journal is not present in this checkout")
+    import shutil, sqlite3, tempfile
+    copy_path=pathlib.Path(tempfile.mkdtemp())/"journal.sqlite"
+    shutil.copy(live,copy_path)
+    db=sqlite3.connect(copy_path)
+    scope=db.execute("SELECT scope FROM run").fetchone()[0]
+    view=types.SimpleNamespace(db=db,scope=scope)
+    payloads={row[0]:json.loads(row[1]) for row in db.execute("SELECT id,payload FROM events")}
+    migrations=[p for p in payloads.values() if "old_scope" in p]
+    if not migrations:
+        pytest.skip("this journal has not been migrated")
+    assert s.superseded_scope(view)==migrations[0]["old_scope"], "predecessor recovered deterministically"
+    legacy=payloads.get("prospective_amendment_commit")
+    if legacy is not None:
+        assert set(legacy)=={"commit","plan_sha256"}, "the pre-fix singleton record is untouched"
+        assert r.identifier("prospective_amendment_commit",scope) not in payloads, \
+            "the corrected record is keyed by scope, so it cannot collide with the original"
+    assert db.execute("SELECT COUNT(*),SUM(billed) FROM calls").fetchone()==(4,10394600)
+    db.close()

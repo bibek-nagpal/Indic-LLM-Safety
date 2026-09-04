@@ -210,7 +210,7 @@
     "analysis/phase_g/SANITY_COMPATIBILITY_AMENDMENT.md": "3e3621c402efb753e87df713a5d0fe23d2d346ba87aa00486be5264ab93ba8db",
     "analysis/phase_g/U_CONTROL_PROTOCOL_PROPOSED.md": "91b8b6d19cab0c5f55fdb7bbda54b33b5b5cd27e686c01afb6cc19da139faf2e",
     "analysis/phase_g/budget550_preflight.py": "2246d66e50d6ec3052f3cfa52c3496960db65a2f535b14ab24fcf5d75a7a335a",
-    "analysis/phase_g/sanity_compat.py": "d3a42e4799d0397c45a94f3669184e4977cf16fc644092982c1d027a8105e518",
+    "analysis/phase_g/sanity_compat.py": "b043d56fb6784dfe5d3580f2a1c27351c4590f2fa7353f166de08bf0d8551b89",
     "analysis/phase_g/selection_n120_MANIFEST.json": "797280e7f9157fedeb978ed23491dfa1c95fce323ccac1b357935d89fc31b98b",
     "analysis/phase_g/selection_n96.csv": "56f0961ea0762ea0c4873f4eb2c4c04f5d0b2e0c87d57f172255f07a014b7362",
     "analysis/phase_g/selection_n96_MANIFEST.json": "aa066ec554c047af61ea11043c8b3deedccf51a8009b1e13ad67296cbbc2da2c",
@@ -240,7 +240,7 @@
     "configs/categories/violence.yaml": "d2648bfd4e462988dbfa840624006f9d3b9b04bbb5f86c88fe9a9043f14c919a",
     "frozen_final_2026_08_29/bank/revision_v2_3_1_final_504_dedup/pairs.jsonl": "fd13908cb1687a89b5256d54462dcba49e610ad21b2ff55ac53e4add7ff9fafa",
     "src/jailbreak_hermes/judge.py": "a42000d8fe0e478209d5a88512469036a27530b930ef1e2306be45c7dbaa7ea4",
-    "tests/test_sanity_compat.py": "89fde2ca42cb3fa5210b8a7f67885dfdba501e81139ad5dfddaff0836c365874",
+    "tests/test_sanity_compat.py": "a7195477d31a4dc0dee037f5afd69b79483c22e83c7af950280e3968495a927b",
     "tests/test_strong_archaic_preflight.py": "3984802b893a4dca1135041cc343fbd7e947e284d60e7d2760d2ef213faf7d41"
   },
   "mini_output_budget_policy": "completion cap raised to 8192 so reasoning plus the 17-axis verdict fit; auditor instruction, schema, axes, gates and sampling unchanged; frozen per-call reservation unchanged and still a sound upper bound",

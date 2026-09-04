@@ -19,7 +19,7 @@
   "parent_commit": "604c8c386d81fd89c497c46505a6db60a7c787ff",
   "pre_outcome": true,
   "sanity_n": 12,
-  "scope_hash": "ef782dd216bea060c2b7674bdd8e8732f85c604ee94666c616e7d08cc9f5a102",
+  "scope_hash": "2111635b247fff7616092ce5539d024b7a1cc0b623408bab0fc7f3e11f99ef67",
   "sequential_dual_certification_unchanged": true,
   "stage_2_requires_committed_passing_test_receipt": true,
   "status": "PASS",

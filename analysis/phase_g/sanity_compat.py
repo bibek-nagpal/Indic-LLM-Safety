@@ -162,6 +162,33 @@ def preflight():
         scope_hash=r.identifier(plan,plan["locks"]))
 
 
+def superseded_scope(journal):
+    """The configuration this journal was migrated FROM, or None if never migrated.
+
+    Deterministic on every restart: at most one recorded migration names the current
+    scope as its successor, so the resumed runner reconstructs exactly the same value
+    and the prospective amendment record stays idempotent.
+    """
+    found=sorted({payload["old_scope"] for payload in
+                  (json.loads(row[0]) for row in journal.db.execute("SELECT payload FROM events"))
+                  if isinstance(payload,dict) and "old_scope" in payload
+                  and payload.get("new_scope")==journal.scope})
+    if len(found)>1: raise r.Stop("ambiguous migration history for this configuration scope")
+    return found[0] if found else None
+
+
+def record_prospective_amendment(journal,commit,plan_sha256):
+    """One immutable prospective amendment record PER approved configuration scope.
+
+    A reviewed migration is the only thing that changes the scope, so a superseding
+    engineering correction ADDS a record and never rewrites the earlier one, while a
+    changed decision WITHIN one configuration still fails as a replay conflict.
+    """
+    journal.event(r.identifier("prospective_amendment_commit",journal.scope),
+                  {"commit":commit,"plan_sha256":plan_sha256,"scope":journal.scope,
+                   "supersedes_scope":superseded_scope(journal)})
+
+
 def verify_commit(commit,plan):
     if len(commit)!=40 or any(c not in "0123456789abcdef" for c in commit): raise r.Stop("full amendment commit hash required")
     git("merge-base","--is-ancestor",commit,"HEAD")
@@ -251,7 +278,7 @@ def execute(commit):
     private=r.ROOT/plan["journal_path"]
     private.parent.mkdir(parents=True,exist_ok=True)
     journal=r.Journal(private,plan,plan["locks"])
-    journal.event("prospective_amendment_commit",{"commit":commit,"plan_sha256":r.file_hash(OUT/"EXECUTION_PLAN.json")})
+    record_prospective_amendment(journal,commit,r.file_hash(OUT/"EXECUTION_PLAN.json"))
     # Credential consumption occurs ONLY after committed PASS and explicit N12 authority.
     from dotenv import dotenv_values
     from analysis.phase_g.strong_archaic_transport import SingleDispatchTransport

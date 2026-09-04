@@ -44,7 +44,14 @@ def analyse(path, config, locks):
     try:
         recorded = db.execute("SELECT scope FROM run").fetchone()[0]
         rows = db.execute("SELECT * FROM calls ORDER BY created,id").fetchall()
-        problems, replayable, superseded = [], [], []
+        # Rows a previous reviewed migration already retired keep the identifier that
+        # migration recorded: they stay in the ledger and are never renamed again.
+        retired = {entry["superseded_id"]
+                   for row in db.execute("SELECT payload FROM events")
+                   for payload in [json.loads(row[0])]
+                   if isinstance(payload, dict) and "old_scope" in payload
+                   for entry in payload.get("superseded", [])}
+        problems, replayable, superseded, already = [], [], [], []
         for row in rows:
             if row["state"] != "received":
                 problems.append("unreconciled call %s in state %s" % (row["id"][:16], row["state"]))
@@ -71,7 +78,10 @@ def analyse(path, config, locks):
             entry = {"id": row["id"], "role": row["role"], "stage": row["stage"],
                      "billed_nusd": row["billed"], "finish_reason":
                          (json.loads(row["response"]).get("finish_reason") if row["response"] else None)}
-            if rebuilt == row["request"]:
+            if row["id"] in retired:
+                entry["reason"] = "retired by an earlier reviewed migration; identifier and billing unchanged"
+                already.append(entry)
+            elif rebuilt == row["request"]:
                 replayable.append(entry)
             else:
                 entry["superseded_id"] = r.identifier(row["id"], SUPERSEDED, recorded)
@@ -80,7 +90,7 @@ def analyse(path, config, locks):
         return {"journal": str(path), "recorded_scope": recorded, "new_scope": scope,
                 "scope_change_required": recorded != scope, "totals_before": _totals(db),
                 "replayable_without_payment": replayable, "superseded": superseded,
-                "problems": problems}
+                "already_superseded": already, "problems": problems}
     finally:
         db.close()
 
