@@ -12,8 +12,9 @@ Baseline `8eca4be99f7d1af62a48980690069c3bcb3bd1c0` is preserved; see REVISION_L
 | Total PDF | 16 pages |
 | Format | Official NeurIPS 2026 style, dblblindworkshop, GlobalSouthAI workshop title parameter |
 | Anonymity | Anonymous placeholder author block; empty author metadata; no identifying paths or repository links |
-| Numerical checks | PASS; validated bootstrap outputs reused, not redrawn |
-| Frozen data / Human A | Unchanged |
+| Numerical checks | PASS; automated bootstrap outputs reused, completed human audit recomputed at its fixed seed |
+| Frozen experimental data | Unchanged |
+| Human audit | Completed workbook verified by hash; 354 analyzed items / 174 complete jobs |
 
 The official checklist and excluded supplemental material explain the larger total page count; this is not a 16-page main paper.
 Every page was rendered and visually inspected using the PDF workflow.
@@ -21,7 +22,7 @@ No margin, spacing, font-size or line-count override was used.
 
 ## Before upload
 
-1. Resolve/verify the consent procedure and institutional ethics-review facts. A retrospective author clarification identifies an unpaid, bilingual co-author who completed familiarization and scored without AI assistance (HUMAN_A_CLARIFICATION.md). This does not establish ethics approval, exemption or independent external validation.
+1. Review the human-audit disclosure: one unpaid co-author knowingly and voluntarily agreed after sensitive-content warning; no formal institutional ethics/IRB review or approval was obtained (HUMAN_A_CLARIFICATION.md).
 2. Review the disclosed license inventory and artifact-access limitations. No anonymous public release or gated service has been promised as already available.
 3. Enter title, abstract, required keywords and author profiles in the OpenReview form; check the current form before final submission. PDF remains anonymous.
 4. Confirm prior GlobalSouthAI/GlobalSouthML activity and nominate an eligible reviewer if the venue's conditional rule applies.
@@ -55,5 +56,5 @@ wsl -d Ubuntu --exec python3 /mnt/c/Prahlada/paper_globalsouthai_2026/analysis/n
 Use the bundled Windows Python for verify_revision.py (pypdf is installed there).
 Set MPLCONFIGDIR to the repository's ignored .matplotlib-cache if needed.
 The builder stages only source/tables/figures into a fresh ignored directory, runs all four compilation passes, rejects unresolved references or overflow, and copies the resulting PDF to main.pdf.
-The existing human_a_validation.py is preserved for provenance; do **not** rerun it merely to redraw published bootstrap intervals. human_a_results.json is the verified baseline result.
+The completed-workbook human analysis is deterministic apart from its fixed-seed job-cluster bootstrap. `human_a_results.json` records the authoritative workbook hash and verified result.
 Only point estimates are recomputed by verify_headline.py; its intervals come from validated analysis/results/main_results.csv.

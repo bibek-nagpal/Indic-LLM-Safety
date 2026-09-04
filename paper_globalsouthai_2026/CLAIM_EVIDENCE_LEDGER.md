@@ -12,16 +12,17 @@ Point estimates are recomputed from frozen scores. Statistical intervals are tak
 | Deterministic filters → DeepSeek → Mini acceptance cascade | src/jailbreak_hermes/probe_bank.py; frozen bank audits | Dual pass for retained prompts, not unconditional independent rating |
 | 272 short Nemotron RH zeros explicitly refuse | Frozen traces plus scores; analysis/verify_revision.py | Original regex missed curly apostrophes; length does not classify refusal |
 | Second judge retains Qwen>OSS>Nemotron order | analysis/phase_d_results/judge_replacement_main_results.csv | 324 shared pairs/model; contrast magnitude/support changes |
-| Human agreement74.7%; Mini79.6%, QWK.885 | unchanged analysis/human_a_results.json | 285 verified completed responses; conditional single-human comparison |
-| Human Qwen gap53.1 on32 complete jobs | Same human result JSON | Directionally consistent, no tested human-minus-judge difference |
-| B labels unavailable | Frozen Phase E template/output hashes, accepted independent audit | Blank template is not evidence of a returned workbook |
-| Human bootstrap5000/seed20260904 | analysis/human_a_validation.py; unchanged results | Separate from Phase B10000/20260829 |
+| Human--Gemini agreement69.2% [63.8,74.1], QWK.794 | analysis/human_a_results.json; completed private workbook hash | 354 verified responses; exploratory single-co-author comparison |
+| Human--Mini agreement75.1% [70.1,79.9], QWK.851 | Same human result JSON | Same 354 verified items; replacement-judge comparison |
+| Human Qwen gap37.9 on58 complete jobs | Same human result JSON | Same qualitative model ordering; no tested human-minus-judge difference |
+| Human data flow357 valid labels,354 analyzed,174 complete jobs | human_a_validation.py; HUMAN_A_CLARIFICATION.md | Three blank labels and three frozen-stimulus verification exclusions |
+| Human bootstrap5000/seed20260904 | analysis/human_a_validation.py | Pair-model-job clusters; separate from Phase B10000/20260829 |
 | Length ratio1.114; absolute rho≤.051,p≥.256 | analysis/sensitivity_results/prompt_length_null.json | Spearman association, not adjustment or absence-of-effect proof |
 | Similarity gate versus clustering | near_duplicate_similarity.json; audit_sensitivity.py; construction code | SequenceMatcher within source bank; exact-only cross-bank; separate token Jaccard |
 | Bowker/truncation | analysis/results/; analysis/sensitivity_results/truncation_sensitivity.csv | Transition-symmetry and completed-output sensitivity, not causal identification |
 | Judge language labels | src/jailbreak_hermes/judge.py; frozen judge input format | Explicit en/rh labels and prompt text, not blinded |
-| Participant warnings/right to stop | human_validation/ANNOTATOR_INSTRUCTIONS.md | Specific consent procedure and ethics approval/exemption not established |
-| Human A background and preparation | Retrospective author statement, HUMAN_A_CLARIFICATION.md | Unpaid bilingual co-author; familiarization completed, no AI assistance reported; not an independent external assessor |
+| Participant warnings/right to stop | human_validation/ANNOTATOR_INSTRUCTIONS.md; HUMAN_A_CLARIFICATION.md | Co-author knowingly and voluntarily agreed after sensitive-content disclosure; no formal institutional ethics/IRB review or approval obtained |
+| Human background and preparation | Author statement, HUMAN_A_CLARIFICATION.md | Unpaid bilingual co-author; familiarization completed, no AI assistance; blinded to automated-judge scores and aggregate results; not external validation |
 | Official template/checklist | build/official_2026.zip; SUBMISSION_RULES.md | Complete checklist retained after appendix; not charged to main pages |
 
-See analysis/revision_verification.json (34 checks), NUMERICAL_AUDIT.md (30 checks), and REVISION_LOG.md for the full change mapping.
+See analysis/revision_verification.json, NUMERICAL_AUDIT.md, and REVISION_LOG.md for the full change mapping.

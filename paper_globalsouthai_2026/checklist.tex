@@ -8,7 +8,7 @@
 \item {\bf Claims}
     \item[] Question: Do the main claims made in the abstract and introduction accurately reflect the paper's contributions and scope?
     \item[] Answer: \answerYes{}
-    \item[] Justification: The abstract and Sections 1--5 delimit the shared-bank score-based contrast and the exploratory, completion-conditional human check.
+    \item[] Justification: The abstract and Sections 1--5 delimit the shared-bank score-based contrast and the exploratory single-co-author human check.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the abstract and introduction do not include the claims made in the paper.
@@ -20,7 +20,7 @@
 \item {\bf Limitations}
     \item[] Question: Does the paper discuss the limitations of the work performed by the authors?
     \item[] Answer: \answerYes{}
-    \item[] Justification: Section 5 and Appendices A--C discuss scope, shared model dependencies, language labels, incomplete human coverage and near-duplicate sensitivity.
+    \item[] Justification: Section 5 and Appendices A--C discuss scope, shared model dependencies, language labels, the single-co-author audit and its verification exclusions, and near-duplicate sensitivity.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper has no limitation while the answer \answerNo{} means that the paper has limitations, but those are not discussed in the paper.
@@ -98,7 +98,7 @@
 \item {\bf Experiment statistical significance}
     \item[] Question: Does the paper report error bars suitably and correctly defined or other appropriate information about the statistical significance of the experiments?
     \item[] Answer: \answerYes{}
-    \item[] Justification: Tables 1--2 and Sections 2--4 report paired percentile-bootstrap intervals and paired randomization tests. Human intervals are conditional on completed items; Appendix C reports clustering sensitivity.
+    \item[] Justification: Tables 1--2 and Sections 2--4 report paired percentile-bootstrap intervals and paired randomization tests. Human intervals are conditional on verified analyzed items; Appendix C reports clustering sensitivity.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not include experiments.
@@ -127,7 +127,7 @@
 \item {\bf Code of ethics}
     \item[] Question: Does the research conducted in the paper conform, in every respect, with the NeurIPS Code of Ethics \url{https://neurips.cc/public/EthicsGuidelines}?
     \item[] Answer: \answerNo{}
-    \item[] Justification: Appendix B identifies an unpaid co-author assessor, based on retrospective author clarification. A specific consent procedure and ethics-review status remain unestablished; co-authorship is not presented as an exemption or certification of compliance.
+    \item[] Justification: Appendix B reports a consensual, unpaid co-author audit with advance sensitive-content disclosure. No formal institutional ethics/IRB review or approval was obtained, so we conservatively do not assert conformity in every respect.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the authors have not reviewed the NeurIPS Code of Ethics.
@@ -193,7 +193,7 @@
 \item {\bf Crowdsourcing and research with human subjects}
     \item[] Question: For crowdsourcing experiments and research with human subjects, does the paper include the full text of instructions given to participants and screenshots, if applicable, as well as details about compensation (if any)?
     \item[] Answer: \answerNo{}
-    \item[] Justification: Appendix B summarizes the instructions, right to decline, and retrospective report of unpaid co-author participation. Full instructions/screenshots are not included; no independent external human validation is claimed.
+    \item[] Justification: Appendix B summarizes the instructions, right to decline, and voluntary unpaid co-author participation. Full instructions/screenshots are not included.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not involve crowdsourcing nor research with human subjects.
@@ -203,8 +203,8 @@
 
 \item {\bf Institutional review board (IRB) approvals or equivalent for research with human subjects}
     \item[] Question: Does the paper describe potential risks incurred by study participants, whether such risks were disclosed to the subjects, and whether Institutional Review Board (IRB) approvals (or an equivalent approval/review based on the requirements of your country or institution) were obtained?
-    \item[] Answer: \answerNo{}
-    \item[] Justification: Appendix B reports the harmful-content warning and right to stop. The records do not establish approval, exemption or a documented consent procedure; no claim that review was unnecessary is made.
+    \item[] Answer: \answerYes{}
+    \item[] Justification: Appendix B reports the sensitive-content warning, voluntary agreement and right to stop, and states that no formal institutional ethics/IRB review or approval was obtained.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not involve crowdsourcing nor research with human subjects.

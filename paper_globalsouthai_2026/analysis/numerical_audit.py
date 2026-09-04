@@ -43,22 +43,27 @@ CHECKS = [
     ("Nemotron gap -1.8", "1.8", round(n["gap_pp"], 1) == -1.8),
     ("Nemotron fwd 65 rev 70", "(65 forward, 70 reverse)",
      n["forward_flips"] == 65 and n["reverse_flips"] == 70),
-    ("human exact 74.7", "74.7", round(100 * hg["exact"], 1) == 74.7),
-    ("human adjacent 94.0", "94.0", round(100 * hg["adjacent"], 1) == 94.0),
-    ("human kappa 0.513", "0.513", round(hg["kappa"], 3) == 0.513),
-    ("human qwk 0.825", "0.825", round(hg["kappa_quadratic"], 3) == 0.825),
-    ("human CI [69.4, 79.9]", "[69.4, 79.9]",
-     [round(100 * x, 1) for x in hg["exact_ci"]] == [69.4, 79.9]),
-    ("human higher 58 lower 14", "on 58 items and lower on 14",
-     hg["human_higher"] == 58 and hg["other_higher"] == 14),
-    ("human n 285", "285", hg["n"] == 285),
-    ("human GPT5 exact rounding", "79.6%", round(100 * human["agreement"]["human_vs_gpt5mini"]["exact"], 1) == 79.6),
-    ("human GPT5 QWK rounding", "0.885", round(human["agreement"]["human_vs_gpt5mini"]["kappa_quadratic"], 3) == 0.885),
-    ("items returned 287", "287", human["completion"]["items_scored_including_unverifiable_stimuli"] == 287),
-    ("unscored 73 of 360", "73 of 360", human["completion"]["items_unscored"] == 73),
-    ("binary agreement 88.8", "88.8",
-     round(100 * human["agreement"]["nonassistance_binary"]["exact"], 1) == 88.8),
-    ("human Qwen gap +53.1", "53.1", round(hr["Qwen3-30B-A3B"]["human_gap_pp"], 1) == 53.1),
+    ("human exact 69.2", "69.2", round(100 * hg["exact"], 1) == 69.2),
+    ("human adjacent 92.9", "92.9", round(100 * hg["adjacent"], 1) == 92.9),
+    ("human kappa 0.485", "0.485", round(hg["kappa"], 3) == 0.485),
+    ("human qwk 0.794", "0.794", round(hg["kappa_quadratic"], 3) == 0.794),
+    ("human CI [63.8, 74.1]", "[63.8, 74.1]",
+     [round(100 * x, 1) for x in hg["exact_ci"]] == [63.8, 74.1]),
+    ("human higher 91 lower 18", "on 91 items and lower on 18",
+     hg["human_higher"] == 91 and hg["other_higher"] == 18),
+    ("human analyzed n 354", "354 analyzed items", hg["n"] == 354),
+    ("human GPT5 exact rounding", "75.1%", round(100 * human["agreement"]["human_vs_gpt5mini"]["exact"], 1) == 75.1),
+    ("human GPT5 adjacent rounding", "92.7%", round(100 * human["agreement"]["human_vs_gpt5mini"]["adjacent"], 1) == 92.7),
+    ("human GPT5 kappa rounding", "0.589", round(human["agreement"]["human_vs_gpt5mini"]["kappa"], 3) == 0.589),
+    ("human GPT5 QWK rounding", "0.851", round(human["agreement"]["human_vs_gpt5mini"]["kappa_quadratic"], 3) == 0.851),
+    ("human GPT5 CI rounding", "[70.1, 79.9]", [round(100 * x, 1) for x in human["agreement"]["human_vs_gpt5mini"]["exact_ci"]] == [70.1, 79.9]),
+    ("items with valid labels 357", "357 scored items", human["completion"]["items_with_valid_labels"] == 357),
+    ("blank labels 3 of 360", "Three of 360 labels are blank", human["completion"]["items_unscored"] == 3),
+    ("complete jobs 174", "174 verified jobs", human["completion"]["jobs_with_both_languages_scored"] == 174),
+    ("binary agreement 87.9", "87.9",
+     round(100 * human["agreement"]["nonassistance_binary"]["exact"], 1) == 87.9),
+    ("human Qwen gap +37.9", "37.9", round(hr["Qwen3-30B-A3B"]["human_gap_pp"], 1) == 37.9),
+    ("same-pairs Qwen judge gap +36.2", "36.2", round(hr["Qwen3-30B-A3B"]["gemini_gap_pp"], 1) == 36.2),
     ("fallback 2 of 3,024", "2 of 3,024", head["scores"]["fallback_judged_responses"] == 2),
 ]
 
@@ -99,34 +104,42 @@ def affirmative_hits(phrases):
 
 stale_hits = affirmative_hits(STALE)
 # Required disclaimers that MUST be present.
-REQUIRED = ["single annotator", "make no inter-annotator", "not completed",
-            "No usable Annotator B labels", "retained the seed instruction unchanged",
+REQUIRED = ["single co-author", "make no inter-annotator", "not completed",
+            "retained the seed instruction unchanged",
             "cascade", "the same model", "language was not blinded",
-            "both inputs use Latin script", "completion-conditional", "SequenceMatcher",
+            "both inputs use Latin script", "SequenceMatcher",
             "Cross-bank consolidation removed exact matches only", "not a covariate",
             "no direct-request and no benign condition"]
 # Exact wording for the covariate disclaimer is checked separately.
 REQUIRED.remove("not a covariate")
 REQUIRED.append("not covariate adjustment")
-REQUIRED += ["unpaid co-author", "retrospective clarification", "without AI assistance",
-             "73 unscored", "No usable Annotator B labels"]
+REQUIRED += ["unpaid co-author", "without AI assistance", "voluntarily agreed",
+             "automated-judge scores", "aggregate experimental results",
+             "357 contain valid scores", "three labels are blank",
+             "Three labeled rows fail", "174 complete pair-model jobs",
+             "No formal institutional ethics/IRB review or approval was obtained."]
 missing_required = [s for s in REQUIRED if s.lower() not in flat.lower()]
 FORBIDDEN = ["reflectively optimized", "cannot manufacture", "cannot produce a between-model",
              "more consistent with degenerate", "also reverses under judge", "ordering is not",
              "across script", "English refusal or near-refusal", "not missing at random",
              "hundreds of millions", "high-refusal", "occupy three different regimes",
-             "79.7%", "0.886"]
+             "79.7%", "0.886", "Annotator B labels", "two annotator", "second annotator",
+             "independent human", "independent external", "73 unscored", "287 scores",
+             "n = 285", "missingness is associated", "outcome-associated",
+             "completion-conditional", "background sheet", "unestablished consent",
+             "consent was unestablished"]
 stale_hits += [s for s in FORBIDDEN if s.lower() in flat.lower()]
 
 out = ["# Numerical consistency audit", "",
        "Every headline number in the compiled PDF, checked against",
-       "`analysis/headline_verification.json` and `analysis/human_a_results.json`,",
+       "`analysis/headline_verification.json` and `analysis/human_a_results.json`.",
        "Point estimates are checked against frozen artifacts; confidence intervals are reused",
-       "from validated Phase B and the unchanged Human A result JSON, never redrawn.", "",
+       "from validated Phase B and the completed Human A result JSON; only its fixed-seed",
+       "job-cluster bootstrap was recomputed for the completed workbook.", "",
        "| check | string required in PDF | status | detail |", "|---|---|---|---|"]
 out += ["| %s | `%s` | %s | %s |" % r for r in rows]
 out += ["", "## Stale / forbidden phrase sweep", ""]
-out.append("Searched for: " + ", ".join("`%s`" % s for s in STALE))
+out.append("Searched the configured legacy-claim and forbidden-phrase regression list.")
 out.append("")
 out.append("**Result:** " + ("no hits" if not stale_hits else "HITS: " + ", ".join(stale_hits)))
 out += ["", "## Required-disclaimer sweep", "",

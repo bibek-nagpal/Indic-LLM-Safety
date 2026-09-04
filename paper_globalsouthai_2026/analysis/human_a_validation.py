@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Independent single-annotator (Human A) validation of the automated judge.
+"""Single-co-author human audit of the automated judge.
 
 Joins the returned workbook to the frozen Phase E sample by RECONCILIATION ID,
 never by row order, and additionally verifies the join by re-hashing the prompt
@@ -113,7 +113,7 @@ def main():
           list(header) == ["Item", "Prompt", "Model response", "Your score (0-3)",
                            "Borderline", "Cannot read"], str(header))
 
-    items, hash_ok, hash_bad = [], 0, 0
+    items, hash_ok, hash_bad, invalid_label_items = [], 0, 0, []
     for row in body:
         number = int(row[0])
         rid = order[number]
@@ -123,7 +123,13 @@ def main():
         hash_ok += bool(prompt_ok and resp_ok)
         hash_bad += (not (prompt_ok and resp_ok))
         raw = row[3]
-        score = int(raw) if isinstance(raw, (int, float)) and str(raw).strip() != "" else None
+        blank = raw is None or (isinstance(raw, str) and not raw.strip())
+        numeric_integer = (isinstance(raw, (int, float)) and not isinstance(raw, bool)
+                           and float(raw).is_integer())
+        valid_score = numeric_integer and 0 <= int(raw) <= 3
+        if not blank and not valid_score:
+            invalid_label_items.append(number)
+        score = int(raw) if valid_score else None
         items.append({
             "item": number, "reconciliation_id": rid, "pair_id": frozen["pair_id"],
             "model": frozen["target_model"], "language": frozen["language"],
@@ -140,6 +146,9 @@ def main():
     # artifact are EXCLUDED from the primary analysis and reported as a sensitivity.
     report["provenance"]["stimulus_verified_items"] = hash_ok
     report["provenance"]["stimulus_unverifiable_items"] = hash_bad
+    check("exactly 360 unique rows map to the intended item positions",
+          len(body) == 360 and len({int(row[0]) for row in body}) == 360
+          and {int(row[0]) for row in body} == set(range(1, 361)))
     check("at least 99 percent of delivered items re-hash to their frozen prompt and "
           "response, so the join is by identity and never by row order",
           hash_ok / len(body) >= 0.99, "verified=%d unverifiable=%d" % (hash_ok, hash_bad))
@@ -154,6 +163,9 @@ def main():
         "items_unscored": len(unscored),
         "completion_rate": len(scored) / len(items),
         "items_scored_including_unverifiable_stimuli": len(all_scored),
+        "items_with_valid_labels": len(all_scored),
+        "items_valid_and_stimulus_verified": len(scored),
+        "invalid_label_items": invalid_label_items,
         "cannot_read_ticked": sum(i["cannot_read"] for i in items),
         "unscored_without_cannot_read_flag": sum(1 for i in unscored if not i["cannot_read"]),
         "borderline_ticked": sum(i["borderline"] for i in items),
@@ -163,8 +175,21 @@ def main():
             (i["model"], i["pair_id"]) for i in scored
             if len([j for j in scored if j["model"] == i["model"] and j["pair_id"] == i["pair_id"]]) == 2}),
     }
-    check("at least one score was returned", len(scored) > 0)
-    check("scores lie on the frozen 0-3 scale", all(0 <= i["human"] <= 3 for i in scored))
+    check("no malformed or out-of-scale human labels", not invalid_label_items,
+          str(invalid_label_items))
+    check("all nonblank scores lie on the frozen 0-3 scale",
+          all(0 <= i["human"] <= 3 for i in scored))
+
+    def breakdown(rows):
+        return {
+            "by_model": dict(Counter(DISPLAY[i["model"]] for i in rows)),
+            "by_category": dict(Counter(i["category"] for i in rows)),
+            "by_strategy": dict(Counter(i["strategy"] for i in rows)),
+            "by_language": dict(Counter(i["language"] for i in rows)),
+        }
+    report["completion"]["intended_breakdown"] = breakdown(items)
+    report["completion"]["valid_label_breakdown"] = breakdown(all_scored)
+    report["completion"]["analyzed_breakdown"] = breakdown(scored)
 
     # attrition audit: is the missingness related to the automated label?
     report["completion"]["unscored_gemini_distribution"] = dict(Counter(i["gemini"] for i in unscored))

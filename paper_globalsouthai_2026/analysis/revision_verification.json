@@ -1,8 +1,8 @@
 {
-  "baseline": "8eca4be99f7d1af62a48980690069c3bcb3bd1c0",
+  "baseline": "de160ee925ad2e3a6c1e4248526bc09404137959",
   "status": "PASS",
   "frozen_entries": 82,
-  "pdf_sha256": "80b519f55464fda7d0f74685e1c2a25df8f867222c4b3f66f68fba012255376b",
+  "pdf_sha256": "315cc37cc4ff26de603031b08c41a42bf1c528d4cac5d1706b8c1599fea5be08",
   "pdf_pages": 16,
   "references_begin_page": 5,
   "checks": [
@@ -60,12 +60,17 @@
       "detail": null
     },
     {
-      "name": "Human A workbook unchanged",
+      "name": "Completed Human A workbook identified",
       "pass": true,
       "detail": null
     },
     {
-      "name": "Human analysis including bootstrap digits unchanged",
+      "name": "Human result provenance matches completed workbook",
+      "pass": true,
+      "detail": null
+    },
+    {
+      "name": "Completed Human A analysis status",
       "pass": true,
       "detail": null
     },
@@ -206,29 +211,22 @@
       "name": "Tracked changes restricted to workshop",
       "pass": true,
       "detail": [
-        "paper_globalsouthai_2026/CITATION_AUDIT.md",
         "paper_globalsouthai_2026/CLAIM_EVIDENCE_LEDGER.md",
         "paper_globalsouthai_2026/FINAL_SUBMISSION_CHECKLIST.md",
         "paper_globalsouthai_2026/FINAL_SUBMISSION_README.md",
+        "paper_globalsouthai_2026/HUMAN_A_CLARIFICATION.md",
         "paper_globalsouthai_2026/NUMERICAL_AUDIT.md",
         "paper_globalsouthai_2026/REVIEWER_RISK_AUDIT.md",
         "paper_globalsouthai_2026/REVISION_LOG.md",
-        "paper_globalsouthai_2026/SUBMISSION_RULES.md",
-        "paper_globalsouthai_2026/analysis/build_figure.py",
-        "paper_globalsouthai_2026/analysis/build_submission.py",
-        "paper_globalsouthai_2026/analysis/headline_verification.json",
+        "paper_globalsouthai_2026/analysis/human_a_results.json",
+        "paper_globalsouthai_2026/analysis/human_a_validation.py",
         "paper_globalsouthai_2026/analysis/numerical_audit.py",
         "paper_globalsouthai_2026/analysis/revision_verification.json",
-        "paper_globalsouthai_2026/analysis/verify_headline.py",
         "paper_globalsouthai_2026/analysis/verify_revision.py",
-        "paper_globalsouthai_2026/audits/reviewer_risk_audit.md",
         "paper_globalsouthai_2026/checklist.tex",
-        "paper_globalsouthai_2026/figures/gap_by_model.pdf",
         "paper_globalsouthai_2026/main.pdf",
         "paper_globalsouthai_2026/main.tex",
-        "paper_globalsouthai_2026/neurips_2026.sty",
-        "paper_globalsouthai_2026/references.bib",
-        "paper_globalsouthai_2026/tables/main_results.tex"
+        "paper_globalsouthai_2026/tables/human_rates.tex"
       ]
     }
   ]

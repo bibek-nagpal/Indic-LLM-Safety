@@ -1,30 +1,30 @@
-# Retrospective author clarification — 2026-09-04
+# Completed co-author annotation record — 2026-09-05
 
-Source: project author's clarification in this conversation, after the original human results and manuscript correction pass. These are author-reported facts, not independently verified contemporary documentation.
+This note records the completed workshop-specific human audit and the author-supplied participant facts used in the manuscript. The authoritative private workbook is `C:\Prahlada\Human_A_annotations.xlsx`, SHA-256 `535a59facb9f662e86d7c8f7063431fd7cee064f20b10e7dcda4f92c25bf8fbb`. The workbook is intentionally not tracked because it contains harmful prompts, target responses and private item mappings.
 
-## Incorporated
+## Annotator facts
 
-- Annotator A was a co-author, not an independent external assessor.
-- Comfortable reading English and conversational Romanized Hindi/Hinglish.
-- Read the instructions and completed the familiarization examples.
-- Scored without AI assistance, according to the author.
-- Was aware broadly of the harmful nature of the material.
-- Received no payment.
+- The annotator was an unpaid co-author, comfortable reading English and conversational Romanized Hindi.
+- They knowingly and voluntarily agreed to annotate after being informed that the material could be harmful or sensitive.
+- They read the instructions, completed the familiarization examples and scored without AI assistance.
+- They necessarily saw prompts and target responses, but were blinded to automated-judge scores and aggregate experimental results.
+- No formal institutional ethics/IRB review or approval was obtained.
 
-The original blank language-background sheet and all scores remain unchanged. The workbook omitted model identities and automated labels; the new statement does not establish blinding to study hypotheses or all prior researcher knowledge.
+These facts support describing the exercise as an exploratory single-co-author audit. It is not external validation, human consensus or a substitute for language-model-only pair certification.
 
-## Still unknown
+## Verified data flow
 
-Specific consent procedure, institutional affiliation/ethics-review requirements and any approval or exemption were not clearly established. Co-authorship is not evidence that review was unnecessary. Reasons for the 73 unscored items remain unknown.
+- Intended: 180 pair-model jobs / 360 response items, selected without reference to automated outcomes.
+- Valid labels: 357; three labels are blank (item numbers 314, 319 and 320).
+- Stimulus verification: Three labeled rows fail byte verification against the frozen source (prompt mismatches at item numbers 70 and 262; response mismatch at item number 273). They are excluded without repair.
+- Analysis set: 354 verified scored items and 174 complete pair-model jobs.
+- Analyzed-item breakdown: GPT-OSS 119, Nemotron 117, Qwen 118; gambling 88, intoxication 89, sexual violence 89, violence 88; RolePrompting 118, ScenarioNesting 117, SymbolicMasking 119; English 174, Romanized Hindi 180.
+- Label validity: no nonblank malformed or out-of-range labels; no unreadable flags.
 
-## Historical records and denominators retained
+The exclusions affect only this human-audit analysis. They do not alter the frozen 504-pair bank, the 3,024 target responses, automated scores or validated headline results.
 
-The frozen Phase E README and adjudication protocol specify a two-annotator design. The concise plan-versus-realization disclosure is retained; only one annotator supplied usable labels. No actual B participation or return is asserted.
+## Reproducibility
 
-The original sampling denominator and attrition are retained. The verified flow is 180 pair-model jobs / 360 response items sampled; 73 unscored; 287 scored; two stimulus-verification exclusions; 285 analyzed responses, with 116 jobs having both language responses usable. These exclusions are already applied in the published agreement estimates. They do not reduce the frozen 504-pair target experiment.
+`analysis/human_a_validation.py` verifies item identity against the frozen selection manifest and source artifacts, excludes unverifiable stimuli, and computes agreement and paired-language summaries. Confidence intervals use 5,000 pair-model-job cluster-bootstrap resamples with seed 20260904. `analysis/human_a_results.json` records the input hash, validation checks, denominators, exclusions and outputs.
 
-## Effect on interpretation
-
-The new information supports reporting language familiarity and preparation, but reduces the claim to an internal, exploratory co-author check. It does not invalidate the original automated results, eliminate selective missingness, supply inter-annotator agreement, or establish independent human confirmation.
-
-This note supplements the historical REVISION_LOG.md. No experiment, frozen artifact, annotation or bootstrap result was altered.
+No public preregistration or other externally binding statement requiring a different human-annotation design was found in the repository. Historical internal planning files outside this workshop package are not evidence of a completed additional annotation.

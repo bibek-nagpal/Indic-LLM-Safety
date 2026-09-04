@@ -31,8 +31,8 @@ Qwen3-30B-A3B is scored as withholding assistance on 65.9\% of English prompts b
 22.8\% of their Romanized-Hindi counterparts ($+43.1$ pp, 95\% CI $[38.5, 47.6]$), with
 85 of 504 pairs moving from English scores 0--1 to score 3 in Romanized Hindi
 output; the same bank yields $+4.6$ pp for GPT-OSS-20B and $-1.8$ pp for Nemotron-3-Nano.
-A second judge preserves the large Qwen gap. An exploratory single-co-author check is
-directionally consistent on completed items, but selective missingness limits inference.
+A second judge preserves the large Qwen gap. An exploratory single-co-author audit of
+354 verified items preserves the same qualitative model-gap ordering.
 Both input conditions use Latin script: the contrast changes language and linguistic
 realization, not script alone. We identify a language-conditioned difference, not its
 mechanism; English-only measurements need not characterize Romanized-Hindi behavior.
@@ -70,8 +70,8 @@ measurement bias. Our contributions are:
 English / Romanized-Hindi pairs (4 categories $\times$ 3 framings $\times$ 42);
 (ii) a paired evaluation of three open-weight models on it (3{,}024 responses) showing a
 language-conditioned non-assistance gap from $+43.1$ to $-1.8$ pp \emph{on identical
-inputs}; and (iii) a second-judge robustness check and exploratory single-human comparison,
-reporting disagreement, incomplete human coverage and dependencies within the pipeline.
+inputs}; and (iii) a second-judge robustness check and exploratory single-co-author comparison,
+reporting disagreement and dependencies within the pipeline.
 
 \section{Method}
 
@@ -180,31 +180,29 @@ for the smaller contrast differs.
 an independent replication. Shared dependencies and unblinded language labels remain;
 LLM-judge biases are a broader concern \citep{zheng2023judging,wang2024unfair}.
 
-\paragraph{Exploratory single-annotator check.}
-One co-author scored items presented without model identity or automated scores in a
-stratified sample of 180 pair-model jobs (360 response items) drawn without reference to
-any automated outcome. The annotator returned 287 scores, of which 285 could be
-byte-verified against the frozen stimuli and form the analysis set. Human--judge exact
-agreement is 74.7\% (95\% CI $[69.4, 79.9]$) with 94.0\% adjacent agreement,
-$\kappa = 0.513$ and quadratic-weighted $\kappa = 0.825$---closely matching the
-judge--judge profile. On the binary non-assistance boundary the headline estimand uses,
-human and judge agree on 88.8\% of completed, verified items, and every such response the primary judge scored 3
-was scored $\ge 2$ by the human. Disagreement is directional but not uniformly so: the
-human scored higher than the primary judge on 58 items and lower on 14, yet against the
-replacement judge the direction reverses (higher on 14, lower on 44), so the primary
-judge assigns lower scores than this annotator on average in this conditional sample.
+\paragraph{Exploratory single-co-author human audit.}
+One co-author scored an outcome-independent stratified sample of 180 pair-model jobs
+(360 response items) drawn without reference to any automated outcome. They were blinded
+to automated-judge scores and aggregate experimental results. Of 357 scored items, three
+fail byte verification against the frozen stimuli, leaving 354 analyzed items.
+Human--primary-judge exact agreement is 69.2\% (95\% job-cluster bootstrap CI
+$[63.8, 74.1]$), with 92.9\% adjacent agreement, $\kappa = 0.485$ and
+quadratic-weighted $\kappa = 0.794$. On the binary non-assistance boundary, human and
+primary judge agree on 87.9\% of analyzed items. The human scored higher than the primary
+judge on 91 items and lower on 18. Against the replacement judge on these items, exact
+agreement is 75.1\% (95\% CI $[70.1,79.9]$), adjacent agreement is 92.7\%,
+$\kappa=0.589$ and quadratic-weighted $\kappa=0.851$.
 
-Restricted to jobs where the annotator scored both languages, the human point estimates preserve the
-model ordering (Table~\ref{tab:human}); the human point estimate for Qwen is larger than
-the judge's on the same 32 jobs ($+53.1$ vs $+43.8$ pp), though the intervals overlap and
-we do not test the difference.
+Restricted to the 174 verified jobs with both languages, human and primary-judge point
+estimates preserve the model ordering (Table~\ref{tab:human}). For Qwen the human gap is
+$+37.9$ pp versus $+36.2$ pp for the judge on the same 58 jobs. This is exploratory
+corroboration by one co-author, not independent validation or a test of equality.
 
 \begin{table}[t]
 \centering
-\caption{Human-derived non-assistance on jobs where the single annotator scored both
-languages, with the judge's gap on the \emph{same} items (which differs from
-Table~\ref{tab:main}: Nemotron $-11.8$ vs $-1.8$). Subsamples are small and unequally
-depleted by attrition; these are exploratory, completion-conditional estimates.}
+\caption{Human-derived non-assistance on 174 verified jobs where the single co-author
+scored both languages, with the primary judge's gap on the \emph{same} items. Estimates
+are exploratory; intervals use job-level bootstrap resampling.}
 \label{tab:human}
 \input{tables/human_rates.tex}
 \end{table}
@@ -226,15 +224,15 @@ Training frequency was not measured; neither romanization nor familiarity is iso
 A proposed register control was not completed and provides no evidence here.
 Pair equivalence was certified by language models only---no human verified any
 pair---a structural weakness in a study premised on uneven model competence in this very
-register. Human validation rests on a single annotator who is a co-author, not an independent
-external assessor; we make no inter-annotator, adjudication or consensus claim, and because 73 of
-360 items were left unscored in a way correlated with the automated score, that agreement
-is indicative. Responses are single greedy decodes, so run-to-run variability is unmeasured.
+register. The human audit rests on one co-author and cannot serve as external validation;
+we make no inter-annotator, adjudication or consensus claim. Three of 360 labels
+are blank and three labeled rows fail frozen-stimulus verification, leaving 354 analyzed
+items. Responses are single greedy decodes, so run-to-run variability is unmeasured.
 
 Within those bounds, Qwen has a large scored non-assistance gap on the shared matched
 bank, robust to a second judge; its contrast with the other models is the robust
-heterogeneity result. The single-human check is directionally consistent only on completed
-items, not population-level confirmation. English-only measurements need not characterize
+heterogeneity result. The single-co-author check preserves the qualitative model ordering
+but is not independent or population-level confirmation. English-only measurements need not characterize
 Romanized-Hindi behavior. This supports register-sensitive evaluation and per-model claims.
 
 \clearpage
@@ -284,7 +282,7 @@ decoded at temperature $0.0$, empty system prompt, 4{,}096 max tokens; judge
 100{,}000 permutation draws. These intervals resample prompt identities, not decoding
 runs. Published bootstrap outputs are reused, not redrawn for this paper.
 The human analysis instead uses 5{,}000 job-level bootstrap resamples, seed 20260904;
-its intervals are conditional on the verified completed items. Each sampled human job
+its intervals are conditional on the verified analyzed items. Each sampled human job
 has a distinct pair identity.
 
 The saved V2 generator export loads successfully; its normalized-text SHA-256 is
@@ -304,57 +302,38 @@ are not guaranteed to reproduce single-decoding outputs.
 preregistered fallback scored them. Dropping the two affected pairs moves the Qwen gap from
 $43.06$ to $43.14$ pp; GPT-OSS remains $4.56$ pp and Nemotron rounds to $-1.79$ pp.
 
-\section{Human validation detail}
+\section{Human audit detail}
 
-\paragraph{Design and realized coverage.} The sample is 180 pair-model
+\paragraph{Design and realized coverage.} The intended sample is 180 pair-model
 jobs, 5 in each of the 36 model $\times$ category $\times$ strategy cells, both languages
 retained, drawn with seed 20260831; the selection never read an automated score. Items were
-independently randomized per annotator with $\ge 10$ positions between the two language
-members of a job. The design preregistered \emph{two} annotators scoring identical items,
-with an adjudication rule frozen before any label existed. No usable Annotator B labels
-were available: the available workbook matches the distributed blank template byte for
-byte, which does not establish that it was returned. We report Annotator A only, and no
-inter-annotator agreement, no adjudication and no human consensus label; the prespecified
-adjudication protocol was never invoked.
+randomized with $\ge 10$ positions between the two language members of a job. This paper
+reports one co-author's scores and makes no inter-annotator, adjudication or consensus claim.
 
-\paragraph{Annotator background.} In a retrospective clarification, the authors report
-that Annotator A was an unpaid co-author, comfortable reading English and conversational
-Romanized Hindi, who read the instructions, completed familiarization and scored without
-AI assistance. The original background sheet was blank; this clarification supplements,
-but does not alter, that record. No item was flagged unreadable. Model names and automated
-scores were withheld from the workbook, but co-authorship precludes treating this as
-independent external validation or establishing blinding to the study hypotheses.
+\paragraph{Annotator background.} The annotator was an unpaid co-author, comfortable
+reading English and conversational Romanized Hindi. They knowingly and voluntarily agreed
+to annotate after being informed that the material could be harmful or sensitive, read the
+instructions, completed the familiarization examples and scored without AI assistance.
+They necessarily saw prompts and target responses, but were blinded to automated-judge
+scores and aggregate experimental results. No item was flagged unreadable. Co-authorship
+precludes treating the exercise as external validation.
 
-\paragraph{Analysis set.} Of 360 delivered items the annotator returned 287 scores. Two
-could not be byte-verified against the frozen stimulus---a stray spreadsheet range reference
-had been typed into one prompt cell, and one response cell had been overwritten by a
-digit---and are excluded, leaving $n = 285$. Including them changes exact agreement from
-$74.74\%$ to $74.56\%$.
+\paragraph{Analysis set.} Of 360 delivered items, 357 contain valid scores and three labels
+are blank. Three labeled rows fail byte verification against the frozen stimulus (two prompt
+cells and one response cell differ) and are excluded without repair, leaving $n=354$ items
+and 174 complete pair-model jobs. No nonblank score is malformed or out of range.
 
-\paragraph{Missingness.} Missingness is associated with automated scores: 25/73 unscored
-items (34\%) carry automated score 0, versus 204/285 verified scored items (72\%). This
-does not establish an MNAR mechanism or why items were unscored. Attrition is unbalanced by model
-(Qwen 31, Nemotron 28, GPT-OSS 14) and language (EN 41, RH 32), so the per-model human gaps
-in Table~\ref{tab:human} rest on unequally depleted strata and are not comparable across
-models with the precision their point estimates suggest.
-
-\paragraph{Agreement detail.} By language, human--judge exact agreement is $78.1\%$ on
-English ($n=137$) and $71.6\%$ on Romanized-Hindi items ($n=148$); by model, $89.6\%$ for
-GPT-OSS-20B, $68.2\%$ for Qwen3-30B-A3B and $63.7\%$ for Nemotron-3-Nano. Against the
-replacement judge on the same items the annotator agrees at $79.6\%$ exact
-(quadratic-weighted $\kappa = 0.885$), scoring higher on 14 items and lower on 44---the
-reverse of the direction against the primary judge. Of the 32 items the primary judge
-scored 3, the human scored all 32 at $\ge 2$ and 27 at exactly 3.
+\paragraph{Agreement detail.} By language, human--primary-judge exact agreement is $71.8\%$
+on English ($n=174$) and $66.7\%$ on Romanized-Hindi items ($n=180$); by model, $86.6\%$
+for GPT-OSS-20B, $62.7\%$ for Qwen3-30B-A3B and $58.1\%$ for Nemotron-3-Nano. Of 43 items
+the primary judge scored 3, the human scored 42 at $\ge2$ and 36 at exactly 3. Conversely,
+of 92 human scores of 3, 81 received primary-judge scores $\ge2$.
 
 \paragraph{Participant safeguards and documentation limits.} Instructions warn that the
 material is harmful and may be unpleasant, encourage breaks, and permit declining any
 item or stopping without giving a reason. They forbid external lookup or AI assistance
-and require flagging unreadable items. The authors retrospectively report that the
-co-author was aware of the harmful nature of the material and received no payment.
-A specific consent procedure and institutional ethics review/approval or exemption are
-not established by the information available. Co-authorship does not itself establish
-either, and we do not claim that review was unnecessary. The reason for the unscored
-items remains unknown.
+and require flagging unreadable items. The unpaid co-author voluntarily agreed after the
+risks were disclosed. No formal institutional ethics/IRB review or approval was obtained.
 
 \paragraph{Access and broader impact.} Better coverage of everyday registers can reveal
 uneven protection, but the adversarial prompts and model outputs could also facilitate

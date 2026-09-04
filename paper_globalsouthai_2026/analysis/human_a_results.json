@@ -1,77 +1,77 @@
 {
   "agreement": {
     "human_vs_gemini": {
-      "adjacent": 0.9403508771929825,
-      "exact": 0.7473684210526316,
+      "adjacent": 0.9293785310734464,
+      "exact": 0.692090395480226,
       "exact_ci": [
-        0.6936619718309859,
-        0.7986111111111112
+        0.6384180790960452,
+        0.7414772727272727
       ],
-      "human_higher": 58,
-      "human_minus_other_mean": 0.21052631578947367,
-      "kappa": 0.513017063388471,
-      "kappa_linear": 0.7131416568202704,
-      "kappa_quadratic": 0.8247779094529935,
-      "n": 285,
-      "other_higher": 14
+      "human_higher": 91,
+      "human_minus_other_mean": 0.2824858757062147,
+      "kappa": 0.48490188225871034,
+      "kappa_linear": 0.6839325461198928,
+      "kappa_quadratic": 0.7943099047500467,
+      "n": 354,
+      "other_higher": 18
     },
     "human_vs_gpt5mini": {
-      "adjacent": 0.9473684210526315,
-      "exact": 0.7964912280701755,
+      "adjacent": 0.9265536723163842,
+      "exact": 0.751412429378531,
       "exact_ci": [
-        0.75,
-        0.8422939068100358
+        0.7014011723975135,
+        0.7988826815642458
       ],
-      "human_higher": 14,
-      "human_minus_other_mean": -0.13333333333333333,
-      "kappa": 0.6304163126593032,
-      "kappa_linear": 0.7968873394071305,
-      "kappa_quadratic": 0.8854663580683332,
-      "n": 285,
-      "other_higher": 44
+      "human_higher": 27,
+      "human_minus_other_mean": -0.11016949152542373,
+      "kappa": 0.5889207057177921,
+      "kappa_linear": 0.7595465598136922,
+      "kappa_quadratic": 0.850984488845986,
+      "n": 354,
+      "other_higher": 61
     },
     "nonassistance_binary": {
-      "exact": 0.887719298245614,
-      "gemini_0_same_items": 204,
-      "human_0": 176
+      "exact": 0.8785310734463276,
+      "gemini_0_same_items": 228,
+      "human_0": 189
     },
     "score3": {
-      "both_3": 27,
-      "gemini_3_confirmed_by_human_ge2": 32,
-      "gemini_3_same_items": 32,
-      "human_3": 57,
-      "human_3_scored_ge2_by_gemini": 52
+      "both_3": 36,
+      "gemini_3_confirmed_by_human_ge2": 42,
+      "gemini_3_same_items": 43,
+      "human_3": 92,
+      "human_3_scored_ge2_by_gemini": 81
     },
     "sensitivity_including_unverifiable_stimuli": {
       "human_vs_gemini": {
-        "adjacent": 0.9407665505226481,
-        "exact": 0.7456445993031359,
+        "adjacent": 0.9299719887955182,
+        "exact": 0.6890756302521008,
         "exact_ci": [
-          0.6923076923076923,
-          0.7964912280701755
+          0.6361046918767507,
+          0.7380281690140845
         ],
-        "human_higher": 59,
-        "human_minus_other_mean": 0.21254355400696864,
-        "kappa": 0.5142360306051474,
-        "kappa_linear": 0.7153597594138914,
-        "kappa_quadratic": 0.8271091830233899,
-        "n": 287,
-        "other_higher": 14
+        "human_higher": 93,
+        "human_minus_other_mean": 0.2857142857142857,
+        "kappa": 0.4835998279838931,
+        "kappa_linear": 0.6846908734052993,
+        "kappa_quadratic": 0.7960505361503345,
+        "n": 357,
+        "other_higher": 18
       },
       "human_vs_gpt5mini": {
-        "adjacent": 0.9477351916376306,
-        "exact": 0.7979094076655052,
+        "adjacent": 0.927170868347339,
+        "exact": 0.7507002801120448,
         "exact_ci": [
-          0.7509018937234784,
-          0.8435398886827459
+          0.7005578502587475,
+          0.7983193277310925
         ],
-        "human_higher": 14,
-        "human_minus_other_mean": -0.13240418118466898,
-        "kappa": 0.6349721503442831,
-        "kappa_linear": 0.7999698607945448,
-        "kappa_quadratic": 0.8874616049319962,
-        "n": 287,
-        "other_higher": 44
+        "human_higher": 28,
+        "human_minus_other_mean": -0.10644257703081232,
+        "kappa": 0.5891670330238692,
+        "kappa_linear": 0.7605928177845336,
+        "kappa_quadratic": 0.8522140722629721,
+        "n": 357,
+        "other_higher": 61
       }
     }
   },
@@ -102,137 +102,207 @@
       "status": "PASS"
     },
     {
-      "check": "at least 99 percent of delivered items re-hash to their frozen prompt and response, so the join is by identity and never by row order",
-      "detail": "verified=358 unverifiable=2",
-      "status": "PASS"
-    },
-    {
-      "check": "at least one score was returned",
+      "check": "exactly 360 unique rows map to the intended item positions",
       "detail": "",
       "status": "PASS"
     },
     {
-      "check": "scores lie on the frozen 0-3 scale",
+      "check": "at least 99 percent of delivered items re-hash to their frozen prompt and response, so the join is by identity and never by row order",
+      "detail": "verified=357 unverifiable=3",
+      "status": "PASS"
+    },
+    {
+      "check": "no malformed or out-of-scale human labels",
+      "detail": "[]",
+      "status": "PASS"
+    },
+    {
+      "check": "all nonblank scores lie on the frozen 0-3 scale",
       "detail": "",
       "status": "PASS"
     }
   ],
   "completion": {
-    "borderline_rate_of_scored": 0.010526315789473684,
-    "borderline_ticked": 3,
+    "analyzed_breakdown": {
+      "by_category": {
+        "gambling": 88,
+        "intoxication": 89,
+        "sexual_violence": 89,
+        "violence": 88
+      },
+      "by_language": {
+        "en": 174,
+        "rh": 180
+      },
+      "by_model": {
+        "GPT-OSS-20B": 119,
+        "Nemotron-3-Nano": 117,
+        "Qwen3-30B-A3B": 118
+      },
+      "by_strategy": {
+        "RolePrompting": 118,
+        "ScenarioNesting": 117,
+        "SymbolicMasking": 119
+      }
+    },
+    "borderline_rate_of_scored": 0.01694915254237288,
+    "borderline_ticked": 6,
     "cannot_read_ticked": 0,
-    "completion_rate": 0.7916666666666666,
+    "completion_rate": 0.9833333333333333,
     "contiguous_tail": false,
+    "intended_breakdown": {
+      "by_category": {
+        "gambling": 90,
+        "intoxication": 90,
+        "sexual_violence": 90,
+        "violence": 90
+      },
+      "by_language": {
+        "en": 180,
+        "rh": 180
+      },
+      "by_model": {
+        "GPT-OSS-20B": 120,
+        "Nemotron-3-Nano": 120,
+        "Qwen3-30B-A3B": 120
+      },
+      "by_strategy": {
+        "RolePrompting": 120,
+        "ScenarioNesting": 120,
+        "SymbolicMasking": 120
+      }
+    },
+    "invalid_label_items": [],
     "items_delivered": 360,
-    "items_scored": 285,
-    "items_scored_including_unverifiable_stimuli": 287,
-    "items_unscored": 73,
+    "items_scored": 354,
+    "items_scored_including_unverifiable_stimuli": 357,
+    "items_unscored": 3,
+    "items_valid_and_stimulus_verified": 354,
+    "items_with_valid_labels": 357,
     "jobs_delivered": 180,
-    "jobs_with_both_languages_scored": 116,
-    "min_item_number_unscored": 1,
+    "jobs_with_both_languages_scored": 174,
+    "min_item_number_unscored": 314,
     "scored_gemini_distribution": {
-      "0": 204,
-      "1": 3,
-      "2": 46,
-      "3": 32
+      "0": 228,
+      "1": 5,
+      "2": 78,
+      "3": 43
     },
     "unscored_by_language": {
-      "en": 41,
-      "rh": 32
+      "en": 3
     },
     "unscored_by_model": {
-      "GPT-OSS-20B": 14,
-      "Nemotron-3-Nano": 28,
-      "Qwen3-30B-A3B": 31
+      "Nemotron-3-Nano": 2,
+      "Qwen3-30B-A3B": 1
     },
     "unscored_gemini_distribution": {
-      "0": 25,
-      "1": 2,
-      "2": 35,
-      "3": 11
+      "0": 1,
+      "2": 2
     },
     "unscored_max_item_number": 320,
-    "unscored_without_cannot_read_flag": 73
+    "unscored_without_cannot_read_flag": 3,
+    "valid_label_breakdown": {
+      "by_category": {
+        "gambling": 89,
+        "intoxication": 90,
+        "sexual_violence": 89,
+        "violence": 89
+      },
+      "by_language": {
+        "en": 177,
+        "rh": 180
+      },
+      "by_model": {
+        "GPT-OSS-20B": 120,
+        "Nemotron-3-Nano": 118,
+        "Qwen3-30B-A3B": 119
+      },
+      "by_strategy": {
+        "RolePrompting": 118,
+        "ScenarioNesting": 120,
+        "SymbolicMasking": 119
+      }
+    }
   },
   "distributions": {
     "gemini_same_items": {
-      "0": 204,
-      "1": 3,
-      "2": 46,
-      "3": 32
+      "0": 228,
+      "1": 5,
+      "2": 78,
+      "3": 43
     },
     "gpt5mini_matched_items": {
-      "0": 178,
-      "2": 32,
-      "3": 75
+      "0": 197,
+      "2": 42,
+      "3": 115
     },
     "human": {
-      "0": 176,
-      "1": 24,
-      "2": 28,
-      "3": 57
+      "0": 189,
+      "1": 32,
+      "2": 41,
+      "3": 92
     },
-    "n_gpt5mini_matched": 285
+    "n_gpt5mini_matched": 354
   },
   "human_rates": {
-    "n_complete_jobs": 116,
+    "n_complete_jobs": 174,
     "per_model": {
       "GPT-OSS-20B": {
-        "gemini_en_nonassistance_pct": 92.0,
-        "gemini_forward_flips": 2,
+        "gemini_en_nonassistance_pct": 89.83050847457628,
+        "gemini_forward_flips": 4,
         "gemini_gap_ci_pp": [
-          -4.0,
-          8.0
+          -6.779661016949152,
+          10.169491525423728
         ],
-        "gemini_gap_pp": 2.0,
-        "gemini_rh_nonassistance_pct": 90.0,
-        "human_en_nonassistance_pct": 92.0,
-        "human_forward_flips": 2,
-        "human_gap_ci_pp": [
-          2.0,
-          16.0
-        ],
-        "human_gap_pp": 8.0,
-        "human_rh_nonassistance_pct": 84.0,
-        "n_jobs": 50
-      },
-      "Nemotron-3-Nano": {
-        "gemini_en_nonassistance_pct": 64.70588235294117,
-        "gemini_forward_flips": 3,
-        "gemini_gap_ci_pp": [
-          -29.41176470588235,
-          5.882352941176471
-        ],
-        "gemini_gap_pp": -11.764705882352942,
-        "gemini_rh_nonassistance_pct": 76.47058823529412,
-        "human_en_nonassistance_pct": 50.0,
+        "gemini_gap_pp": 1.694915254237288,
+        "gemini_rh_nonassistance_pct": 88.13559322033899,
+        "human_en_nonassistance_pct": 88.13559322033899,
         "human_forward_flips": 3,
         "human_gap_ci_pp": [
-          -26.470588235294116,
-          14.705882352941176
+          0.0,
+          15.254237288135593
         ],
-        "human_gap_pp": -5.882352941176471,
-        "human_rh_nonassistance_pct": 55.88235294117647,
-        "n_jobs": 34
+        "human_gap_pp": 6.779661016949152,
+        "human_rh_nonassistance_pct": 81.35593220338983,
+        "n_jobs": 59
+      },
+      "Nemotron-3-Nano": {
+        "gemini_en_nonassistance_pct": 52.63157894736842,
+        "gemini_forward_flips": 5,
+        "gemini_gap_ci_pp": [
+          -26.31578947368421,
+          1.7543859649122806
+        ],
+        "gemini_gap_pp": -12.280701754385966,
+        "gemini_rh_nonassistance_pct": 64.91228070175438,
+        "human_en_nonassistance_pct": 35.08771929824562,
+        "human_forward_flips": 4,
+        "human_gap_ci_pp": [
+          -26.31578947368421,
+          5.2631578947368425
+        ],
+        "human_gap_pp": -10.526315789473685,
+        "human_rh_nonassistance_pct": 45.6140350877193,
+        "n_jobs": 57
       },
       "Qwen3-30B-A3B": {
-        "gemini_en_nonassistance_pct": 78.125,
-        "gemini_forward_flips": 15,
+        "gemini_en_nonassistance_pct": 65.51724137931035,
+        "gemini_forward_flips": 23,
         "gemini_gap_ci_pp": [
-          25.0,
-          62.5
+          22.413793103448278,
+          50.0
         ],
-        "gemini_gap_pp": 43.75,
-        "gemini_rh_nonassistance_pct": 34.375,
-        "human_en_nonassistance_pct": 71.875,
-        "human_forward_flips": 11,
+        "gemini_gap_pp": 36.206896551724135,
+        "gemini_rh_nonassistance_pct": 29.310344827586206,
+        "human_en_nonassistance_pct": 55.172413793103445,
+        "human_forward_flips": 17,
         "human_gap_ci_pp": [
-          37.5,
-          71.875
+          24.137931034482758,
+          51.724137931034484
         ],
-        "human_gap_pp": 53.125,
-        "human_rh_nonassistance_pct": 18.75,
-        "n_jobs": 32
+        "human_gap_pp": 37.93103448275862,
+        "human_rh_nonassistance_pct": 17.24137931034483,
+        "n_jobs": 58
       }
     }
   },
@@ -245,174 +315,174 @@
       "selection_seed": 20260831,
       "selection_used_automated_scores": false
     },
-    "stimulus_unverifiable_items": 2,
-    "stimulus_verified_items": 358,
+    "stimulus_unverifiable_items": 3,
+    "stimulus_verified_items": 357,
     "workbook": "Human_A_annotations.xlsx",
-    "workbook_sha256": "a68c9305e7fdb6f5865aebb25e4cffe9b554c97dd02d19882fa50c1da1e4b75f"
+    "workbook_sha256": "535a59facb9f662e86d7c8f7063431fd7cee064f20b10e7dcda4f92c25bf8fbb"
   },
   "status": "PASS",
   "stratified": {
     "by_language": {
       "en": {
         "human_vs_gemini": {
-          "adjacent": 0.9781021897810219,
-          "exact": 0.781021897810219,
+          "adjacent": 0.9540229885057471,
+          "exact": 0.7183908045977011,
           "exact_ci": [
-            0.708029197080292,
-            0.8467153284671532
+            0.6494252873563219,
+            0.7873563218390804
           ],
-          "human_higher": 26,
-          "human_minus_other_mean": 0.1678832116788321,
-          "kappa": 0.5046999276934202,
-          "kappa_linear": 0.7427010414888169,
-          "kappa_quadratic": 0.874178735429177,
-          "n": 137,
-          "other_higher": 4
+          "human_higher": 43,
+          "human_minus_other_mean": 0.26436781609195403,
+          "kappa": 0.48371079084413227,
+          "kappa_linear": 0.6941645183970002,
+          "kappa_quadratic": 0.8104856676073073,
+          "n": 174,
+          "other_higher": 6
         },
         "human_vs_gpt5mini": {
-          "adjacent": 0.9708029197080292,
-          "exact": 0.8321167883211679,
+          "adjacent": 0.9540229885057471,
+          "exact": 0.7701149425287356,
           "exact_ci": [
-            0.7664233576642335,
-            0.8905109489051095
+            0.7068965517241379,
+            0.8333333333333334
           ],
-          "human_higher": 6,
-          "human_minus_other_mean": -0.11678832116788321,
-          "kappa": 0.6438340680456651,
-          "kappa_linear": 0.8143631436314362,
-          "kappa_quadratic": 0.8979629836517335,
-          "n": 137,
-          "other_higher": 17
+          "human_higher": 12,
+          "human_minus_other_mean": -0.10919540229885058,
+          "kappa": 0.5908289241622575,
+          "kappa_linear": 0.7738186267013305,
+          "kappa_quadratic": 0.8642155797459352,
+          "n": 174,
+          "other_higher": 28
         }
       },
       "rh": {
         "human_vs_gemini": {
-          "adjacent": 0.9054054054054054,
-          "exact": 0.7162162162162162,
+          "adjacent": 0.9055555555555556,
+          "exact": 0.6666666666666666,
           "exact_ci": [
-            0.6418918918918919,
-            0.7905405405405406
+            0.6,
+            0.7333333333333333
           ],
-          "human_higher": 32,
-          "human_minus_other_mean": 0.25,
-          "kappa": 0.5089659530768624,
-          "kappa_linear": 0.6839438251049661,
-          "kappa_quadratic": 0.7850856606430415,
-          "n": 148,
-          "other_higher": 10
+          "human_higher": 48,
+          "human_minus_other_mean": 0.3,
+          "kappa": 0.47664276022484986,
+          "kappa_linear": 0.6669374492282698,
+          "kappa_quadratic": 0.7749172489885987,
+          "n": 180,
+          "other_higher": 12
         },
         "human_vs_gpt5mini": {
-          "adjacent": 0.9256756756756757,
-          "exact": 0.7635135135135135,
+          "adjacent": 0.9,
+          "exact": 0.7333333333333333,
           "exact_ci": [
-            0.6959459459459459,
-            0.831081081081081
+            0.6722222222222223,
+            0.7944444444444444
           ],
-          "human_higher": 8,
-          "human_minus_other_mean": -0.14864864864864866,
-          "kappa": 0.6106434155141311,
-          "kappa_linear": 0.7762587090837387,
-          "kappa_quadratic": 0.8711329645564434,
-          "n": 148,
-          "other_higher": 27
+          "human_higher": 15,
+          "human_minus_other_mean": -0.1111111111111111,
+          "kappa": 0.5784954629719973,
+          "kappa_linear": 0.7402156379998303,
+          "kappa_quadratic": 0.834591401378405,
+          "n": 180,
+          "other_higher": 33
         }
       }
     },
     "by_model": {
       "GPT-OSS-20B": {
         "human_vs_gemini": {
-          "adjacent": 0.9811320754716981,
-          "exact": 0.8962264150943396,
+          "adjacent": 0.9747899159663865,
+          "exact": 0.865546218487395,
           "exact_ci": [
-            0.819047619047619,
-            0.9619047619047619
+            0.7844540229885058,
+            0.9401836158192088
           ],
-          "human_higher": 8,
-          "human_minus_other_mean": 0.07547169811320754,
-          "kappa": 0.46118299445471345,
-          "kappa_linear": 0.7158176943699732,
-          "kappa_quadratic": 0.8288565976809041,
-          "n": 106,
+          "human_higher": 13,
+          "human_minus_other_mean": 0.12605042016806722,
+          "kappa": 0.4639639639639639,
+          "kappa_linear": 0.7067245628447366,
+          "kappa_quadratic": 0.8122097479597817,
+          "n": 119,
           "other_higher": 3
         },
         "human_vs_gpt5mini": {
-          "adjacent": 1.0,
-          "exact": 0.9528301886792453,
+          "adjacent": 0.9915966386554622,
+          "exact": 0.9327731092436975,
           "exact_ci": [
-            0.8990592082908597,
-            0.9907407407407407
+            0.8728813559322034,
+            0.9831932773109243
           ],
-          "human_higher": 1,
-          "human_minus_other_mean": -0.02830188679245283,
-          "kappa": 0.7806291390728477,
-          "kappa_linear": 0.9141561386459346,
-          "kappa_quadratic": 0.9685758330368789,
-          "n": 106,
+          "human_higher": 4,
+          "human_minus_other_mean": 0.01680672268907563,
+          "kappa": 0.748945147679325,
+          "kappa_linear": 0.8769898697539797,
+          "kappa_quadratic": 0.9275660047173401,
+          "n": 119,
           "other_higher": 4
         }
       },
       "Nemotron-3-Nano": {
         "human_vs_gemini": {
-          "adjacent": 0.8901098901098901,
-          "exact": 0.6373626373626373,
+          "adjacent": 0.8803418803418803,
+          "exact": 0.5811965811965812,
           "exact_ci": [
-            0.539304235090752,
-            0.7333333333333333
+            0.48717948717948717,
+            0.6752136752136753
           ],
-          "human_higher": 27,
-          "human_minus_other_mean": 0.32967032967032966,
-          "kappa": 0.40687339522022525,
-          "kappa_linear": 0.6065251572327044,
-          "kappa_quadratic": 0.736591179976162,
-          "n": 91,
-          "other_higher": 6
+          "human_higher": 42,
+          "human_minus_other_mean": 0.4358974358974359,
+          "kappa": 0.38001514004542003,
+          "kappa_linear": 0.5675988747310938,
+          "kappa_quadratic": 0.6846667476022823,
+          "n": 117,
+          "other_higher": 7
         },
         "human_vs_gpt5mini": {
-          "adjacent": 0.9340659340659341,
-          "exact": 0.7142857142857143,
+          "adjacent": 0.9145299145299145,
+          "exact": 0.6495726495726496,
           "exact_ci": [
-            0.6276595744680851,
-            0.7956989247311828
+            0.5603448275862069,
+            0.7310924369747899
           ],
-          "human_higher": 6,
-          "human_minus_other_mean": -0.16483516483516483,
-          "kappa": 0.5574261129816686,
-          "kappa_linear": 0.7388014264590763,
-          "kappa_quadratic": 0.8420642510537315,
-          "n": 91,
-          "other_higher": 20
+          "human_higher": 12,
+          "human_minus_other_mean": -0.11965811965811966,
+          "kappa": 0.48258008844784817,
+          "kappa_linear": 0.6807478524507327,
+          "kappa_quadratic": 0.7929970375246873,
+          "n": 117,
+          "other_higher": 29
         }
       },
       "Qwen3-30B-A3B": {
         "human_vs_gemini": {
-          "adjacent": 0.9431818181818182,
-          "exact": 0.6818181818181818,
+          "adjacent": 0.9322033898305084,
+          "exact": 0.6271186440677966,
           "exact_ci": [
-            0.5934065934065934,
-            0.7701149425287356
+            0.5462184873949579,
+            0.711864406779661
           ],
-          "human_higher": 23,
-          "human_minus_other_mean": 0.25,
-          "kappa": 0.5270633397312859,
-          "kappa_linear": 0.7261577887607542,
-          "kappa_quadratic": 0.8414414414414415,
-          "n": 88,
-          "other_higher": 5
+          "human_higher": 36,
+          "human_minus_other_mean": 0.288135593220339,
+          "kappa": 0.4741745999594895,
+          "kappa_linear": 0.6820993813610059,
+          "kappa_quadratic": 0.807977968789118,
+          "n": 118,
+          "other_higher": 8
         },
         "human_vs_gpt5mini": {
-          "adjacent": 0.8977272727272727,
-          "exact": 0.6931818181818182,
+          "adjacent": 0.8728813559322034,
+          "exact": 0.6694915254237288,
           "exact_ci": [
-            0.6049310938845823,
-            0.7816091954022989
+            0.5811965811965812,
+            0.75
           ],
-          "human_higher": 7,
-          "human_minus_other_mean": -0.22727272727272727,
-          "kappa": 0.5370226032735775,
-          "kappa_linear": 0.7219101123595506,
-          "kappa_quadratic": 0.8354570637119114,
-          "n": 88,
-          "other_higher": 20
+          "human_higher": 11,
+          "human_minus_other_mean": -0.2288135593220339,
+          "kappa": 0.5011922826793842,
+          "kappa_linear": 0.6786174111122115,
+          "kappa_quadratic": 0.7934872379753806,
+          "n": 118,
+          "other_higher": 28
         }
       }
     }

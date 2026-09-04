@@ -12,9 +12,9 @@ All 4 blocking and 5 major manuscript defects are corrected. All 8 moderate repo
 - Generator/primary judge identity; secondary auditor/cross-judge identity; explicit language labels given to judges.
 - English and Romanized Hindi both use Latin script; language/register/familiarity mechanisms are not isolated.
 - One greedy response per prompt; provider rerun variability unmeasured.
-- One unpaid co-author with incomplete, outcome-associated coverage. Bilingual familiarity, instruction/familiarization completion and no AI assistance are retrospectively author-reported; the original background sheet remains blank. This is not independent external validation. No usable B labels, IAA, adjudication or consensus.
+- One unpaid co-author supplied 357 valid labels; three labels are blank and three labeled rows fail frozen-stimulus verification, leaving 354 analyzed items and 174 complete pair-model jobs. Language familiarity, voluntary agreement, sensitive-content disclosure, familiarization, lack of AI assistance and blinding to automated-judge scores and aggregate results are author-reported. This is not external validation, inter-annotator agreement, adjudication or consensus.
 - GPT-OSS versus Nemotron differs at pair level but is fragile to similarity clustering. Judge replacement preserves order, not identical magnitude/support.
 - Length and regex diagnostics cannot establish comprehension or harmfulness.
-- A specific consent procedure, ethics-review status and external reproducibility access remain unestablished, as disclosed in Appendix B and checklist. Co-authorship is not an exemption determination.
+- The co-author knowingly and voluntarily agreed after risk disclosure. No formal institutional ethics/IRB review or approval was obtained. External reproducibility access remains limited, as disclosed in Appendix B and the checklist.
 
 These limits do not erase the robust Qwen-versus-rest contrast within this frozen design, but they prohibit population, causal-mechanism and human-ground-truth claims.

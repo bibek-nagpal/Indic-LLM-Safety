@@ -13,7 +13,7 @@ from pypdf import PdfReader
 
 PAPER = Path(__file__).resolve().parents[1]
 ROOT = PAPER.parent
-BASE = "8eca4be99f7d1af62a48980690069c3bcb3bd1c0"
+BASE = "de160ee925ad2e3a6c1e4248526bc09404137959"
 checks = []
 
 
@@ -47,11 +47,14 @@ for rel in manifests:
     entry_count += len(entries)
     check(rel, not bad, {"entries": len(entries), "mismatches": bad})
 check("82 frozen manifest entries", entry_count == 82)
-check("Human A workbook unchanged", sha(ROOT / "Human_A_annotations.xlsx") ==
-      "a68c9305e7fdb6f5865aebb25e4cffe9b554c97dd02d19882fa50c1da1e4b75f")
+completed_workbook_sha = "535a59facb9f662e86d7c8f7063431fd7cee064f20b10e7dcda4f92c25bf8fbb"
+check("Completed Human A workbook identified", sha(ROOT / "Human_A_annotations.xlsx") ==
+      completed_workbook_sha)
 human_path = PAPER / "analysis/human_a_results.json"
-original = subprocess.check_output(["git", "show", f"{BASE}:paper_globalsouthai_2026/analysis/human_a_results.json"], cwd=ROOT)
-check("Human analysis including bootstrap digits unchanged", original.replace(b"\r\n", b"\n") == human_path.read_bytes().replace(b"\r\n", b"\n"))
+human_results = read_json(human_path)
+check("Human result provenance matches completed workbook",
+      human_results["provenance"]["workbook_sha256"] == completed_workbook_sha)
+check("Completed Human A analysis status", human_results["status"] == "PASS")
 
 head = read_json(PAPER / "analysis/headline_verification.json")
 with (ROOT / "analysis/results/main_results.csv").open(encoding="utf-8") as f:
