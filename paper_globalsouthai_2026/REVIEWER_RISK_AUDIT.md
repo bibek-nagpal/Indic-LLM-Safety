@@ -12,9 +12,9 @@ All 4 blocking and 5 major manuscript defects are corrected. All 8 moderate repo
 - Generator/primary judge identity; secondary auditor/cross-judge identity; explicit language labels given to judges.
 - English and Romanized Hindi both use Latin script; language/register/familiarity mechanisms are not isolated.
 - One greedy response per prompt; provider rerun variability unmeasured.
-- One human with incomplete, outcome-associated coverage and unreturned language-background information. No usable B labels, IAA, adjudication or consensus.
+- One unpaid co-author with incomplete, outcome-associated coverage. Bilingual familiarity, instruction/familiarization completion and no AI assistance are retrospectively author-reported; the original background sheet remains blank. This is not independent external validation. No usable B labels, IAA, adjudication or consensus.
 - GPT-OSS versus Nemotron differs at pair level but is fragile to similarity clustering. Judge replacement preserves order, not identical magnitude/support.
 - Length and regex diagnostics cannot establish comprehension or harmfulness.
-- Missing consent/compensation/ethics documentation and external reproducibility access are substantive remaining author issues, disclosed in Appendix B and checklist.
+- A specific consent procedure, ethics-review status and external reproducibility access remain unestablished, as disclosed in Appendix B and checklist. Co-authorship is not an exemption determination.
 
 These limits do not erase the robust Qwen-versus-rest contrast within this frozen design, but they prohibit population, causal-mechanism and human-ground-truth claims.

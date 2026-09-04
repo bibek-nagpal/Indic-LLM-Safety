@@ -46,7 +46,7 @@ Searched for: `1,512 unique`, `1512 unique prompt pairs`, `Logical Appeal`, `two
 
 ## Required-disclaimer sweep
 
-Searched for: `single annotator`, `make no inter-annotator`, `not completed`, `No usable Annotator B labels`, `retained the seed instruction unchanged`, `cascade`, `the same model`, `language was not blinded`, `both inputs use Latin script`, `completion-conditional`, `SequenceMatcher`, `Cross-bank consolidation removed exact matches only`, `no direct-request and no benign condition`, `not covariate adjustment`
+Searched for: `single annotator`, `make no inter-annotator`, `not completed`, `No usable Annotator B labels`, `retained the seed instruction unchanged`, `cascade`, `the same model`, `language was not blinded`, `both inputs use Latin script`, `completion-conditional`, `SequenceMatcher`, `Cross-bank consolidation removed exact matches only`, `no direct-request and no benign condition`, `not covariate adjustment`, `unpaid co-author`, `retrospective clarification`, `without AI assistance`, `73 unscored`, `No usable Annotator B labels`
 
 **Result:** all present
 

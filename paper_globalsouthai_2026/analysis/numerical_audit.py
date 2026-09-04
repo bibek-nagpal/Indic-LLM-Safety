@@ -108,6 +108,8 @@ REQUIRED = ["single annotator", "make no inter-annotator", "not completed",
 # Exact wording for the covariate disclaimer is checked separately.
 REQUIRED.remove("not a covariate")
 REQUIRED.append("not covariate adjustment")
+REQUIRED += ["unpaid co-author", "retrospective clarification", "without AI assistance",
+             "73 unscored", "No usable Annotator B labels"]
 missing_required = [s for s in REQUIRED if s.lower() not in flat.lower()]
 FORBIDDEN = ["reflectively optimized", "cannot manufacture", "cannot produce a between-model",
              "more consistent with degenerate", "also reverses under judge", "ordering is not",

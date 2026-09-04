@@ -31,7 +31,7 @@ Qwen3-30B-A3B is scored as withholding assistance on 65.9\% of English prompts b
 22.8\% of their Romanized-Hindi counterparts ($+43.1$ pp, 95\% CI $[38.5, 47.6]$), with
 85 of 504 pairs moving from English scores 0--1 to score 3 in Romanized Hindi
 output; the same bank yields $+4.6$ pp for GPT-OSS-20B and $-1.8$ pp for Nemotron-3-Nano.
-A second judge preserves the large Qwen gap. An exploratory single-annotator check is
+A second judge preserves the large Qwen gap. An exploratory single-co-author check is
 directionally consistent on completed items, but selective missingness limits inference.
 Both input conditions use Latin script: the contrast changes language and linguistic
 realization, not script alone. We identify a language-conditioned difference, not its
@@ -181,7 +181,7 @@ an independent replication. Shared dependencies and unblinded language labels re
 LLM-judge biases are a broader concern \citep{zheng2023judging,wang2024unfair}.
 
 \paragraph{Exploratory single-annotator check.}
-One human annotator, blind to model identity and to the automated scores, rescored a
+One co-author scored items presented without model identity or automated scores in a
 stratified sample of 180 pair-model jobs (360 response items) drawn without reference to
 any automated outcome. The annotator returned 287 scores, of which 285 could be
 byte-verified against the frozen stimuli and form the analysis set. Human--judge exact
@@ -226,8 +226,8 @@ Training frequency was not measured; neither romanization nor familiarity is iso
 A proposed register control was not completed and provides no evidence here.
 Pair equivalence was certified by language models only---no human verified any
 pair---a structural weakness in a study premised on uneven model competence in this very
-register. Human validation rests on a single annotator whose language background was not
-returned; we make no inter-annotator, adjudication or consensus claim, and because 73 of
+register. Human validation rests on a single annotator who is a co-author, not an independent
+external assessor; we make no inter-annotator, adjudication or consensus claim, and because 73 of
 360 items were left unscored in a way correlated with the automated score, that agreement
 is indicative. Responses are single greedy decodes, so run-to-run variability is unmeasured.
 
@@ -306,7 +306,7 @@ $43.06$ to $43.14$ pp; GPT-OSS remains $4.56$ pp and Nemotron rounds to $-1.79$ 
 
 \section{Human validation detail}
 
-\paragraph{Design, and a failed preregistered component.} The sample is 180 pair-model
+\paragraph{Design and realized coverage.} The sample is 180 pair-model
 jobs, 5 in each of the 36 model $\times$ category $\times$ strategy cells, both languages
 retained, drawn with seed 20260831; the selection never read an automated score. Items were
 independently randomized per annotator with $\ge 10$ positions between the two language
@@ -315,9 +315,15 @@ with an adjudication rule frozen before any label existed. No usable Annotator B
 were available: the available workbook matches the distributed blank template byte for
 byte, which does not establish that it was returned. We report Annotator A only, and no
 inter-annotator agreement, no adjudication and no human consensus label; the prespecified
-adjudication protocol was never invoked. The annotator's self-reported language background
-sheet was returned blank, so we can state only that the instructions required conversational
-Romanized-Hindi reading ability and that no item was flagged unreadable (0 ``cannot read'').
+adjudication protocol was never invoked.
+
+\paragraph{Annotator background.} In a retrospective clarification, the authors report
+that Annotator A was an unpaid co-author, comfortable reading English and conversational
+Romanized Hindi, who read the instructions, completed familiarization and scored without
+AI assistance. The original background sheet was blank; this clarification supplements,
+but does not alter, that record. No item was flagged unreadable. Model names and automated
+scores were withheld from the workbook, but co-authorship precludes treating this as
+independent external validation or establishing blinding to the study hypotheses.
 
 \paragraph{Analysis set.} Of 360 delivered items the annotator returned 287 scores. Two
 could not be byte-verified against the frozen stimulus---a stray spreadsheet range reference
@@ -343,10 +349,12 @@ scored 3, the human scored all 32 at $\ge 2$ and 27 at exactly 3.
 \paragraph{Participant safeguards and documentation limits.} Instructions warn that the
 material is harmful and may be unpleasant, encourage breaks, and permit declining any
 item or stopping without giving a reason. They forbid external lookup or AI assistance
-and require flagging unreadable items. The available records do not establish compensation,
-documented consent, or institutional ethics review/approval or exemption. We make no
-claim that these occurred; these are unresolved reporting limitations, not evidence that
-review was unnecessary.
+and require flagging unreadable items. The authors retrospectively report that the
+co-author was aware of the harmful nature of the material and received no payment.
+A specific consent procedure and institutional ethics review/approval or exemption are
+not established by the information available. Co-authorship does not itself establish
+either, and we do not claim that review was unnecessary. The reason for the unscored
+items remains unknown.
 
 \paragraph{Access and broader impact.} Better coverage of everyday registers can reveal
 uneven protection, but the adversarial prompts and model outputs could also facilitate

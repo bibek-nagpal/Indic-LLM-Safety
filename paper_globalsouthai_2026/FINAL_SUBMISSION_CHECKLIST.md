@@ -20,7 +20,7 @@ This file reports the corrected candidate, not the superseded baseline's self-au
 
 ## Not certified by this gate
 
-- Participant consent, compensation and institutional ethics approval/exemption: not established by the available record. Authors must resolve the factual declarations.
+- A specific consent procedure and institutional ethics approval/exemption are not established. Unpaid co-author participation is now retrospectively author-reported; see HUMAN_A_CLARIFICATION.md.
 - Full asset-license compliance and anonymous external artifact access: not established.
 - Acceptance, eligibility, author consent, licensing and actual upload: author actions, not performed here.
 - Single-human results are not human-human agreement or population validation.

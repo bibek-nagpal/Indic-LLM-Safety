@@ -21,7 +21,7 @@ No margin, spacing, font-size or line-count override was used.
 
 ## Before upload
 
-1. Resolve/verify participant consent, compensation and institutional ethics-review facts. The records do not establish them; the checklist deliberately does not claim compliance or an exemption.
+1. Resolve/verify the consent procedure and institutional ethics-review facts. A retrospective author clarification identifies an unpaid, bilingual co-author who completed familiarization and scored without AI assistance (HUMAN_A_CLARIFICATION.md). This does not establish ethics approval, exemption or independent external validation.
 2. Review the disclosed license inventory and artifact-access limitations. No anonymous public release or gated service has been promised as already available.
 3. Enter title, abstract, required keywords and author profiles in the OpenReview form; check the current form before final submission. PDF remains anonymous.
 4. Confirm prior GlobalSouthAI/GlobalSouthML activity and nominate an eligible reviewer if the venue's conditional rule applies.

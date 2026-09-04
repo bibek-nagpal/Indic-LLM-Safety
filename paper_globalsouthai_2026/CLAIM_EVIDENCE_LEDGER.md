@@ -20,7 +20,8 @@ Point estimates are recomputed from frozen scores. Statistical intervals are tak
 | Similarity gate versus clustering | near_duplicate_similarity.json; audit_sensitivity.py; construction code | SequenceMatcher within source bank; exact-only cross-bank; separate token Jaccard |
 | Bowker/truncation | analysis/results/; analysis/sensitivity_results/truncation_sensitivity.csv | Transition-symmetry and completed-output sensitivity, not causal identification |
 | Judge language labels | src/jailbreak_hermes/judge.py; frozen judge input format | Explicit en/rh labels and prompt text, not blinded |
-| Participant warnings/right to stop | human_validation/ANNOTATOR_INSTRUCTIONS.md | Consent, compensation and ethics approval/exemption not established |
+| Participant warnings/right to stop | human_validation/ANNOTATOR_INSTRUCTIONS.md | Specific consent procedure and ethics approval/exemption not established |
+| Human A background and preparation | Retrospective author statement, HUMAN_A_CLARIFICATION.md | Unpaid bilingual co-author; familiarization completed, no AI assistance reported; not an independent external assessor |
 | Official template/checklist | build/official_2026.zip; SUBMISSION_RULES.md | Complete checklist retained after appendix; not charged to main pages |
 
 See analysis/revision_verification.json (34 checks), NUMERICAL_AUDIT.md (30 checks), and REVISION_LOG.md for the full change mapping.

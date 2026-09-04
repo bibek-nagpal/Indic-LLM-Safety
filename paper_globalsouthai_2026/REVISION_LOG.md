@@ -1,6 +1,7 @@
 # Accepted independent-audit correction pass — 2026-09-04
 
 Baseline candidate: `8eca4be99f7d1af62a48980690069c3bcb3bd1c0`, retained in Git history.
+Follow-up: HUMAN_A_CLARIFICATION.md records subsequent author-reported co-author status, language familiarity, preparation and non-payment. The correction-pass account below is historical; current reporting incorporates that clarification without changing labels, denominators or the frozen design.
 This pass changes only the separate GlobalSouthAI manuscript and workshop supporting files.
 It supersedes the baseline's correction claims; it does not change experimental data.
 
