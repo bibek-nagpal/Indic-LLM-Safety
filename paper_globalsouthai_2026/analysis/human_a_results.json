@@ -1,0 +1,420 @@
+{
+  "agreement": {
+    "human_vs_gemini": {
+      "adjacent": 0.9403508771929825,
+      "exact": 0.7473684210526316,
+      "exact_ci": [
+        0.6936619718309859,
+        0.7986111111111112
+      ],
+      "human_higher": 58,
+      "human_minus_other_mean": 0.21052631578947367,
+      "kappa": 0.513017063388471,
+      "kappa_linear": 0.7131416568202704,
+      "kappa_quadratic": 0.8247779094529935,
+      "n": 285,
+      "other_higher": 14
+    },
+    "human_vs_gpt5mini": {
+      "adjacent": 0.9473684210526315,
+      "exact": 0.7964912280701755,
+      "exact_ci": [
+        0.75,
+        0.8422939068100358
+      ],
+      "human_higher": 14,
+      "human_minus_other_mean": -0.13333333333333333,
+      "kappa": 0.6304163126593032,
+      "kappa_linear": 0.7968873394071305,
+      "kappa_quadratic": 0.8854663580683332,
+      "n": 285,
+      "other_higher": 44
+    },
+    "nonassistance_binary": {
+      "exact": 0.887719298245614,
+      "gemini_0_same_items": 204,
+      "human_0": 176
+    },
+    "score3": {
+      "both_3": 27,
+      "gemini_3_confirmed_by_human_ge2": 32,
+      "gemini_3_same_items": 32,
+      "human_3": 57,
+      "human_3_scored_ge2_by_gemini": 52
+    },
+    "sensitivity_including_unverifiable_stimuli": {
+      "human_vs_gemini": {
+        "adjacent": 0.9407665505226481,
+        "exact": 0.7456445993031359,
+        "exact_ci": [
+          0.6923076923076923,
+          0.7964912280701755
+        ],
+        "human_higher": 59,
+        "human_minus_other_mean": 0.21254355400696864,
+        "kappa": 0.5142360306051474,
+        "kappa_linear": 0.7153597594138914,
+        "kappa_quadratic": 0.8271091830233899,
+        "n": 287,
+        "other_higher": 14
+      },
+      "human_vs_gpt5mini": {
+        "adjacent": 0.9477351916376306,
+        "exact": 0.7979094076655052,
+        "exact_ci": [
+          0.7509018937234784,
+          0.8435398886827459
+        ],
+        "human_higher": 14,
+        "human_minus_other_mean": -0.13240418118466898,
+        "kappa": 0.6349721503442831,
+        "kappa_linear": 0.7999698607945448,
+        "kappa_quadratic": 0.8874616049319962,
+        "n": 287,
+        "other_higher": 44
+      }
+    }
+  },
+  "checks": [
+    {
+      "check": "sample selection was independent of the automated scores",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "check": "frozen design is 180 pair-model jobs and 360 response items",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "check": "order key covers all 360 Human A positions",
+      "detail": "360",
+      "status": "PASS"
+    },
+    {
+      "check": "reconciliation key covers 360 frozen items",
+      "detail": "360",
+      "status": "PASS"
+    },
+    {
+      "check": "workbook has the frozen Annotation columns",
+      "detail": "('Item', 'Prompt', 'Model response', 'Your score (0-3)', 'Borderline', 'Cannot read')",
+      "status": "PASS"
+    },
+    {
+      "check": "at least 99 percent of delivered items re-hash to their frozen prompt and response, so the join is by identity and never by row order",
+      "detail": "verified=358 unverifiable=2",
+      "status": "PASS"
+    },
+    {
+      "check": "at least one score was returned",
+      "detail": "",
+      "status": "PASS"
+    },
+    {
+      "check": "scores lie on the frozen 0-3 scale",
+      "detail": "",
+      "status": "PASS"
+    }
+  ],
+  "completion": {
+    "borderline_rate_of_scored": 0.010526315789473684,
+    "borderline_ticked": 3,
+    "cannot_read_ticked": 0,
+    "completion_rate": 0.7916666666666666,
+    "contiguous_tail": false,
+    "items_delivered": 360,
+    "items_scored": 285,
+    "items_scored_including_unverifiable_stimuli": 287,
+    "items_unscored": 73,
+    "jobs_delivered": 180,
+    "jobs_with_both_languages_scored": 116,
+    "min_item_number_unscored": 1,
+    "scored_gemini_distribution": {
+      "0": 204,
+      "1": 3,
+      "2": 46,
+      "3": 32
+    },
+    "unscored_by_language": {
+      "en": 41,
+      "rh": 32
+    },
+    "unscored_by_model": {
+      "GPT-OSS-20B": 14,
+      "Nemotron-3-Nano": 28,
+      "Qwen3-30B-A3B": 31
+    },
+    "unscored_gemini_distribution": {
+      "0": 25,
+      "1": 2,
+      "2": 35,
+      "3": 11
+    },
+    "unscored_max_item_number": 320,
+    "unscored_without_cannot_read_flag": 73
+  },
+  "distributions": {
+    "gemini_same_items": {
+      "0": 204,
+      "1": 3,
+      "2": 46,
+      "3": 32
+    },
+    "gpt5mini_matched_items": {
+      "0": 178,
+      "2": 32,
+      "3": 75
+    },
+    "human": {
+      "0": 176,
+      "1": 24,
+      "2": 28,
+      "3": 57
+    },
+    "n_gpt5mini_matched": 285
+  },
+  "human_rates": {
+    "n_complete_jobs": 116,
+    "per_model": {
+      "GPT-OSS-20B": {
+        "gemini_en_nonassistance_pct": 92.0,
+        "gemini_forward_flips": 2,
+        "gemini_gap_ci_pp": [
+          -4.0,
+          8.0
+        ],
+        "gemini_gap_pp": 2.0,
+        "gemini_rh_nonassistance_pct": 90.0,
+        "human_en_nonassistance_pct": 92.0,
+        "human_forward_flips": 2,
+        "human_gap_ci_pp": [
+          2.0,
+          16.0
+        ],
+        "human_gap_pp": 8.0,
+        "human_rh_nonassistance_pct": 84.0,
+        "n_jobs": 50
+      },
+      "Nemotron-3-Nano": {
+        "gemini_en_nonassistance_pct": 64.70588235294117,
+        "gemini_forward_flips": 3,
+        "gemini_gap_ci_pp": [
+          -29.41176470588235,
+          5.882352941176471
+        ],
+        "gemini_gap_pp": -11.764705882352942,
+        "gemini_rh_nonassistance_pct": 76.47058823529412,
+        "human_en_nonassistance_pct": 50.0,
+        "human_forward_flips": 3,
+        "human_gap_ci_pp": [
+          -26.470588235294116,
+          14.705882352941176
+        ],
+        "human_gap_pp": -5.882352941176471,
+        "human_rh_nonassistance_pct": 55.88235294117647,
+        "n_jobs": 34
+      },
+      "Qwen3-30B-A3B": {
+        "gemini_en_nonassistance_pct": 78.125,
+        "gemini_forward_flips": 15,
+        "gemini_gap_ci_pp": [
+          25.0,
+          62.5
+        ],
+        "gemini_gap_pp": 43.75,
+        "gemini_rh_nonassistance_pct": 34.375,
+        "human_en_nonassistance_pct": 71.875,
+        "human_forward_flips": 11,
+        "human_gap_ci_pp": [
+          37.5,
+          71.875
+        ],
+        "human_gap_pp": 53.125,
+        "human_rh_nonassistance_pct": 18.75,
+        "n_jobs": 32
+      }
+    }
+  },
+  "provenance": {
+    "design": {
+      "allocation": "exactly 5 pair-model jobs in each of the 36 model/category/strategy cells; both languages",
+      "cluster_unit_for_analysis": "pair-model job",
+      "response_items_per_annotator": 360,
+      "selected_pair_model_jobs": 180,
+      "selection_seed": 20260831,
+      "selection_used_automated_scores": false
+    },
+    "stimulus_unverifiable_items": 2,
+    "stimulus_verified_items": 358,
+    "workbook": "Human_A_annotations.xlsx",
+    "workbook_sha256": "a68c9305e7fdb6f5865aebb25e4cffe9b554c97dd02d19882fa50c1da1e4b75f"
+  },
+  "status": "PASS",
+  "stratified": {
+    "by_language": {
+      "en": {
+        "human_vs_gemini": {
+          "adjacent": 0.9781021897810219,
+          "exact": 0.781021897810219,
+          "exact_ci": [
+            0.708029197080292,
+            0.8467153284671532
+          ],
+          "human_higher": 26,
+          "human_minus_other_mean": 0.1678832116788321,
+          "kappa": 0.5046999276934202,
+          "kappa_linear": 0.7427010414888169,
+          "kappa_quadratic": 0.874178735429177,
+          "n": 137,
+          "other_higher": 4
+        },
+        "human_vs_gpt5mini": {
+          "adjacent": 0.9708029197080292,
+          "exact": 0.8321167883211679,
+          "exact_ci": [
+            0.7664233576642335,
+            0.8905109489051095
+          ],
+          "human_higher": 6,
+          "human_minus_other_mean": -0.11678832116788321,
+          "kappa": 0.6438340680456651,
+          "kappa_linear": 0.8143631436314362,
+          "kappa_quadratic": 0.8979629836517335,
+          "n": 137,
+          "other_higher": 17
+        }
+      },
+      "rh": {
+        "human_vs_gemini": {
+          "adjacent": 0.9054054054054054,
+          "exact": 0.7162162162162162,
+          "exact_ci": [
+            0.6418918918918919,
+            0.7905405405405406
+          ],
+          "human_higher": 32,
+          "human_minus_other_mean": 0.25,
+          "kappa": 0.5089659530768624,
+          "kappa_linear": 0.6839438251049661,
+          "kappa_quadratic": 0.7850856606430415,
+          "n": 148,
+          "other_higher": 10
+        },
+        "human_vs_gpt5mini": {
+          "adjacent": 0.9256756756756757,
+          "exact": 0.7635135135135135,
+          "exact_ci": [
+            0.6959459459459459,
+            0.831081081081081
+          ],
+          "human_higher": 8,
+          "human_minus_other_mean": -0.14864864864864866,
+          "kappa": 0.6106434155141311,
+          "kappa_linear": 0.7762587090837387,
+          "kappa_quadratic": 0.8711329645564434,
+          "n": 148,
+          "other_higher": 27
+        }
+      }
+    },
+    "by_model": {
+      "GPT-OSS-20B": {
+        "human_vs_gemini": {
+          "adjacent": 0.9811320754716981,
+          "exact": 0.8962264150943396,
+          "exact_ci": [
+            0.819047619047619,
+            0.9619047619047619
+          ],
+          "human_higher": 8,
+          "human_minus_other_mean": 0.07547169811320754,
+          "kappa": 0.46118299445471345,
+          "kappa_linear": 0.7158176943699732,
+          "kappa_quadratic": 0.8288565976809041,
+          "n": 106,
+          "other_higher": 3
+        },
+        "human_vs_gpt5mini": {
+          "adjacent": 1.0,
+          "exact": 0.9528301886792453,
+          "exact_ci": [
+            0.8990592082908597,
+            0.9907407407407407
+          ],
+          "human_higher": 1,
+          "human_minus_other_mean": -0.02830188679245283,
+          "kappa": 0.7806291390728477,
+          "kappa_linear": 0.9141561386459346,
+          "kappa_quadratic": 0.9685758330368789,
+          "n": 106,
+          "other_higher": 4
+        }
+      },
+      "Nemotron-3-Nano": {
+        "human_vs_gemini": {
+          "adjacent": 0.8901098901098901,
+          "exact": 0.6373626373626373,
+          "exact_ci": [
+            0.539304235090752,
+            0.7333333333333333
+          ],
+          "human_higher": 27,
+          "human_minus_other_mean": 0.32967032967032966,
+          "kappa": 0.40687339522022525,
+          "kappa_linear": 0.6065251572327044,
+          "kappa_quadratic": 0.736591179976162,
+          "n": 91,
+          "other_higher": 6
+        },
+        "human_vs_gpt5mini": {
+          "adjacent": 0.9340659340659341,
+          "exact": 0.7142857142857143,
+          "exact_ci": [
+            0.6276595744680851,
+            0.7956989247311828
+          ],
+          "human_higher": 6,
+          "human_minus_other_mean": -0.16483516483516483,
+          "kappa": 0.5574261129816686,
+          "kappa_linear": 0.7388014264590763,
+          "kappa_quadratic": 0.8420642510537315,
+          "n": 91,
+          "other_higher": 20
+        }
+      },
+      "Qwen3-30B-A3B": {
+        "human_vs_gemini": {
+          "adjacent": 0.9431818181818182,
+          "exact": 0.6818181818181818,
+          "exact_ci": [
+            0.5934065934065934,
+            0.7701149425287356
+          ],
+          "human_higher": 23,
+          "human_minus_other_mean": 0.25,
+          "kappa": 0.5270633397312859,
+          "kappa_linear": 0.7261577887607542,
+          "kappa_quadratic": 0.8414414414414415,
+          "n": 88,
+          "other_higher": 5
+        },
+        "human_vs_gpt5mini": {
+          "adjacent": 0.8977272727272727,
+          "exact": 0.6931818181818182,
+          "exact_ci": [
+            0.6049310938845823,
+            0.7816091954022989
+          ],
+          "human_higher": 7,
+          "human_minus_other_mean": -0.22727272727272727,
+          "kappa": 0.5370226032735775,
+          "kappa_linear": 0.7219101123595506,
+          "kappa_quadratic": 0.8354570637119114,
+          "n": 88,
+          "other_higher": 20
+        }
+      }
+    }
+  }
+}

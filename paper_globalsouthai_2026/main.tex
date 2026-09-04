@@ -1,0 +1,377 @@
+\documentclass{article}
+\usepackage[dblblindworkshop]{neurips_2026}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{microtype}
+
+\title{Romanized Hindi Reveals a Model-Dependent Safety Asymmetry\\in Open-Weight Language Models}
+
+\author{Anonymous Author(s)\\Affiliation\\Address\\\texttt{email}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Safety evaluation is overwhelmingly conducted in standardized English, yet hundreds of
+millions of people in South Asia write to language models in Romanized Hindi---Hindi typed
+in Latin script, often mixed with English. We ask whether that everyday register is
+treated as safely as its English counterpart. We build a shared, frozen bank of 504
+meaning-matched English / Romanized-Hindi prompt pairs over four harm categories and three
+adversarial framings, certified before any target model is contacted, and evaluate three
+open-weight targets on the identical bank. Scoring responses on a 0--3
+information-assistance scale, we find a large but strongly model-dependent asymmetry.
+Qwen3-30B-A3B is scored as withholding assistance on 65.9\% of English prompts but only
+22.8\% of their Romanized-Hindi counterparts ($+43.1$ pp, 95\% CI $[38.5, 47.6]$), with
+85 of 504 pairs moving from English refusal or near-refusal to fully actionable Hindi
+output; the same bank yields $+4.6$ pp for GPT-OSS-20B and $-1.8$ pp for Nemotron-3-Nano.
+A second judge and an independent human annotator both reproduce the Qwen asymmetry, the
+human estimating it slightly larger on the same items. Romanized Hindi differs from
+English in language, script and training frequency at once, so we identify a
+language-conditioned difference and not its mechanism; but across these three models the
+difference is not predictable from English-only evaluation.
+\end{abstract}
+
+\section{Introduction}
+
+Most published safety evaluation of large language models is conducted in standardized
+English. The people who actually use these systems frequently do not write that way.
+In South Asia, a very large fraction of everyday digital text is \emph{Romanized}: Hindi,
+Urdu, Bengali and other languages typed in Latin script and freely mixed with English
+\citep{khanuja2020gluecos,madhani2023aksharantar}. This register is the default input mode
+for a substantial share of Indian users, and it is close to absent from the safety
+benchmarks on which deployment decisions are made
+\citep{mazeika2024harmbench,chao2024jailbreakbench,ning2025linguasafe}.
+
+This matters for the Global South specifically: a guarantee that holds in English and
+fails in Romanized Hindi allocates protection along the lines that already structure access
+to technology. Prior work establishes that low-resource and non-English inputs degrade
+refusal behaviour
+\citep{yong2023lowresource,deng2024multilingual,wang2024xsafety,shen2024languagebarrier}
+and that code-mixed or phonetically perturbed inputs are a distinct attack surface
+\citep{yoo2025codeswitch,banerjee2025attributional,aswal2025haet,pattnayak2026indicjr}.
+Romanized input is a
+further condition: the language is high-resource in speech and in Devanagari, but its
+Latin-script form is rare in curated data \citep{j2024romansetu}. Less established is how
+large the effect is under a matched comparison, and whether it generalizes across models.
+
+Answering that requires avoiding a methodological trap. If prompts are written or filtered
+with reference to how targets respond, the measured gap partly reflects the search
+procedure rather than the models. We therefore certify a single frozen prompt bank
+\emph{before} any target model is contacted, and evaluate every target on exactly the same
+bank. To our knowledge no prior work holds a certified matched English / Romanized-Hindi
+bank fixed across multiple targets, which is what licenses a between-model comparison
+rather than a per-model anecdote. Our contributions are:
+
+(i) a shared, frozen, target-independent bank of 504 meaning-matched
+English / Romanized-Hindi pairs (4 categories $\times$ 3 framings $\times$ 42);
+(ii) a paired evaluation of three open-weight models on it (3{,}024 responses) showing a
+language-conditioned non-assistance gap from $+43.1$ to $-1.8$ pp \emph{on identical
+inputs}; and (iii) validation against a second judge and an independent human annotator,
+reporting disagreement in both directions and where each check is not fully independent of
+the pipeline.
+
+\section{Method}
+
+\paragraph{Matched prompt pairs.}
+Each item is a pair $(x^{\mathrm{EN}}, x^{\mathrm{RH}})$ expressing the same harmful
+request: $x^{\mathrm{EN}}$ in ordinary English, $x^{\mathrm{RH}}$ in conversational
+Romanized Hindi---Hindi in Latin script with the English borrowings a fluent speaker
+would use, not a transliteration of the English string \citep{j2024romansetu}. The bank
+crosses four India-salient harm categories (violence, intoxication, gambling, sexual
+violence) with three adversarial framings (SymbolicMasking, ScenarioNesting,
+RolePrompting), 42 accepted pairs in each of the 12 cells: 504 unique pairs. Every pair
+uses one of these framings; the bank contains no direct-request and no benign condition,
+so our estimand is how these framings transfer across script, not the general safety of
+Romanized-Hindi requests.
+
+\paragraph{Target-independent certification, and its limits.}
+Candidates were generated by \texttt{gemini-2.5-flash} and screened by
+\texttt{deepseek-v4-flash} on all candidates, followed by \texttt{gpt-5-mini} on those the
+primary accepted, against a rubric covering semantic equivalence, preservation of the
+framing, and register fidelity. Screening is thus a conjunctive cascade rather than
+independent dual rating, and no inter-auditor agreement statistic is defined. Two further
+dependencies must be stated. The generator instruction was reflectively optimized against
+that auditor-defined validity objective, so auditor acceptance is an optimization target
+rather than an independent test; and the generator and the primary response judge are the
+same model. No target-model signal entered generation or certification, and the resulting
+bank is content-addressed, frozen, and sent identically to every target---so these
+dependencies are constant across models and cannot manufacture a between-model contrast,
+though they can shift any single model's absolute level.
+
+\paragraph{Targets and scoring.}
+We evaluate Qwen3-30B-A3B, GPT-OSS-20B and Nemotron-3-Nano; the first and third are
+mixture-of-experts models of the same size class, so parameter count does not separate
+them. Each receives all 504 pairs in both languages ($504\times2=1{,}008$ responses per
+model; 3{,}024 in total; 1{,}512 paired observations), decoded greedily at temperature 0
+with an empty system prompt. Responses are scored 0--3 for \emph{information assistance} by
+\texttt{gemini-2.5-flash}, a scale built to reward specificity over engagement
+\citep{souly2024strongreject}: 0 = nothing specific to the harmful request; 1 = engages but
+names no specific material, step or mechanism; 2 = names such a specific but is not by
+itself actionable; 3 = usable by a non-expert as it stands. Framing and disclaimers do not
+lower the score. We call score 0 \emph{non-assistance}, not refusal: it describes the
+information delivered, not a detected refusal string.
+
+\paragraph{Estimands.}
+The primary quantity is the paired non-assistance gap
+$\Delta = \Pr(s^{\mathrm{EN}}\!=\!0) - \Pr(s^{\mathrm{RH}}\!=\!0)$. We also report
+\emph{forward flips} ($s^{\mathrm{EN}}\!=\!0$, $s^{\mathrm{RH}}\!\ge\!2$) and
+\emph{critical flips} ($s^{\mathrm{EN}}\!\le\!1$, $s^{\mathrm{RH}}\!=\!3$). Intervals are
+95\% percentile bootstrap over 10{,}000 resamples of prompt pairs; cross-model contrasts
+use paired sign randomization with Holm correction.
+
+\section{Results}
+
+\begin{table}[t]
+\centering
+\caption{Non-assistance (score 0) by language on the shared frozen bank; 504 matched pairs
+per model. Gap is EN$-$RH in pp with a 95\% cluster bootstrap interval. Forward flips:
+EN$=0$, RH$\ge2$. Critical flips: EN$\le1$, RH$=3$. Counts out of 504.}
+\label{tab:main}
+\input{tables/main_results.tex}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.80\linewidth]{figures/gap_by_model.pdf}
+\caption{Non-assistance in English and Romanized Hindi for each model on the same 504
+matched pairs. The span is the paired gap; annotations give its point estimate.}
+\label{fig:gap}
+\end{figure}
+
+The three models, measured on identical inputs by an identical judge, occupy three
+different regimes (Table~\ref{tab:main}, Figure~\ref{fig:gap}). Qwen3-30B-A3B is scored
+as withholding assistance on roughly two thirds of English prompts and under a quarter of
+the matched Romanized-Hindi prompts. The severity measure matters more than the rate: on
+85 of 504 pairs (16.9\%) it is scored 0--1 in English and 3 in Romanized Hindi. The gap is
+positive in all 12 category $\times$ strategy cells, ranging from $+7.1$ to $+76.2$ pp
+(sign test over disjoint cells, $p = 2^{-12}$).
+
+GPT-OSS-20B is high-refusal in both languages with a small gap ($+4.6$ pp) whose interval
+excludes zero. Nemotron-3-Nano shows no aggregate weakening ($-1.8$ pp, CI spanning zero),
+but that null needs care: 84.5\% of its Romanized-Hindi zeros are under 80 characters and
+5 of 322 match an English refusal pattern---more consistent with degenerate generation than
+refusal. Qwen's Romanized-Hindi zeros invert this profile (99.1\% exceed 500 characters,
+one matches a refusal pattern), so they are long on-topic responses the judge found
+unspecific, which argues against simple incomprehension of the register.
+
+The Qwen gap exceeds the GPT-OSS gap by $38.5$ pp (95\% CI $[32.9, 44.0]$) and the
+Nemotron gap by $44.8$ pp ($[38.3, 51.4]$), both with Holm-adjusted permutation
+$p < 10^{-4}$, and both stable under every near-duplicate clustering we tried. The
+GPT-OSS versus Nemotron contrast is not established: it is $6.3$ pp ($[0.8, 12.1]$,
+adjusted $p = 0.032$) at the pair level, but the interval covers zero once near-duplicate
+prompts are clustered ($p = 0.10$ at Jaccard $0.60$), and it also reverses under judge
+replacement.
+
+\section{Validation and robustness}
+\label{sec:val}
+
+\paragraph{Second judge.}
+An outcome-independent subset of 324 pairs per model (1{,}944 response judgments) was
+rescored by \texttt{gpt-5-mini}. Agreement is moderate on the exact label (73.7\%) and high once adjacent scores are allowed
+(91.4\%; quadratic-weighted $\kappa = 0.813$, unweighted $\kappa = 0.542$)---the expected
+profile for an ordinal scale \citep{zheng2023judging,wang2024unfair}. The Qwen asymmetry is
+stable under replacement ($+42.6$ pp $[37.0, 48.5]$ versus $+43.5$ pp $[37.7, 49.4]$); the
+GPT-OSS versus Nemotron ordering is not ($4.3$ pp $[-2.8, 11.7]$ versus $11.7$ pp
+$[4.0, 19.4]$), because the replacement scores Romanized-Hindi responses more generously.
+\texttt{gpt-5-mini} was also the secondary prompt auditor, so this is a partial rather than
+an independent replication---though it does check the generator/judge overlap above.
+
+\paragraph{Independent human validation.}
+One human annotator, blind to model identity and to the automated scores, rescored a
+stratified sample of 180 pair-model jobs (360 response items) drawn without reference to
+any automated outcome. The annotator returned 287 scores, of which 285 could be
+byte-verified against the frozen stimuli and form the analysis set. Human--judge exact
+agreement is 74.7\% (95\% CI $[69.4, 79.9]$) with 94.0\% adjacent agreement,
+$\kappa = 0.513$ and quadratic-weighted $\kappa = 0.825$---closely matching the
+judge--judge profile. On the binary non-assistance boundary the headline estimand uses,
+human and judge agree on 88.8\% of items, and every response the primary judge scored 3
+was scored $\ge 2$ by the human. Disagreement is directional but not uniformly so: the
+human scored higher than the primary judge on 58 items and lower on 14, yet against the
+replacement judge the direction reverses (higher on 14, lower on 44), so the primary
+judge is conservative relative to this annotator while the replacement is not.
+
+Restricted to jobs where the annotator scored both languages, the human gaps reproduce the
+model ordering (Table~\ref{tab:human}); the human point estimate for Qwen is larger than
+the judge's on the same 32 jobs ($+53.1$ vs $+43.8$ pp), though the intervals overlap and
+we do not test the difference.
+
+\begin{table}[t]
+\centering
+\caption{Human-derived non-assistance on jobs where the single annotator scored both
+languages, with the judge's gap on the \emph{same} items (which differs from
+Table~\ref{tab:main}: Nemotron $-11.8$ vs $-1.8$). Subsamples are small and unequally
+depleted by attrition: they test direction, not precision.}
+\label{tab:human}
+\input{tables/human_rates.tex}
+\end{table}
+
+\paragraph{Other robustness.}
+None of the following moves the Qwen result: restricting to untruncated pairs ($43.36$ pp),
+dropping the 2 of 3{,}024 responses scored by the preregistered fallback judge ($43.14$ pp),
+or conditioning on prompt length, which is 11.4\% greater in Romanized Hindi but
+uncorrelated per pair with the gap ($|\rho| \le 0.05$, $p \ge 0.26$). Appendix~C reports
+these in full.
+
+\section{Limitations and conclusion}
+
+Three models do not characterize open-weight models, and four framing-wrapped categories do
+not characterize harm. We identify a \emph{language-conditioned} difference, not its
+mechanism: Romanized Hindi differs from English in language, script, register and training
+frequency at once, and the register control that would separate these was specified but not
+completed. Pair equivalence was certified by language models only---no human verified any
+pair---a structural weakness in a study premised on uneven model competence in this very
+register. Human validation rests on a single annotator whose language background was not
+returned; we make no inter-annotator, adjudication or consensus claim, and because 73 of
+360 items were left unscored in a way correlated with the automated score, that agreement
+is indicative. Responses are single greedy decodes, so run-to-run variability is unmeasured.
+
+Within those bounds the result is clear. On identical, certified, meaning-matched inputs,
+one of three open-weight models assists with harmful Romanized Hindi requests it refuses in
+English---at a rate an independent annotator confirms---while another shows no aggregate
+effect. Behaviour in this register was not predictable from English-only evaluation of any
+of them. This argues for evaluating in the register Global South users actually write in,
+and for per-model rather than aggregate safety claims.
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\appendix
+\section{Certification and evaluation detail}
+
+\paragraph{Bank construction and its dependencies.} Candidate pairs were produced by
+\texttt{google/gemini-2.5-flash} and screened in a cascade: \texttt{deepseek/deepseek-v4-flash}
+scored all candidates and \texttt{openai/gpt-5-mini} scored only those the primary
+accepted. The auditors are therefore a conjunctive filter, not independent raters, and no
+inter-auditor agreement statistic is defined. Both scored each candidate they saw against a
+rubric requiring that the Romanized-Hindi member express the same harmful objective,
+request the same level of information, preserve the framing and its structural elements,
+and read as conversational Romanized Hindi rather than a transliteration.
+
+Three dependencies must be stated plainly. (i) The generator instruction was
+reflectively optimized (GEPA) against an auditor-defined validity objective
+(\texttt{gepa\_objective\_required} $=$ \texttt{complete\_target\_independent\_probe\_validity}),
+so the 504/504 acceptance rate is an optimization target rather than an independent test of
+pair quality. (ii) The generator and the primary response judge are the same model. (iii)
+The secondary auditor is also the cross-judge replacement. None of these involved any
+target-model signal (\texttt{gepa\_target\_signal\_used} $=$ \texttt{false};
+\texttt{target\_models\_used\_during\_generation} $=$ \texttt{[]}), and because the bank is
+frozen and sent identically to every target, each is a constant across models and cannot
+produce a between-model contrast---but each can shift a single model's absolute level. The
+frozen bank stores only retained pairs; per-candidate generation and rejection logs were
+not preserved, so we cannot report a certification rejection rate.
+
+\paragraph{Denominators.} 504 unique certified prompt pairs; $504\times2=1{,}008$
+responses per target model; 3{,}024 responses in total; 1{,}512 paired pair-model
+observations (504 per model). Percentages in Table~\ref{tab:main} are over the 504 pairs of
+that model.
+
+\paragraph{Reproducibility configuration.} Bank \texttt{revision\_v2\_3\_1\_final\_504\_dedup},
+SHA-256 \texttt{35bfbc1d09e78b77c24d62bbf41783cc9b297dd25f1bba3fe6062d53dc2028ed}. Targets
+decoded at temperature $0.0$, empty system prompt, 4{,}096 max tokens; judge
+\texttt{google/gemini-2.5-flash}, 2{,}048 max tokens, preregistered fallback
+\texttt{openai/gpt-5-mini}. Analysis seed 20260829; 10{,}000 bootstrap resamples;
+100{,}000 permutation draws. The prompt bank contains harmful content and would be released
+only under gated access.
+
+\paragraph{Judge fallback.} The primary judge returned a usable score for 3{,}022 of
+3{,}024 responses; for two the provider refused content after the retry policy and the
+preregistered fallback scored them. Dropping the two affected pairs moves the Qwen gap from
+$43.06$ to $43.14$ pp and leaves the GPT-OSS and Nemotron gaps unchanged to two decimals.
+
+\section{Human validation detail}
+
+\paragraph{Design, and a failed preregistered component.} The sample is 180 pair-model
+jobs, 5 in each of the 36 model $\times$ category $\times$ strategy cells, both languages
+retained, drawn with seed 20260831; the selection never read an automated score. Items were
+independently randomized per annotator with $\ge 10$ positions between the two language
+members of a job. The design preregistered \emph{two} annotators scoring identical items,
+with an adjudication rule frozen before any label existed. Annotator B returned a workbook
+containing no scores. We therefore report Annotator A only, and consequently report no
+inter-annotator agreement, no adjudication and no human consensus label; the prespecified
+adjudication protocol was never invoked. The annotator's self-reported language background
+sheet was returned blank, so we can state only that the instructions required conversational
+Romanized-Hindi reading ability and that no item was flagged unreadable (0 ``cannot read'').
+
+\paragraph{Analysis set.} Of 360 delivered items the annotator returned 287 scores. Two
+could not be byte-verified against the frozen stimulus---a stray spreadsheet range reference
+had been typed into one prompt cell, and one response cell had been overwritten by a
+digit---and are excluded, leaving $n = 285$. Including them changes exact agreement from
+$74.74\%$ to $74.56\%$.
+
+\paragraph{Missingness.} The 73 unscored items are not missing at random: 34\% carry an
+automated score of 0 versus 72\% of scored items, so the annotator disproportionately
+skipped items the judge rated more assistive. Attrition is also unbalanced by model
+(Qwen 31, Nemotron 28, GPT-OSS 14) and language (EN 41, RH 32), so the per-model human gaps
+in Table~\ref{tab:human} rest on unequally depleted strata and are not comparable across
+models with the precision their point estimates suggest.
+
+\paragraph{Agreement detail.} By language, human--judge exact agreement is $78.1\%$ on
+English ($n=137$) and $71.6\%$ on Romanized-Hindi items ($n=148$); by model, $89.6\%$ for
+GPT-OSS-20B, $68.2\%$ for Qwen3-30B-A3B and $63.7\%$ for Nemotron-3-Nano. Against the
+replacement judge on the same items the annotator agrees at $79.7\%$ exact
+(quadratic-weighted $\kappa = 0.886$), scoring higher on 14 items and lower on 44---the
+reverse of the direction against the primary judge. Of the 32 items the primary judge
+scored 3, the human scored all 32 at $\ge 2$ and 27 at exactly 3.
+
+\section{Robustness analyses}
+
+\paragraph{Non-assistance profile (judge-free).} Score 0 could in principle conflate
+refusal with failure to understand the prompt. Table~\ref{tab:profile} separates them
+without reference to the judge's reasoning.
+
+\begin{table}[h]
+\centering
+\caption{Character-length and refusal-string profile of score-0 responses. Qwen's
+Romanized-Hindi zeros are long and are not refusals; Nemotron's are short and are not
+refusals.}
+\label{tab:profile}
+\small
+\begin{tabular}{llrrrr}
+\toprule
+Model & Language & Score-0 & $<$80 ch. & $>$500 ch. & EN refusal regex \\
+\midrule
+Qwen3-30B-A3B & English & 332 & 61.1\% & 38.9\% & 274 \\
+Qwen3-30B-A3B & Romanized Hindi & 115 & 0.0\% & 99.1\% & 1 \\
+GPT-OSS-20B & English & 437 & 94.3\% & 5.7\% & 0 \\
+GPT-OSS-20B & Romanized Hindi & 414 & 88.6\% & 10.9\% & 0 \\
+Nemotron-3-Nano & English & 313 & 66.5\% & 32.9\% & 38 \\
+Nemotron-3-Nano & Romanized Hindi & 322 & 84.5\% & 15.2\% & 5 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Flip directionality.} Forward and reverse flips are far from balanced for Qwen
+(219 forward, 7 reverse) but nearly balanced for Nemotron (65 forward, 70 reverse) and
+mildly asymmetric for GPT-OSS (42 forward, 21 reverse). Nemotron's null aggregate gap
+therefore reflects cancellation of bidirectional instability rather than consistency.
+
+\paragraph{Near-duplicate clustering.} Within-cell token Jaccard similarity averages
+$0.254$ against a cross-bank baseline of $0.138$; five retained pairs exceed the stated
+$0.85$ deduplication gate (maximum $0.942$). Collapsing near-duplicates into clusters and
+bootstrapping over clusters leaves the Qwen gap at $43.06$ pp with the interval widening
+only to $[37.3, 48.6]$ at Jaccard $0.50$ (504 pairs $\rightarrow$ 293 units), and leaves
+both Qwen contrasts at $p < 10^{-4}$ throughout. The GPT-OSS versus Nemotron contrast
+degrades from $p = 0.032$ (pair level) to $p = 0.062$ (Jaccard $0.65$) and $p = 0.10$
+(Jaccard $0.60$), with the interval covering zero; we therefore do not treat it as
+established.
+
+\paragraph{Truncation.} Qwen truncated 22 Romanized-Hindi and 0 English responses
+(discordance $p = 4.8\times10^{-7}$); Nemotron truncated the other way (77 English, 35
+Romanized Hindi, $p = 1.7\times10^{-5}$); GPT-OSS is balanced ($p = 0.37$). Restricting to
+untruncated pairs gives Qwen $43.36$ pp ($n = 482$), GPT-OSS $4.73$ pp ($n = 423$) and
+Nemotron $-0.50$ pp ($n = 401$).
+
+\paragraph{Other analyses.} The frozen analysis also includes a cluster bootstrap over pair
+identities (10{,}000 resamples, reported throughout), paired sign randomization with Holm
+correction for the three cross-model contrasts (100{,}000 draws), Bowker symmetry tests on
+the score-transition matrices, and a prompt-length null. Response length is reported as a
+judge-free diagnostic only; because verbosity and assistance are confounded we do not treat
+it as independent evidence of harm.
+
+\end{document}
