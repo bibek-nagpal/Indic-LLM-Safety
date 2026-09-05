@@ -2,6 +2,8 @@
 
 This final pass preserves the scientific record below while replacing audit-like and defensive prose with direct claims, methods and limitations. It also checks the workshop manuscript against the current official GlobalSouthAI submission rules, NeurIPS 2026 style, Code of Ethics and Paper Checklist. The sole human audit is classified narrowly as work performed by an unpaid co-author within the research team: no external participants, crowdworkers or contractors were recruited, so checklist Questions 14--15 are marked not applicable. This classification is not a formal institutional exemption determination. No experiment, model call or frozen artifact changed.
 
+Surgical follow-up from `24ae35fa0302ebef7d2d9ab5feec5045469dbe53`: the latest Human A workbook still contains three blank score cells (items 314, 319 and 320), so the completed human statistics remain unchanged. Table 1 now identifies the main interval as a pair-level percentile bootstrap, distinct from the near-duplicate cluster-bootstrap sensitivity analysis. Remaining unsupported or internal-process wording was removed. Checklist Question 12 remains No after partial license verification because the routed API-service and full software-asset terms are not comprehensively documented.
+
 ## Accepted independent-audit correction pass — 2026-09-04
 
 Baseline candidate: `8eca4be99f7d1af62a48980690069c3bcb3bd1c0`, retained in Git history.

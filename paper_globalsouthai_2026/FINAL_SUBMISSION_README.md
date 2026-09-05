@@ -1,7 +1,7 @@
 # Revised GlobalSouthAI submission candidate
 
 Upload candidate: `C:\Prahlada\paper_globalsouthai_2026\main.pdf`.
-This final pass starts from `15d8a4166b235ab6fd4b5805d607c6e5b8478932`; the earlier independent-audit baseline `8eca4be99f7d1af62a48980690069c3bcb3bd1c0` remains preserved. See REVISION_LOG.md for the correction ledger.
+This surgical pass starts from `24ae35fa0302ebef7d2d9ab5feec5045469dbe53`; the earlier independent-audit baseline `8eca4be99f7d1af62a48980690069c3bcb3bd1c0` remains preserved. See REVISION_LOG.md for the correction ledger.
 
 | Property | Verified result |
 |---|---|

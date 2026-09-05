@@ -52,7 +52,7 @@ Searched the configured legacy-claim and forbidden-phrase regression list.
 
 ## Required-disclaimer sweep
 
-Searched for: `single-co-author human audit`, `final generation used the seed unchanged`, `only pairs accepted by both were retained`, `Gemini generated the prompts and also served as the primary response judge`, `explicit EN/RH language label`, `both prompt conditions use Latin script`, `SequenceMatcher`, `Cross-bank consolidation removed exact matches only`, `does not adjust for prompt length`, `no benign or direct-request control`, `unpaid co-author`, `without AI assistance`, `knowingly and voluntarily undertook`, `automated-judge scores`, `aggregate experimental results`, `357 contain valid scores`, `three labels are blank`, `Three labeled rows fail`, `174 complete pair-model jobs`, `No crowdsourcing or human-subject recruitment was conducted`
+Searched for: `single-co-author human audit`, `final generation used the seed unchanged`, `only pairs accepted by both were retained`, `Gemini generated the prompts and also served as the primary response judge`, `explicit EN/RH language label`, `both prompt conditions use Latin script`, `SequenceMatcher`, `Cross-bank consolidation removed exact matches only`, `does not adjust for prompt length`, `no benign or direct-request control`, `95% pair-level percentile-bootstrap interval`, `should be evaluated separately for each model`, `unpaid co-author`, `without AI assistance`, `knowingly and voluntarily undertook`, `automated-judge scores`, `aggregate experimental results`, `357 contain valid scores`, `three labels are blank`, `Three labeled rows fail`, `174 complete pair-model jobs`, `No crowdsourcing or human-subject recruitment was conducted`
 
 **Result:** all present
 

@@ -1,8 +1,8 @@
 {
-  "baseline": "15d8a4166b235ab6fd4b5805d607c6e5b8478932",
+  "baseline": "24ae35fa0302ebef7d2d9ab5feec5045469dbe53",
   "status": "PASS",
   "frozen_entries": 82,
-  "pdf_sha256": "c727d4ceacb5de56a6d4ab309332517f266575649b98f64028188c97dbbb6a4f",
+  "pdf_sha256": "6fa1d63d16d64b2771ba2dc5737b15533ea24fc596dfd57ed773d5f6c9347963",
   "pdf_pages": 15,
   "references_begin_page": 5,
   "checks": [
@@ -211,19 +211,12 @@
       "name": "Tracked changes restricted to workshop",
       "pass": true,
       "detail": [
-        "paper_globalsouthai_2026/CLAIM_EVIDENCE_LEDGER.md",
-        "paper_globalsouthai_2026/FINAL_SUBMISSION_CHECKLIST.md",
         "paper_globalsouthai_2026/FINAL_SUBMISSION_README.md",
         "paper_globalsouthai_2026/NUMERICAL_AUDIT.md",
-        "paper_globalsouthai_2026/REVIEWER_RISK_AUDIT.md",
         "paper_globalsouthai_2026/REVISION_LOG.md",
-        "paper_globalsouthai_2026/analysis/headline_verification.json",
         "paper_globalsouthai_2026/analysis/numerical_audit.py",
-        "paper_globalsouthai_2026/analysis/revision_verification.json",
-        "paper_globalsouthai_2026/analysis/verify_headline.py",
         "paper_globalsouthai_2026/analysis/verify_revision.py",
         "paper_globalsouthai_2026/checklist.tex",
-        "paper_globalsouthai_2026/figures/gap_by_model.pdf",
         "paper_globalsouthai_2026/main.pdf",
         "paper_globalsouthai_2026/main.tex"
       ]

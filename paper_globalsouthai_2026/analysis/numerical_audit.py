@@ -111,7 +111,8 @@ REQUIRED = ["single-co-author human audit",
             "explicit EN/RH language label",
             "both prompt conditions use Latin script", "SequenceMatcher",
             "Cross-bank consolidation removed exact matches only", "does not adjust for prompt length",
-            "no benign or direct-request control"]
+            "no benign or direct-request control", "95% pair-level percentile-bootstrap interval",
+            "should be evaluated separately for each model"]
 REQUIRED += ["unpaid co-author", "without AI assistance", "knowingly and voluntarily undertook",
              "automated-judge scores", "aggregate experimental results",
              "357 contain valid scores", "three labels are blank",
@@ -130,7 +131,8 @@ FORBIDDEN = ["reflectively optimized", "cannot manufacture", "cannot produce a b
              "preregistered fallback", "register-sensitive evaluation", "per-model claims",
              "without claiming that work validates", "conjunctive cascade, not",
              "not independent validation or a test of equality",
-             "No formal institutional ethics/IRB review or approval was obtained"]
+             "No formal institutional ethics/IRB review or approval was obtained",
+             "95% cluster bootstrap interval", "everyday registers"]
 stale_hits += [s for s in FORBIDDEN if s.lower() in flat.lower()]
 
 out = ["# Numerical consistency audit", "",

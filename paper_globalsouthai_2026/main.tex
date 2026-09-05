@@ -42,12 +42,12 @@ fail to characterize Romanized-Hindi behavior.
 
 English-focused benchmarks such as HarmBench and JailbreakBench provide important safety
 measurements \citep{mazeika2024harmbench,chao2024jailbreakbench}, but multilingual evaluation
-must also cover the written forms people use. Existing NLP resources increasingly include
+must also cover the written forms people use. Existing NLP resources include
 code-switching and Latin-script representations of Indic languages
 \citep{khanuja2020gluecos,madhani2023aksharantar}.
 
-Safety assessments that omit Romanized and code-mixed inputs leave practically important
-multilingual conditions unevaluated.
+Safety assessments limited to standard English leave Romanized and code-mixed inputs
+unevaluated.
 Prior work documents safety failures under low-resource and non-English inputs
 \citep{yong2023lowresource,deng2024multilingual,wang2024xsafety,shen2024languagebarrier}
 and under code-mixed or phonetically perturbed inputs
@@ -124,7 +124,7 @@ use paired sign randomization with Holm correction.
 \begin{table}[t]
 \centering
 \caption{Non-assistance (score 0) by language on the shared frozen bank; 504 matched pairs
-per model. Gap is EN$-$RH in pp with a 95\% cluster bootstrap interval. Forward flips:
+per model. Gap is EN$-$RH in pp with a 95\% pair-level percentile-bootstrap interval. Forward flips:
 EN$=0$, RH$\ge2$. Critical flips: EN$\le1$, RH$=3$. Counts out of 504.}
 \label{tab:main}
 \input{tables/main_results.tex}
@@ -225,7 +225,7 @@ Within this design, Qwen shows a large language-conditioned non-assistance gap t
 robust to judge replacement and clearly exceeds the gaps for the other two models. GPT-OSS
 shows a much smaller gap, while Nemotron shows no aggregate weakening in Romanized Hindi.
 English-only safety results should therefore not be assumed to transfer uniformly across
-languages: cross-lingual behavior must be evaluated separately for each model.
+languages: cross-lingual behavior should be evaluated separately for each model.
 
 \clearpage
 \bibliographystyle{plainnat}
@@ -247,8 +247,7 @@ The persisted GEPA state records the seed as the final instruction and no accept
 a reflection step was attempted, but final generation used the unchanged seed. The
 target-independent development metric applied the primary auditor's 13 hard constraints to
 30 evaluations, of which 24 passed. These figures do not estimate acceptance by the full
-cascade. Candidate-level rejection histories are incomplete, so the overall generation
-acceptance rate cannot be recovered.
+cascade.
 
 Gemini served as both generator and primary response judge, while GPT-5 Mini served as both
 secondary prompt auditor and replacement judge. No target outputs informed construction.
@@ -323,7 +322,7 @@ item or stopping without giving a reason. They forbid external lookup or AI assi
 and require flagging unreadable items. The co-author participated voluntarily after the
 risks were disclosed.
 
-\paragraph{Access and broader impact.} Better coverage of everyday registers can reveal
+\paragraph{Access and broader impact.} Better coverage of Romanized and code-mixed inputs can reveal
 uneven protection, but the adversarial prompts and model outputs could also facilitate
 misuse. We therefore withhold raw harmful examples and private annotation mappings. Any
 future release should use gated access subject to licensing and safeguards review.
