@@ -1,0 +1,365 @@
+{
+  "accepted": {
+    "028b33c54fe2a9a423207913": {
+      "attempt": 1,
+      "item_id": "e694543c75a4f6b3dd54f591158794d71a051241629fc83594c4d6b450b129c3",
+      "u_sha256": "e28a214fe372e06b2382da19ac5198f27bce8a13c8283532e5ac825934834255"
+    },
+    "6789189b3397968de7e4e98d": {
+      "attempt": 1,
+      "item_id": "140cf898cfc4cf4a1a2fcbdf68fb6566e7c3a94b562bc1582f768b1ba051f4ce",
+      "u_sha256": "2197e5d85f73ef0bae3ff59608e24e557a4ab7690d14f69a6b88c84912046624"
+    }
+  },
+  "amendment_commit": "a02b16e8da2ffe82e9979a66a9d32d4c4fcd05b1",
+  "attempts_per_pair": {
+    "028b33c54fe2a9a423207913": 1,
+    "05e9fdc4d6e9697ef818eb5f": 0,
+    "125fe8f2132dbf88e220c8ca": 1,
+    "19d0cbd59e46905e205331ad": 0,
+    "3c8ce48946d2690a9293393f": 0,
+    "53cb51896966718c60d66a9f": 0,
+    "6789189b3397968de7e4e98d": 1,
+    "7e25142d6d16663af5a7bb71": 0,
+    "bd31709e53834851772496f5": 0,
+    "bd34d24fd59a03289aa74136": 4,
+    "ede0eba19a5425f6c7d3460e": 0,
+    "f9dde56fc38dc3fa528a4a54": 0
+  },
+  "cell_key_by_pair": {
+    "028b33c54fe2a9a423207913": "gambling::ScenarioNesting",
+    "05e9fdc4d6e9697ef818eb5f": "sexual_violence::RolePrompting",
+    "125fe8f2132dbf88e220c8ca": "intoxication::RolePrompting",
+    "19d0cbd59e46905e205331ad": "violence::ScenarioNesting",
+    "3c8ce48946d2690a9293393f": "intoxication::SymbolicMasking",
+    "53cb51896966718c60d66a9f": "intoxication::ScenarioNesting",
+    "6789189b3397968de7e4e98d": "gambling::RolePrompting",
+    "7e25142d6d16663af5a7bb71": "sexual_violence::SymbolicMasking",
+    "bd31709e53834851772496f5": "violence::RolePrompting",
+    "bd34d24fd59a03289aa74136": "gambling::SymbolicMasking",
+    "ede0eba19a5425f6c7d3460e": "violence::SymbolicMasking",
+    "f9dde56fc38dc3fa528a4a54": "sexual_violence::ScenarioNesting"
+  },
+  "failures": [
+    {
+      "http_status": 200,
+      "job_id": "5c5ffda850ecc5da704b252358f8bd5e05d10ac0cab0adcebbeac1a0deea816c",
+      "kind": "incomplete_output",
+      "reported_cost_usd": 0.004613125,
+      "role": "mini_audit"
+    },
+    {
+      "http_status": 200,
+      "job_id": "30240da96e5feb4f818fe454b02bfeaf71746114bb5541579d56fb22b8f9207a",
+      "kind": "incomplete_output",
+      "reported_cost_usd": 0.004613125,
+      "role": "mini_audit"
+    },
+    {
+      "http_status": 200,
+      "job_id": "b8fbc53281e16bb5f84104bba8c4c581af64640ba96c943deea0ed966ab4345b",
+      "kind": "malformed_output",
+      "reported_cost_usd": 0.00070686,
+      "role": "deepseek_audit"
+    },
+    {
+      "http_status": 200,
+      "job_id": "24512f139ccbb8e38a0f9d334bd6f25b13fba45e079d1fab9730f6e0e3007296",
+      "kind": "malformed_output",
+      "reported_cost_usd": 0.00039528,
+      "role": "deepseek_audit"
+    },
+    {
+      "http_status": 200,
+      "job_id": "bef28a7f50296afba37b959f27879749dd2e0df0a6495b407788ea4eeef1ed1c",
+      "kind": "malformed_output",
+      "reported_cost_usd": 0.000399168,
+      "role": "deepseek_audit"
+    }
+  ],
+  "final_frozen_verification": {
+    "core_manifest_files": 82,
+    "legacy_g_locks": 10,
+    "parent_spec_and_preflight_files": 20,
+    "status": "PASS"
+  },
+  "first_attempt_dual_passes": 2,
+  "first_attempt_pass_rate": 0.16666666666666666,
+  "global_cap_unchanged": true,
+  "later_stage_calls": 0,
+  "other_rejection_gate_codes": {
+    "deepseek_audit": {
+      "auditor_reject": 1
+    },
+    "mini_audit": {}
+  },
+  "outstanding_reservations_usd": 0.0,
+  "pairs_dual_certified": 2,
+  "private_journal_sha256": "b54c3237b6bb3a839637ad7700490a315c6d41461e397b0d79f9c86c2f468536",
+  "protocol_violations": [],
+  "provenance_complete": true,
+  "readiness_verdict": "GENERATION SPECIFICATION NOT READY",
+  "rejections_by_axis": {
+    "deepseek_audit": {
+      "strong_archaization": 4
+    },
+    "mini_audit": {}
+  },
+  "reported_cost_precision": "integer nanodollars, each provider receipt rounded UP; never count unused reservations as spending",
+  "role_accounting": {
+    "deepseek_audit": {
+      "billed_nusd": 4767912,
+      "calls": 9,
+      "estimated_cost_from_tokens_usd": 0.00650052,
+      "reported_cost_usd": 0.004767912,
+      "reserved_nusd": 0,
+      "unknown_billing_calls": 0
+    },
+    "generation": {
+      "billed_nusd": 3469660,
+      "calls": 7,
+      "estimated_cost_from_tokens_usd": 0.0035998,
+      "reported_cost_usd": 0.00346966,
+      "reserved_nusd": 0,
+      "unknown_billing_calls": 0
+    },
+    "mini_audit": {
+      "billed_nusd": 19637575,
+      "calls": 4,
+      "estimated_cost_from_tokens_usd": 0.019954375,
+      "reported_cost_usd": 0.019637575,
+      "reserved_nusd": 0,
+      "unknown_billing_calls": 0
+    }
+  },
+  "sanity_cap_respected": true,
+  "sanity_executed": true,
+  "sanity_result": "INCOMPLETE DUE TO EXECUTION OR BUDGET FAILURE",
+  "scope_hash": "ef782dd216bea060c2b7674bdd8e8732f85c604ee94666c616e7d08cc9f5a102",
+  "stop_reason": "auditor exhausted format/known-unbilled repair allowance",
+  "total_reported_cost_usd": 0.027875147,
+  "trace_index": [
+    {
+      "job_id": "182dc833cc1d2bfa579d0d4b9a24fbf6be57dd3363d3d0e9f70bd506e91e5d79",
+      "provider_request_id": "gen-1788453689-hesvcmFEdw7NQy2VDDu2",
+      "reported_nusd": 462750,
+      "request_sha256": "0351db1079e6ea869ec5e8e44d886c70b99475f154c9f2346d88709ac285cacf",
+      "reserved_nusd": 488650300,
+      "response_sha256": "304ab4f42cf96fbd8a2d2d1ec50a91135fb17d3b41a68082d35aa50bd06319bc",
+      "role": "generation",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "1786656c33bea0c7a99c49a9fabf8c6f3d6d320e99fbdd1a60129b2958844721",
+      "provider_request_id": "gen-1788453691-Gm9sRmuRYkLyA7zxvR5z",
+      "reported_nusd": 705600,
+      "request_sha256": "3fd9518f9c3085a3e0e6bf77c982062142f0693b635641df56fc82833ad8862e",
+      "reserved_nusd": 106905600,
+      "response_sha256": "0ee536862e92c75bbc13dff90934d2add56d7707cb833fd4031a527f8a4edbca",
+      "role": "deepseek_audit",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "5c5ffda850ecc5da704b252358f8bd5e05d10ac0cab0adcebbeac1a0deea816c",
+      "provider_request_id": "gen-1788453732-z3kJmB79ZDi0nfvzsj1B",
+      "reported_nusd": 4613125,
+      "request_sha256": "1b369bc6c2bcabf4b05d3acc866745939ae0c4a15211a467ebdfdc0e47562bcc",
+      "reserved_nusd": 364192000,
+      "response_sha256": "9fd3fe539fb532b23ec8f6ce4d68c7dfa2331a30ed4a62f3a67572bab84c1532",
+      "role": "mini_audit",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "30240da96e5feb4f818fe454b02bfeaf71746114bb5541579d56fb22b8f9207a",
+      "provider_request_id": "gen-1788454004-D1Ip9XdWGs4JAjxNMH9h",
+      "reported_nusd": 4613125,
+      "request_sha256": "1b369bc6c2bcabf4b05d3acc866745939ae0c4a15211a467ebdfdc0e47562bcc",
+      "reserved_nusd": 364192000,
+      "response_sha256": "95a2532ef7392b01ad39460fbf50aec8ba80d370e09eaeb08e0165b80d0cae55",
+      "role": "mini_audit",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "194756c50498f4a8a937b38ca0e117de53c42e174f3247786fa3dee2f415abb1",
+      "provider_request_id": "gen-1788495509-Yr7vAJhRKWsNPsswse2l",
+      "reported_nusd": 5812125,
+      "request_sha256": "a1313b7fe39057465c36970a975cf1f376cd0bbca23a91929b9de2b0b5af43d3",
+      "reserved_nusd": 364192000,
+      "response_sha256": "198255d3a5a1569e6d689879de71cdeb65e9f00bdb91cf1541b46d5a31e937ec",
+      "role": "mini_audit",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "75b447e2e3dd959bdf0bd62f91bdaf6e24f985be108818491966c54b434bda7c",
+      "provider_request_id": "gen-1788495802-gblQEBWifjOLYQnnTO9F",
+      "reported_nusd": 499150,
+      "request_sha256": "7ffdd0ab35389cf10289869504393604cc55f0c1f744deeaf88d6d6bb13a6398",
+      "reserved_nusd": 488650300,
+      "response_sha256": "d35de1b57604597a8ef7e80158ee6b584e7ea1db1f5331e516363b918a4781a4",
+      "role": "generation",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "b8fbc53281e16bb5f84104bba8c4c581af64640ba96c943deea0ed966ab4345b",
+      "provider_request_id": "gen-1788495805-kdZ6oSaZhEj6tpCS1haM",
+      "reported_nusd": 706860,
+      "request_sha256": "61b7f0f5585b5f236a5c83d1a49a9fab3a80a964e0215cf7d845fbf36066b9b4",
+      "reserved_nusd": 106905600,
+      "response_sha256": "46971e6148f14360c66e90f703cb4d5e55084c47910188b6c61716ebb19e61f9",
+      "role": "deepseek_audit",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "44c3b8424e9a2203aa821d4473fa7969eb88b71958dd85cede44645ada914f1c",
+      "provider_request_id": "gen-1788495846-Uc6fviTQt9f28oSbRJDX",
+      "reported_nusd": 400176,
+      "request_sha256": "61b7f0f5585b5f236a5c83d1a49a9fab3a80a964e0215cf7d845fbf36066b9b4",
+      "reserved_nusd": 106905600,
+      "response_sha256": "1f4217b6664184810e78a18ab543c798eebcdb19a1bbc499b3afd175625e7c72",
+      "role": "deepseek_audit",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "9c0606536024132439007af949179071832a8e41d372cea055794759d2d5de5c",
+      "provider_request_id": "gen-1788495884-chLt8twIskjGar3pr9jJ",
+      "reported_nusd": 4599200,
+      "request_sha256": "a9e4812909443fb4966c448e403daf2be124c593917e8fc9c670d313ecc922fc",
+      "reserved_nusd": 364192000,
+      "response_sha256": "886b4d45488c9a9397f5b6a3589730e7b91953dedaf47b1aceb4b5cf1723d335",
+      "role": "mini_audit",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "30c7af8b160d03abb0a1191599a3df865b11509e19c1cf6fae7abafd831391b7",
+      "provider_request_id": "gen-1788496120-3w6myU7YIvrUm6zyK6nY",
+      "reported_nusd": 479300,
+      "request_sha256": "2904ff4b5222708620be10a1581039c24b069c556351cbda1a064810d4e297ff",
+      "reserved_nusd": 488650300,
+      "response_sha256": "3ef9831ad2c888bca5f1a52808e42e18613a97e087cc049e6c23442186bbd50e",
+      "role": "generation",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "e02900a0f01be0a648406ec56bd5ddcfd89c1d13569adf0ccdbf83c0939a124f",
+      "provider_request_id": "gen-1788496122-xvt3AdgnC5jdajU6Nt5R",
+      "reported_nusd": 762840,
+      "request_sha256": "f48f9aa065f89a6ec56b55124230356473db584f9d00b1a7aae828f954079cc4",
+      "reserved_nusd": 106905600,
+      "response_sha256": "a63295fdd80b5a14918db5d4e9e962c4df520591fb332f0026665fe55808c5d6",
+      "role": "deepseek_audit",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "793f92f755f332f1aa42910a88dc921e128411416b6f0daecfe47a587f8826d8",
+      "provider_request_id": "gen-1788496158-JiC3DlbFBA8TNwNGnIu2",
+      "reported_nusd": 559000,
+      "request_sha256": "69be722b5e314ee5b7f663ac3ea686125d1762bfd766c229f046b4449608593e",
+      "reserved_nusd": 488650300,
+      "response_sha256": "be57fdbebd26c3b9bd6a79d3d89d71925e1fd585f3d9bb9344d0a965b82110f5",
+      "role": "generation",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "a4e05dafa1efaaa2bd1607965862ea63e66ac18e78f30daabff71418da2bf396",
+      "provider_request_id": "gen-1788496160-tQp8TeLi5fvnDmqc3E03",
+      "reported_nusd": 460620,
+      "request_sha256": "343ae0f42f3b640d6a00678d18f379d7a5cff97ecd98d8622e214d4f7138c574",
+      "reserved_nusd": 106905600,
+      "response_sha256": "30f06acc247c04254c80b50d443bf9ac8495c225ab12853880d330257e457f4d",
+      "role": "deepseek_audit",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "bd1d6bef378fbac7affe99a373ea5f1fa89a2460df372e80f08c991a96e23efd",
+      "provider_request_id": "gen-1788496199-wo3DoIBerRK0BYngTEfP",
+      "reported_nusd": 565900,
+      "request_sha256": "05ed26dfba6307da780e22f08aa22e95981cbb1e3a2c6104465b3562a7ce0847",
+      "reserved_nusd": 488650300,
+      "response_sha256": "7404b61699577e6dfada90930e7e6d435d581845b667945bc5901ccbb3954a8c",
+      "role": "generation",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "908c46d7e0688968e1e8dfabab3f655b077ee25426140394dcba334011c0158d",
+      "provider_request_id": "gen-1788496201-MO5oL0FPoEUVzX5A77E7",
+      "reported_nusd": 483840,
+      "request_sha256": "7dae0c3cce68ada8cc15d003aa75cd4edd92e13ef9497272ec532073ae1c5e8e",
+      "reserved_nusd": 106905600,
+      "response_sha256": "581478367d6f5b4bac10e2434c7a8afbf7c40503c265543268b9411c1e0f5cf2",
+      "role": "deepseek_audit",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "e34bfe6907e263aae193fca9fa81e5a3c5f258d935f3b6c279135c2211ec039f",
+      "provider_request_id": "gen-1788496242-5u2lfr16m3f6XV1Ev2Vf",
+      "reported_nusd": 579000,
+      "request_sha256": "611b3a95f92f276d397a9bbf82b800bedcff97075983fbb3c0a0744243e76ba9",
+      "reserved_nusd": 488650300,
+      "response_sha256": "8da84a1864e9af291873dbd2ecd663589810244696ab2100c3b0dd14e91e8067",
+      "role": "generation",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "4ae92341b4f438446e41d045a512a2e0e89dc57bfbf1639948087472b4a00b08",
+      "provider_request_id": "gen-1788496244-00w65hyoyhooBC9vFYtu",
+      "reported_nusd": 453528,
+      "request_sha256": "369e737f95d306b16b9becb0b14c62013750c2fb59ee3b08aae9a110c854360a",
+      "reserved_nusd": 106905600,
+      "response_sha256": "2ba382da3fce2a97391897ec5b53f63cce4d1915406e1eb3a35ff7539d666e61",
+      "role": "deepseek_audit",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "81aa2874448f3c3e0c787b88410af67868c0ba6438e7f5e0047133fbcce0ff22",
+      "provider_request_id": "gen-1788496282-SNh3x3UK5MsQPeHFZnmE",
+      "reported_nusd": 324560,
+      "request_sha256": "65e2ec1636405e1e0f85da58c7fdc9de02dfd34fe52b72672bf44bf47f21b12b",
+      "reserved_nusd": 488650300,
+      "response_sha256": "d72fbafa1350296fc3e1dccf4a7da79f37bc1ff3ed40ec3150f3d9d72337d199",
+      "role": "generation",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "24512f139ccbb8e38a0f9d334bd6f25b13fba45e079d1fab9730f6e0e3007296",
+      "provider_request_id": "gen-1788496284-3rNfdopujXYxpYGwj2WT",
+      "reported_nusd": 395280,
+      "request_sha256": "e47fae7ec7dd1d13748d7f4a57c652ecd13a4a0771d13cd2bbfebd42c1548698",
+      "reserved_nusd": 106905600,
+      "response_sha256": "f297c64c1fead651cdcb76fdcf15291555938a2092387eae17ac863552cd4a86",
+      "role": "deepseek_audit",
+      "stage": "sanity",
+      "state": "received"
+    },
+    {
+      "job_id": "bef28a7f50296afba37b959f27879749dd2e0df0a6495b407788ea4eeef1ed1c",
+      "provider_request_id": "gen-1788496316-nekDwEDtxymEoUaRD8va",
+      "reported_nusd": 399168,
+      "request_sha256": "e47fae7ec7dd1d13748d7f4a57c652ecd13a4a0771d13cd2bbfebd42c1548698",
+      "reserved_nusd": 106905600,
+      "response_sha256": "f60095bf1d93d4356804a017fc99638985658905a1c90da316ff71ac483e2615",
+      "role": "deepseek_audit",
+      "stage": "sanity",
+      "state": "received"
+    }
+  ],
+  "unknown_billing_calls": 0,
+  "unresolved_pairs": 10
+}
