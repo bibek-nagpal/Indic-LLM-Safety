@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: >-
+  If you refer to this repository, please cite it using the metadata below.
+title: >-
+  IndicAlignProbe: a paired English / Romanized-Hindi safety-asymmetry
+  evaluation harness for open-weight language models
+type: software
+license: MIT
+repository-code: "https://github.com/bibek-nagpal/Indic-LLM-Safety"
+version: "0.1.0"
+
+# Individual author names are deliberately omitted while the associated
+# manuscript is under double-blind review. Replace this entity entry with the
+# per-person `given-names` / `family-names` records once the work is
+# de-anonymised; do not add names here before then.
+authors:
+  - name: "The IndicAlignProbe authors"
+
+abstract: >-
+  A reproducible harness and frozen evidence archive for measuring whether an
+  open-weight language model assists with the same request differently when it
+  is written in English versus Romanized Hindi (Hinglish). The measured
+  construct is non-assistance -- a score of 0 on a 0-3 information-assistance
+  scale -- rather than refusal. The frozen V2 experiment evaluates 504
+  equivalence-certified EN/RH prompt pairs against three target models and
+  finds a model-dependent asymmetry rather than a universal one.
+
+keywords:
+  - AI safety
+  - language models
+  - multilingual evaluation
+  - Romanized Hindi
+  - Hinglish
+  - code-switching
+  - safety asymmetry
+  - reproducibility

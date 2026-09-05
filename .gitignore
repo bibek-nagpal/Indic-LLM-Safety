@@ -73,6 +73,10 @@ paper/**/*.pdf
 .opencode/
 .DS_Store
 *.swp
+# Windows / OneDrive shell noise (this working copy lives in a synced folder).
+Thumbs.db
+ehthumbs.db
+desktop.ini
 
 # --- legacy paper copy lives outside the repo ---
 Automated_Indic_Jailbreaking_Harness_Prahlada/
