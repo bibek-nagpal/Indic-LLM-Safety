@@ -1,9 +1,9 @@
 {
-  "baseline": "de160ee925ad2e3a6c1e4248526bc09404137959",
+  "baseline": "15d8a4166b235ab6fd4b5805d607c6e5b8478932",
   "status": "PASS",
   "frozen_entries": 82,
-  "pdf_sha256": "315cc37cc4ff26de603031b08c41a42bf1c528d4cac5d1706b8c1599fea5be08",
-  "pdf_pages": 16,
+  "pdf_sha256": "c727d4ceacb5de56a6d4ab309332517f266575649b98f64028188c97dbbb6a4f",
+  "pdf_pages": 15,
   "references_begin_page": 5,
   "checks": [
     {
@@ -179,7 +179,7 @@
       "pass": true,
       "detail": {
         "references_begin_page": 5,
-        "total_pages": 16
+        "total_pages": 15
       }
     },
     {
@@ -214,19 +214,18 @@
         "paper_globalsouthai_2026/CLAIM_EVIDENCE_LEDGER.md",
         "paper_globalsouthai_2026/FINAL_SUBMISSION_CHECKLIST.md",
         "paper_globalsouthai_2026/FINAL_SUBMISSION_README.md",
-        "paper_globalsouthai_2026/HUMAN_A_CLARIFICATION.md",
         "paper_globalsouthai_2026/NUMERICAL_AUDIT.md",
         "paper_globalsouthai_2026/REVIEWER_RISK_AUDIT.md",
         "paper_globalsouthai_2026/REVISION_LOG.md",
-        "paper_globalsouthai_2026/analysis/human_a_results.json",
-        "paper_globalsouthai_2026/analysis/human_a_validation.py",
+        "paper_globalsouthai_2026/analysis/headline_verification.json",
         "paper_globalsouthai_2026/analysis/numerical_audit.py",
         "paper_globalsouthai_2026/analysis/revision_verification.json",
+        "paper_globalsouthai_2026/analysis/verify_headline.py",
         "paper_globalsouthai_2026/analysis/verify_revision.py",
         "paper_globalsouthai_2026/checklist.tex",
+        "paper_globalsouthai_2026/figures/gap_by_model.pdf",
         "paper_globalsouthai_2026/main.pdf",
-        "paper_globalsouthai_2026/main.tex",
-        "paper_globalsouthai_2026/tables/human_rates.tex"
+        "paper_globalsouthai_2026/main.tex"
       ]
     }
   ]

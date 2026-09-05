@@ -37,7 +37,7 @@ job-cluster bootstrap was recomputed for the completed workbook.
 | human GPT5 QWK rounding | `0.851` | PASS | source=True pdf=True |
 | human GPT5 CI rounding | `[70.1, 79.9]` | PASS | source=True pdf=True |
 | items with valid labels 357 | `357 scored items` | PASS | source=True pdf=True |
-| blank labels 3 of 360 | `Three of 360 labels are blank` | PASS | source=True pdf=True |
+| blank labels 3 of 360 | `three labels are blank` | PASS | source=True pdf=True |
 | complete jobs 174 | `174 verified jobs` | PASS | source=True pdf=True |
 | binary agreement 87.9 | `87.9` | PASS | source=True pdf=True |
 | human Qwen gap +37.9 | `37.9` | PASS | source=True pdf=True |
@@ -52,7 +52,7 @@ Searched the configured legacy-claim and forbidden-phrase regression list.
 
 ## Required-disclaimer sweep
 
-Searched for: `single co-author`, `make no inter-annotator`, `not completed`, `retained the seed instruction unchanged`, `cascade`, `the same model`, `language was not blinded`, `both inputs use Latin script`, `SequenceMatcher`, `Cross-bank consolidation removed exact matches only`, `no direct-request and no benign condition`, `not covariate adjustment`, `unpaid co-author`, `without AI assistance`, `voluntarily agreed`, `automated-judge scores`, `aggregate experimental results`, `357 contain valid scores`, `three labels are blank`, `Three labeled rows fail`, `174 complete pair-model jobs`, `No formal institutional ethics/IRB review or approval was obtained.`
+Searched for: `single-co-author human audit`, `final generation used the seed unchanged`, `only pairs accepted by both were retained`, `Gemini generated the prompts and also served as the primary response judge`, `explicit EN/RH language label`, `both prompt conditions use Latin script`, `SequenceMatcher`, `Cross-bank consolidation removed exact matches only`, `does not adjust for prompt length`, `no benign or direct-request control`, `unpaid co-author`, `without AI assistance`, `knowingly and voluntarily undertook`, `automated-judge scores`, `aggregate experimental results`, `357 contain valid scores`, `three labels are blank`, `Three labeled rows fail`, `174 complete pair-model jobs`, `No crowdsourcing or human-subject recruitment was conducted`
 
 **Result:** all present
 

@@ -1,15 +1,15 @@
 # Revised GlobalSouthAI submission candidate
 
 Upload candidate: `C:\Prahlada\paper_globalsouthai_2026\main.pdf`.
-Baseline `8eca4be99f7d1af62a48980690069c3bcb3bd1c0` is preserved; see REVISION_LOG.md for the correction ledger.
+This final pass starts from `15d8a4166b235ab6fd4b5805d607c6e5b8478932`; the earlier independent-audit baseline `8eca4be99f7d1af62a48980690069c3bcb3bd1c0` remains preserved. See REVISION_LOG.md for the correction ledger.
 
 | Property | Verified result |
 |---|---|
 | Main scientific paper | 4 pages |
 | References | Begin page 5; extend into page 6 |
-| Appendix | Pages 6–9, same PDF |
-| Official checklist | All 16 items and guidelines, pages 10–16 |
-| Total PDF | 16 pages |
+| Appendix | Pages 6–8, same PDF |
+| Official checklist | All 16 items and guidelines, pages 9–15 |
+| Total PDF | 15 pages |
 | Format | Official NeurIPS 2026 style, dblblindworkshop, GlobalSouthAI workshop title parameter |
 | Anonymity | Anonymous placeholder author block; empty author metadata; no identifying paths or repository links |
 | Numerical checks | PASS; automated bootstrap outputs reused, completed human audit recomputed at its fixed seed |
@@ -22,7 +22,7 @@ No margin, spacing, font-size or line-count override was used.
 
 ## Before upload
 
-1. Review the human-audit disclosure: one unpaid co-author knowingly and voluntarily agreed after sensitive-content warning; no formal institutional ethics/IRB review or approval was obtained (HUMAN_A_CLARIFICATION.md).
+1. Confirm the documented human-audit classification: one unpaid co-author performed the rating as part of the research team after a sensitive-content warning; no external participants, crowdworkers or contractors were recruited. The checklist therefore marks the participant-specific Questions 14 and 15 as not applicable. This is not a formal institutional exemption determination.
 2. Review the disclosed license inventory and artifact-access limitations. No anonymous public release or gated service has been promised as already available.
 3. Enter title, abstract, required keywords and author profiles in the OpenReview form; check the current form before final submission. PDF remains anonymous.
 4. Confirm prior GlobalSouthAI/GlobalSouthML activity and nominate an eligible reviewer if the venue's conditional rule applies.

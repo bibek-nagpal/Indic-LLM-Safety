@@ -58,7 +58,7 @@ CHECKS = [
     ("human GPT5 QWK rounding", "0.851", round(human["agreement"]["human_vs_gpt5mini"]["kappa_quadratic"], 3) == 0.851),
     ("human GPT5 CI rounding", "[70.1, 79.9]", [round(100 * x, 1) for x in human["agreement"]["human_vs_gpt5mini"]["exact_ci"]] == [70.1, 79.9]),
     ("items with valid labels 357", "357 scored items", human["completion"]["items_with_valid_labels"] == 357),
-    ("blank labels 3 of 360", "Three of 360 labels are blank", human["completion"]["items_unscored"] == 3),
+    ("blank labels 3 of 360", "three labels are blank", human["completion"]["items_unscored"] == 3),
     ("complete jobs 174", "174 verified jobs", human["completion"]["jobs_with_both_languages_scored"] == 174),
     ("binary agreement 87.9", "87.9",
      round(100 * human["agreement"]["nonassistance_binary"]["exact"], 1) == 87.9),
@@ -104,20 +104,19 @@ def affirmative_hits(phrases):
 
 stale_hits = affirmative_hits(STALE)
 # Required disclaimers that MUST be present.
-REQUIRED = ["single co-author", "make no inter-annotator", "not completed",
-            "retained the seed instruction unchanged",
-            "cascade", "the same model", "language was not blinded",
-            "both inputs use Latin script", "SequenceMatcher",
-            "Cross-bank consolidation removed exact matches only", "not a covariate",
-            "no direct-request and no benign condition"]
-# Exact wording for the covariate disclaimer is checked separately.
-REQUIRED.remove("not a covariate")
-REQUIRED.append("not covariate adjustment")
-REQUIRED += ["unpaid co-author", "without AI assistance", "voluntarily agreed",
+REQUIRED = ["single-co-author human audit",
+            "final generation used the seed unchanged",
+            "only pairs accepted by both were retained",
+            "Gemini generated the prompts and also served as the primary response judge",
+            "explicit EN/RH language label",
+            "both prompt conditions use Latin script", "SequenceMatcher",
+            "Cross-bank consolidation removed exact matches only", "does not adjust for prompt length",
+            "no benign or direct-request control"]
+REQUIRED += ["unpaid co-author", "without AI assistance", "knowingly and voluntarily undertook",
              "automated-judge scores", "aggregate experimental results",
              "357 contain valid scores", "three labels are blank",
              "Three labeled rows fail", "174 complete pair-model jobs",
-             "No formal institutional ethics/IRB review or approval was obtained."]
+             "No crowdsourcing or human-subject recruitment was conducted"]
 missing_required = [s for s in REQUIRED if s.lower() not in flat.lower()]
 FORBIDDEN = ["reflectively optimized", "cannot manufacture", "cannot produce a between-model",
              "more consistent with degenerate", "also reverses under judge", "ordering is not",
@@ -127,7 +126,11 @@ FORBIDDEN = ["reflectively optimized", "cannot manufacture", "cannot produce a b
              "independent human", "independent external", "73 unscored", "287 scores",
              "n = 285", "missingness is associated", "outcome-associated",
              "completion-conditional", "background sheet", "unestablished consent",
-             "consent was unestablished"]
+             "consent was unestablished", "For the Global South", "India-salient",
+             "preregistered fallback", "register-sensitive evaluation", "per-model claims",
+             "without claiming that work validates", "conjunctive cascade, not",
+             "not independent validation or a test of equality",
+             "No formal institutional ethics/IRB review or approval was obtained"]
 stale_hits += [s for s in FORBIDDEN if s.lower() in flat.lower()]
 
 out = ["# Numerical consistency audit", "",

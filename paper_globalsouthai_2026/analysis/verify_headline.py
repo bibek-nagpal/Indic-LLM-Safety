@@ -105,7 +105,7 @@ def main():
           all(set(v) == {"en", "rh"} for v in table.values()), "")
     check("all judged scores lie on the 0-3 scale",
           all(0 <= x <= 3 for v in table.values() for x in v.values()), "")
-    check("exactly the three preregistered target models",
+    check("exactly the three pre-specified target models",
           sorted({m for m, _ in table}) == sorted(MODELS), "")
 
     committed_path = ROOT / "analysis/results/main_results.csv"

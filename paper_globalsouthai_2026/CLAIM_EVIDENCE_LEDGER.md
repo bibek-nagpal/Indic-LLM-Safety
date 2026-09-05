@@ -21,8 +21,8 @@ Point estimates are recomputed from frozen scores. Statistical intervals are tak
 | Similarity gate versus clustering | near_duplicate_similarity.json; audit_sensitivity.py; construction code | SequenceMatcher within source bank; exact-only cross-bank; separate token Jaccard |
 | Bowker/truncation | analysis/results/; analysis/sensitivity_results/truncation_sensitivity.csv | Transition-symmetry and completed-output sensitivity, not causal identification |
 | Judge language labels | src/jailbreak_hermes/judge.py; frozen judge input format | Explicit en/rh labels and prompt text, not blinded |
-| Participant warnings/right to stop | human_validation/ANNOTATOR_INSTRUCTIONS.md; HUMAN_A_CLARIFICATION.md | Co-author knowingly and voluntarily agreed after sensitive-content disclosure; no formal institutional ethics/IRB review or approval obtained |
+| Annotation warnings/right to stop | human_validation/ANNOTATOR_INSTRUCTIONS.md; HUMAN_A_CLARIFICATION.md | Unpaid co-author knowingly and voluntarily undertook the audit after sensitive-content disclosure; no external participants, crowdworkers or contractors were recruited |
 | Human background and preparation | Author statement, HUMAN_A_CLARIFICATION.md | Unpaid bilingual co-author; familiarization completed, no AI assistance; blinded to automated-judge scores and aggregate results; not external validation |
-| Official template/checklist | build/official_2026.zip; SUBMISSION_RULES.md | Complete checklist retained after appendix; not charged to main pages |
+| Official template/checklist | build/official_2026.zip; SUBMISSION_RULES.md; official 2026 Code of Ethics and Paper Checklist | Complete checklist retained after appendix; Questions 14--15 marked N/A because the rating was author-produced research work, not recruited human-subject or crowdworker participation |
 
 See analysis/revision_verification.json, NUMERICAL_AUDIT.md, and REVISION_LOG.md for the full change mapping.

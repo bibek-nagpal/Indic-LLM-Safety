@@ -67,7 +67,7 @@
       "status": "PASS"
     },
     {
-      "check": "exactly the three preregistered target models",
+      "check": "exactly the three pre-specified target models",
       "detail": "",
       "status": "PASS"
     },
